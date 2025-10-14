@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 
 const MainLayout = ({ children }: { children: ReactNode }) => {
-  return (<>Hello</>
+  return (<>Hello world</>
   );
 };
 
