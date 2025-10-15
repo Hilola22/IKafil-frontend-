@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
@@ -29,8 +29,31 @@ const categoriesData = [
 const Header = () => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
 
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        //skroll pastga
+        console.log(window.scrollY);
+        setIsVisible(false);
+      } else {
+        // skroll tepaga
+        setIsVisible(true);
+      }
+      setLastScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
   return (
-    <header className=" fixed top-0 left-0 w-full z-50 bg-[#f5f5f5]">
+    <header
+      className={`fixed top-0 left-0 w-full z-50 bg-[#f5f5f5] shadow transition-transform duration-500 ${
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
       <div
         onMouseEnter={() => setOpenCategory(null)}
         className="container text-[14px] h-8 place-items-center justify-between flex"

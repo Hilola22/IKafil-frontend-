@@ -1,34 +1,49 @@
 import { memo } from "react";
+import { FaInstagram, FaTelegram, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-white">
-      <div className="container h-130 mb-2">
-        <div className="grid grid-cols-4">
-          <div className=" flex flex-col justify-center gap-7 pb-30 h-110">
-            <strong>Buy</strong>
-            <p>Computers</p>
-            <p>Phones</p>
-            <p>Laptops</p>
-            <p>Accessors</p>
+    <footer className="bg-[#f5f5f5]">
+      <div className="container h-96 mb-2">
+        <div className="flex">
+          <div className="flex-[40%] px-7 py-11">
+            <p className="text-2xl mb-10">iKalif team work</p>
+            <p className="w-111">
+              iKalif Market is an online shop project where users can browse and
+              order devices such as smartphones, Apple products, laptops, and
+              accessories.
+            </p>
+            <div className="flex gap-4 text-2xl mt-6">
+              <FaInstagram />
+              <FaTelegram />
+              <FaYoutube />
+              <FaTwitter />
+            </div>
           </div>
-          <div className=" flex flex-col justify-center gap-7 pb-30 h-110">
-            <strong>Buy</strong>
-            <p>Computers</p>
-            <p>Phones</p>
-            <p>Laptops</p>
-          </div>
-          <div className=" flex flex-col justify-center gap-7 pb-30 h-110">
-            <strong>Buy</strong>
-            <p>Computers</p>
-            <p>Phones</p>
-          </div>
-          <div className=" flex flex-col justify-center gap-7 pb-30 h-110">
-            <strong>Buy</strong>
-            <p>Computers</p>
-            <p>Phones</p>
-            <p>Laptops</p>
-            <p>Accessors</p>
+          <div className="flex flex-[50%] justify-between place-content-center px-22">
+            <div className="p-5 flex flex-col justify-center gap-4 h-80">
+              <strong className="pb-4">Buy</strong>
+              <p>Computers</p>
+              <p>Phones</p>
+              <p>Laptops</p>
+              <p>Accessories</p>
+            </div>
+
+            <div className="p-5 flex flex-col justify-center gap-4 h-80">
+              <strong className="pb-4">Support</strong>
+              <p>FAQ</p>
+              <p>Delivery & Payment</p>
+              <p>Warranty</p>
+              <p>Return Policy</p>
+            </div>
+
+            <div className="p-5 flex flex-col justify-center gap-4 h-80">
+              <strong className="pb-4">Company</strong>
+              <p>About Us</p>
+              <p>News</p>
+              <p>Careers</p>
+              <p>Contacts</p>
+            </div>
           </div>
         </div>
         <hr className="text-[#dadce0]" />
