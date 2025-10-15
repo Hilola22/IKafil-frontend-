@@ -16,7 +16,6 @@ const categoriesData = [
       { title: "Computers", items: ["Desktop PCs", "Monitors", "All-in-One"] },
       { title: "Smartphones", items: ["iPhone", "Samsung"] },
       { title: "Tablets", items: ["iPad Pro", "iPad Mini"] },
-      { title: "Accessories", items: ["Cables", "Cases", "Chargers"] },
     ],
   },
   {
@@ -39,7 +38,7 @@ const Header = () => {
         <ul className="flex gap-5 text-[12px] font-[Montserrat,sans-serif] text-gray-600 font-normal">
           <li>
             <Link
-              href={"/"}
+              href={"/about"}
               className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
             >
               About company
@@ -48,7 +47,7 @@ const Header = () => {
           </li>
           <li>
             <Link
-              href={"/"}
+              href={"/delivery"}
               className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
             >
               Delivery
@@ -57,7 +56,7 @@ const Header = () => {
           </li>
           <li>
             <Link
-              href={"/"}
+              href={"/trade-in"}
               className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
             >
               Trade in
@@ -75,7 +74,7 @@ const Header = () => {
           </li>
           <li>
             <Link
-              href={"/"}
+              href={"/news"}
               className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
             >
               News
@@ -84,7 +83,7 @@ const Header = () => {
           </li>
           <li>
             <Link
-              href={"/"}
+              href={"/contacts"}
               className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
             >
               Contacts
@@ -112,7 +111,9 @@ const Header = () => {
           onMouseEnter={() => setOpenCategory(null)}
           className="flex justify-between place-items-center"
         >
-          <p className="text-[35px] mt-2 font-[serif]">IKafil</p>
+          <Link href={"/"} className="text-[35px] mt-2 font-[serif]">
+            IKafil
+          </Link>
           <div className="flex gap-3">
             <RiSearchLine className="size-6" />
             <LuUserRound className="size-6" />
@@ -134,13 +135,11 @@ const Header = () => {
                 className="relative"
                 onMouseEnter={() => setOpenCategory("all")}
               >
-                {/* title */}
                 <div className="cursor-pointer flex items-center gap-2 transition-colors duration-300 hover:text-indigo-500">
                   All Categories <IoIosArrowDown />
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 hover:w-full"></span>
                 </div>
 
-                {/* menu + overlay */}
                 <div
                   className={`fixed top-[177px] left-0 w-full h-[calc(100vh-177px)] z-40 transition-opacity duration-300 ${
                     openCategory === "all"
@@ -148,19 +147,36 @@ const Header = () => {
                       : "opacity-0 pointer-events-none"
                   }`}
                 >
-                  {/* overlay */}
                   <div
                     className="absolute inset-0 backdrop-grain bg-gradient-to-b from-black/60 to-black/70"
-                    onMouseEnter={() => setOpenCategory(null)} // close only when hovering overlay
+                    onMouseEnter={() => setOpenCategory(null)}
                   />
 
-                  {/* menu */}
                   <div className="relative bg-[#f5f5f5] h-100 transition-opacity duration-300">
-                    <div className="container pt-4">
-                      <h2>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Fugit, autem.
+                    <div className="container pt-4 h-full p-2">
+                      <h2 className="text-2xl italic font-sans">
+                        Explore all devices
                       </h2>
+                      <div className="flex gap-10 pt-10 ">
+                        {categoriesData?.map((e, inx) => (
+                          <div className="text-[16px]" key={inx}>
+                            <p>{e.name}</p>
+                            <div className="text-[14px] pt-4 flex flex-col gap-2">
+                              {e.columns?.map((e, inx) => (
+                                <div
+                                  key={inx}
+                                  className="relative group align-bottom"
+                                >
+                                  <span className="cursor-pointer hover:text-indigo-500 transition-all duration-300">
+                                    {e.title}
+                                  </span>
+                                  <span className="absolute left-0 bottom-0 w-0 h-px bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -353,8 +369,7 @@ const Header = () => {
           </ul>
         </div>
         <p
-          // onMouseEnter={() => setOpenCategory(null)}
-          className="mt-2.5 text-[15px] font-normal text-transparent bg-clip-text"
+          className=" mt-2.5 text-[15px] font-normal text-transparent bg-clip-text"
           style={{
             background:
               "linear-gradient(87deg, rgba(13,10,69,1) 0%, rgba(197,197,250,1) 10%, rgba(195,190,229,1) 25%, rgba(193,184,214,1) 40%, rgba(203,122,240,1) 60%, rgba(188,168,240,1) 75%, rgba(250,120,122,1) 90%, rgba(245,5,5,0.98) 100%)",
