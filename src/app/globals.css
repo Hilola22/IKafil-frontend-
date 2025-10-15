@@ -6,3 +6,27 @@
   margin-left: auto;
   margin-right: auto;
 }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.animate-fade-in-delay {
+  animation: fadeIn 1.5s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+.animate-fade-in-delay-2 {
+  animation: fadeIn 1.8s ease-out forwards;
+  animation-delay: 0.6s;
+}
