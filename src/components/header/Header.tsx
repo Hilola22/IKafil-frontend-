@@ -49,7 +49,7 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
   return (
-    <header>
+    <header className="px-10">
       <div className="w-full h-44 bg-white"></div>
 
       <div
