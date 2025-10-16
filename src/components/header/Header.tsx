@@ -8,6 +8,7 @@ import { LuInstagram, LuUserRound } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 import { SiTelegram } from "react-icons/si";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import CartDrawer from "./CartDrawer"
 
 const categoriesData = [
   {
@@ -28,6 +29,7 @@ const categoriesData = [
 ];
 const Header = () => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
+  const [isCartOpen, setCartOpen] = useState(false);
 
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -143,7 +145,7 @@ const Header = () => {
             <div className="flex gap-3">
               <RiSearchLine className="size-6" />
               <LuUserRound className="size-6" />
-              <div className="relative">
+              <div className="relative"  onClick={() => setCartOpen(true)}>
                 <p className="left-5 bottom-3 absolute bg-indigo-500 rounded-full size-4 text-[11px] font-bold text-white grid items-center justify-center">
                   0
                 </p>
@@ -408,6 +410,7 @@ const Header = () => {
         </div>
         <div />
       </div>
+      <CartDrawer open={isCartOpen} onClose={() => setCartOpen(false)} />
     </header>
   );
 };
