@@ -82,7 +82,7 @@ export default function Home() {
   return (
     <main className="bg-white text-gray-900">
       <div
-        className={`transition-all duration-700 ease-in-out ${
+        className={`transition-all duration-600 ease-in-out ${
           isScrolled
             ? "h-[60vh] max-w-6xl mx-auto rounded-3xl shadow-lg"
             : "h-screen w-full"
@@ -101,7 +101,7 @@ export default function Home() {
         >
           {heroImages.map((src, index) => (
             <SwiperSlide key={index}>
-              <div className="relative w-full h-full">
+              <div className="relative w-full h-full pt-5">
                 <Image
                   src={src}
                   alt={`hero-${index}`}
