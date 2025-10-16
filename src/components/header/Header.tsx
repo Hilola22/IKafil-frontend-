@@ -164,7 +164,7 @@ const Header = () => {
                 </div>
 
                 <div
-                  className={`fixed top-[177px] left-0 w-full h-[calc(100vh-177px)] z-40 transition-opacity duration-300 ${
+                  className={`fixed top-[177px] left-0 w-full h-[calc(100vh-1px)] z-40 transition-opacity duration-300 ${
                     openCategory === "all"
                       ? "opacity-100"
                       : "opacity-0 pointer-events-none"
