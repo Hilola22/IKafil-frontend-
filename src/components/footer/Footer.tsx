@@ -7,7 +7,9 @@ const Footer = () => {
       <div className="container h-96 mb-2">
         <div className="flex">
           <div className="flex-[40%] px-7 py-11">
-            <p className="text-2xl mb-10">iKalif team work</p>
+            <p className="text-2xl mt-4 mb-9 font-medium font-[Roboto]">
+              iKafil team work
+            </p>
             <p className="w-111">
               iKalif Market is an online shop project where users can browse and
               order devices such as smartphones, Apple products, laptops, and
