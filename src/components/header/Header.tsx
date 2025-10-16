@@ -361,7 +361,7 @@ const Header = () => {
               <>
                 <li>
                   <Link
-                    href={"/"}
+                    href={"/products"}
                     className="font-medium text-transparent bg-clip-text bg-[linear-gradient(90deg,#60a5fa_0%,#818cf8_25%,#a78bfa_50%,#f472b6_75%,#f87171_100%)]"
                   >
                     Top week products

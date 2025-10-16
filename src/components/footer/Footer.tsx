@@ -24,7 +24,7 @@ const Footer = () => {
           </div>
           <div className="flex flex-[50%] justify-between place-content-center px-22">
             <div className="p-5 flex flex-col justify-center gap-4 h-80">
-              <strong className="pb-4">Buy</strong>
+              <strong className="pb-4 uppercase font-normal">Buy</strong>
               <p>Computers</p>
               <p>Phones</p>
               <p>Laptops</p>
@@ -32,7 +32,7 @@ const Footer = () => {
             </div>
 
             <div className="p-5 flex flex-col justify-center gap-4 h-80">
-              <strong className="pb-4">Support</strong>
+              <strong className="pb-4 uppercase font-normal">Support</strong>
               <p>FAQ</p>
               <p>Delivery & Payment</p>
               <p>Warranty</p>
@@ -40,7 +40,7 @@ const Footer = () => {
             </div>
 
             <div className="p-5 flex flex-col justify-center gap-4 h-80">
-              <strong className="pb-4">Company</strong>
+              <strong className="pb-4 uppercase font-normal">Company</strong>
               <p>About Us</p>
               <p>News</p>
               <p>Careers</p>
