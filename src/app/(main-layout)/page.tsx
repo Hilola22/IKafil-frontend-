@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
+import BackTo from "../../components/header/BackTo";
 
 const heroImages = ["/assets/17pro.jpg"];
 
@@ -47,7 +48,7 @@ const products = [
   {
     name: "iPhone 16",
     price: "11 299 000 сум",
-    oldPrice: "12 399 000 сум",  
+    oldPrice: "12 399 000 сум",
     discount: "9%",
     available: "Доступно в 5 цветах",
     image: "/assets/17pro.jpg",
@@ -131,7 +132,12 @@ export default function Home() {
       <section className="max-w-7xl mx-auto py-20 px-6">
         <div className="flex justify-between items-center mb-12">
           <h2 className="text-3xl font-bold">Top products</h2>
-          <a href="/products" className=" py-2 px-3 hover:border-b-1 border-blue-500 cursor-pointer">{"View all products ->"}</a>
+          <a
+            href="/products"
+            className=" py-2 px-3 hover:border-b-1 border-blue-500 cursor-pointer"
+          >
+            {"View all products ->"}
+          </a>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
           {products.map((p, i) => (
@@ -173,6 +179,8 @@ export default function Home() {
             </div>
           ))}
         </div>
+        {/* o'chirib yubormang , i did this here */}
+        <BackTo />
       </section>
     </main>
   );
