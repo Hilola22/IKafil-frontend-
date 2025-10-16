@@ -9,13 +9,13 @@ import "swiper/css/effect-fade";
 const heroImages = ["/assets/17pro.jpg"];
 
 export default function Hero() {
-    const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-    useEffect(() => {
-      const handleScroll = () => setIsScrolled(window.scrollY > 150);
-      window.addEventListener("scroll", handleScroll);
-      return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 150);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
     <div
       className={`transition-all duration-600 ease-in-out ${
