@@ -5,17 +5,8 @@ export const DeviceView = ({ data }: any) => {
   const image_url = "http://3.76.183.255:3030";
   console.log(data);
   return (
-    <div className="container ">
-      <section className="max-w-7xl mx-auto py-20 px-6">
-        <div className="flex justify-between items-center mb-12">
-          <h2 className="text-3xl font-bold">Top products</h2>
-          <a
-            href="/products"
-            className=" py-2 px-3 hover:border-b-1 border-blue-500 cursor-pointer transition duration-300"
-          >
-            {"View all products ->"}
-          </a>
-        </div>
+    <div className=" ">
+      <section className="max-w-7xl mx-auto py-5 px-6">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
           {data?.map((p: any, i: any) => (
             <div
