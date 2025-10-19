@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    domains: ["www.eclosio.ong", "localhost"],
     remotePatterns: [
       {
         protocol: "https",
