@@ -11,7 +11,7 @@ export const DeviceView = ({ data }: any) => {
           <h2 className="text-3xl font-bold">Top products</h2>
           <a
             href="/products"
-            className=" py-2 px-3 hover:border-b-1 border-blue-500 cursor-pointer"
+            className=" py-2 px-3 hover:border-b-1 border-blue-500 cursor-pointer transition duration-300"
           >
             {"View all products ->"}
           </a>
