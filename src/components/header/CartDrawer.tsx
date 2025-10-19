@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { FiX } from "react-icons/fi";
+import CartDrawerView from "./CartDrawerView";
 
 interface CartDrawerProps {
   open: boolean;
@@ -40,10 +41,13 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-700 transition"
-          >
+            >
             <FiX size={24} />
           </button>
         </div>
+          <div>
+          {/* <CartDrawerView/> */}
+          </div>
 
         <div className="flex flex-col justify-center items-center h-[80%] text-center text-gray-600">
           <svg
