@@ -5,7 +5,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.samsung.com",
+        hostname: "images.apple.com",
         pathname: "/**",
       },
     ],
