@@ -1,6 +1,6 @@
 import ProductDetail from "./product-detail";
 
-const API_BASE = "http://localhost:3030/api/devices";
+const API_BASE = "http://3.76.183.255:3030/api/devices";
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   try {
@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
           data.device_images?.length > 0
             ? [
                 {
-                  url: `http://localhost:3030${data.device_images[0].url}`,
+                  url: `http://3.76.183.255:3030${data.device_images[0].url}`,
                   alt: data.name,
                 },
               ]

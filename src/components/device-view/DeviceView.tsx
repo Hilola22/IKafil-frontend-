@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 
 export const DeviceView = ({ data }: any) => {
-  const image_url = "http://localhost:3030";
+  const image_url = "http://3.76.183.255:3030";
 
   console.log(data);
 

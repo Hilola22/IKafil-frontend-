@@ -25,7 +25,7 @@ type Product = {
 export default function ProductDetail({ data }: { data: Product }) {
   const imgUrl =
     data.device_images?.length && data.device_images[0].url
-      ? `http://localhost:3030${data.device_images[0].url}`
+      ? `http://3.76.183.255:3030${data.device_images[0].url}`
       : "https://www.eclosio.ong/wp-content/uploads/2018/08/default.png";
 
   return (
