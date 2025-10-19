@@ -28,16 +28,14 @@ export default function Search() {
     setIsLoading(true);
     setIsError(false);
 
-    fetch(
-      `http://localhost:3030/api/devices?search=${
-        debouncedTitle
-      }`
-    )
+    fetch(`http://3.76.183.255:3030/api/devices?search=${debouncedTitle}`)
       .then((res) => {
         if (!res.ok) throw new Error("Fetch failed");
         return res.json();
       })
-      .then((data) => {setResults(data || []), console.log(data);})
+      .then((data) => {
+        setResults(data || []), console.log(data);
+      })
       .catch(() => setIsError(true))
       .finally(() => setIsLoading(false));
   }, [debouncedTitle]);
@@ -65,8 +63,7 @@ export default function Search() {
         <p className="text-center text-red-400 mt-10">Error fetching results</p>
       )}
 
-          <DeviceView  data={results?.data} />
-        
+      <DeviceView data={results?.data} />
 
       {debouncedTitle && results.length === 0 && !isLoading && !isError && (
         <p className="text-center text-gray-400 mt-10">

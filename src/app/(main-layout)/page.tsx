@@ -6,7 +6,7 @@ import CategoryView from "./components/categories/CategoryView";
 
 const Home = async () => {
   const response = await fetch(
-    "http://localhost:3030/api/devices?page=1&limit=8",
+    "http://3.76.183.255:3030/api/devices?page=1&limit=8",
     {
       cache: "force-cache",
     }
