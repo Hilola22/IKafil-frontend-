@@ -35,11 +35,11 @@ export default function ProductDetail({ data }: { data: Product }) {
         <Card className="overflow-hidden shadow-lg">
           <CardContent className="p-4">
             <Image
-              src=""
+              src={imgUrl}
               alt={data.name}
               width={600}
               height={600}
-              className="rounded-xl object-cover w-full"
+              className="rounded-xl object-cover h-100 w-full"
             />
           </CardContent>
         </Card>
