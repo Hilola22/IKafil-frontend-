@@ -9,20 +9,19 @@ import "swiper/css/effect-fade";
 const heroImages = ["/assets/17pro.jpg"];
 
 export default function Hero() {
-    const [isScrolled, setIsScrolled] = useState(false);
+  const [isShrunk, setIsShrunk] = useState(false);
 
-    useEffect(() => {
-      const handleScroll = () => setIsScrolled(window.scrollY > 150);
-      window.addEventListener("scroll", handleScroll);
-      return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+  useEffect(() => {
+    const handleScroll = () => setIsShrunk(window.scrollY > 100);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div
-      className={`transition-all duration-600 ease-in-out ${
-        isScrolled
-          ? "h-[60vh] max-w-6xl mx-auto rounded-3xl shadow-lg"
-          : "h-screen w-full"
-      } overflow-hidden`}
+    <section
+      className={`relative w-full overflow-hidden transition-all duration-700 ease-in-out ${
+        isShrunk ? "h-[70vh]" : "h-screen"
+      }`}
     >
       <Swiper
         modules={[Autoplay, EffectFade]}
@@ -37,24 +36,25 @@ export default function Hero() {
       >
         {heroImages.map((src, index) => (
           <SwiperSlide key={index}>
-            <div className="relative w-full h-full pt-5">
+            <div className="relative w-full h-full">
               <Image
                 src={src}
                 alt={`hero-${index}`}
                 fill
                 priority
                 unoptimized
-                className="object-cover scale-105 hover:scale-110 transition-transform duration-1000"
+                className="object-cover object-center transition-transform duration-[2500ms] scale-105"
               />
-              <div className="absolute inset-0 bg-black/40"></div>
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
-                <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-md">
-                  Apple products
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/70"></div>
+
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
+                <h1 className="text-5xl md:text-7xl font-bold mb-4 drop-shadow-md">
+                  Apple Products
                 </h1>
                 <p className="text-lg md:text-2xl opacity-90 mb-6">
                   Discover the power of the next generation.
                 </p>
-                <button className="px-8 py-3 bg-white text-black font-semibold rounded-full shadow-md hover:bg-gray-200 transition-all duration-300">
+                <button className="px-10 py-4 bg-white text-black font-semibold rounded-full shadow-md hover:bg-gray-200 transition-all duration-300">
                   Learn More
                 </button>
               </div>
@@ -62,6 +62,6 @@ export default function Hero() {
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </section>
   );
 }
