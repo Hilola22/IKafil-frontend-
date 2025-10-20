@@ -53,7 +53,7 @@ const Header = () => {
 
   return (
     <header className="px-10">
-      <div className="w-full h-44 bg-white"></div>
+      <div className="w-full h-44 bg-transparent"></div>
 
       <div
         className={`fixed top-0 left-0 w-full z-50 bg-[#f5f5f5] shadow transition-transform duration-500 ${
@@ -167,38 +167,7 @@ const Header = () => {
                   </li>
                 </ul>
               </li>
-              <li className="relative group">
-                <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-                  iPad <IoIosArrowDown />
-                  <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-                </div>
-                <ul className=" z-10 absolute left-0 mt-2 w-48 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                  <li>
-                    <Link
-                      href="/"
-                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                    >
-                      Option 1
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/"
-                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                    >
-                      Option 2
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/"
-                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                    >
-                      Option 3
-                    </Link>
-                  </li>
-                </ul>
-              </li>
+
               <li className="relative group">
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
                   Accessors <IoIosArrowDown />
@@ -234,7 +203,7 @@ const Header = () => {
               </li>
               <li className="relative group">
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-                  MacKalif Verified <IoIosArrowDown />
+                  MacKafil Verified <IoIosArrowDown />
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
                 </div>
 
