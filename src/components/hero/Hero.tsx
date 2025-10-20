@@ -16,7 +16,6 @@ export default function Hero() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
   return (
     <section
       className={`relative w-full overflow-hidden transition-all duration-700 ease-in-out ${
