@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="container min-h-96 mb-2">
         <div className="flex flex-col sm:flex-col xl:flex-row">
           <div className="flex-[40%] px-7 py-11">
-            <p className="text-2xl mt-4 mb-9 font-medium font-[Roboto]">
+            <p className="text-2xl mt-4 mb-9 font-medium font-[Roboto] italic">
               iKafil team work
             </p>
             <p className="max-w-111">
