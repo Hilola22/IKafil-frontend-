@@ -33,20 +33,26 @@ const Header = () => {
 
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > lastScrollY) {
-        //skroll pastga
-        console.log(window.scrollY);
-        setIsVisible(false);
+      const currentScroll = window.scrollY;
+
+      // Only trigger hide/show after 200px scroll
+      if (currentScroll > 200) {
+        if (currentScroll > lastScrollY) {
+          // scrolling down
+          setIsVisible(false);
+        } else {
+          // scrolling up
+          setIsVisible(true);
+        }
       } else {
-        // skroll tepaga
+        // Always visible at the top section
         setIsVisible(true);
       }
-      setLastScrollY(window.scrollY);
-    };
 
+      setLastScrollY(currentScroll);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
