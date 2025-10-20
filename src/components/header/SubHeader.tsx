@@ -68,13 +68,6 @@ const SubHeader = ({ setOpenCategory }: any) => {
         </li>
       </ul>
       <div className="flex items-center gap-5 text-gray-800 justify-between cursor-pointer">
-        <p className="font-medium text-transparent bg-clip-text bg-[linear-gradient(90deg,#60a5fa_0%,#818cf8_25%,#a78bfa_50%,#f472b6_75%,#f87171_100%)]">
-          +998787772020
-        </p>
-
-        <LuInstagram />
-        <FaYoutube className="size-6" />
-        <SiTelegram />
         <ul className="flex gap-6">
           <LanguageSwitcher />
         </ul>

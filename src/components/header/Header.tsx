@@ -53,7 +53,7 @@ const Header = () => {
 
   return (
     <header className="px-10">
-      <div className="w-full h-44 bg-transparent"></div>
+      <div className="w-full h-40 bg-transparent"></div>
 
       <div
         className={`fixed top-0 left-0 w-full z-50 bg-[#f5f5f5] shadow transition-transform duration-500 ${
@@ -63,7 +63,7 @@ const Header = () => {
         <SubHeader setOpenCategory={setOpenCategory} />
         <hr className="text-[#dadce0]" />
 
-        <div className="container h-36">
+        <div className="container h-32">
           <div
             onMouseEnter={() => setOpenCategory(null)}
             className="flex justify-between place-items-center"
@@ -99,9 +99,9 @@ const Header = () => {
                   </div>
 
                   <div
-                    className={`fixed top-[177px] left-0 w-full h-[calc(100vh-1px)] z-40 transition-opacity duration-300 ${
+                    className={`fixed top-[158px] left-0 w-full h-[calc(110vh)] z-40 transition-opacity duration-300 ${
                       openCategory === "all"
-                        ? "opacity-100"
+                        ? "backdrop-blur-xs"
                         : "opacity-0 pointer-events-none"
                     }`}
                   >
@@ -254,18 +254,6 @@ const Header = () => {
               </>
             </ul>
           </div>
-
-          <p
-            className=" mt-2.5 text-[15px] font-normal text-transparent bg-clip-text"
-            style={{
-              background:
-                "linear-gradient(87deg, rgba(13,10,69,1) 0%, rgba(197,197,250,1) 10%, rgba(195,190,229,1) 25%, rgba(193,184,214,1) 40%, rgba(203,122,240,1) 60%, rgba(188,168,240,1) 75%, rgba(250,120,122,1) 90%, rgba(245,5,5,0.98) 100%)",
-              WebkitBackgroundClip: "text",
-              backgroundClip: "text",
-            }}
-          >
-            BroService
-          </p>
         </div>
         <div />
       </div>
