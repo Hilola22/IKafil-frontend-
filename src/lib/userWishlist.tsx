@@ -45,29 +45,32 @@ export interface Device {
   device_images?: DeviceImage[];
 }
 
-type CartStore = {
-  cart: Device[];
-  addToCart: (item: Device) => void;
-  removeFromCart: (id: number) => void;
-  clearCart: () => void;
-  getTotalPrice: () => number;
+type WishlistStore = {
+  wishlist: Device[];
+  toggleWishlist: (item: Device) => void;
+  // removeFromWishlist: (id: number) => void;
+  clearWishlist: () => void;
+  isInWishlist: (id: number) => boolean;
   getItemCount: () => number;
 };
 
-export const useCartStore = create<CartStore>()(
+export const useWishlistStore = create<WishlistStore>()(
   persist(
     (set, get) => ({
-      cart: [],
+      wishlist: [],
 
-      addToCart: (item) =>
+      toggleWishlist: (item) =>
         set((state) => {
-          console.log("🧩 addToCart() kelgan item:", item);
-      
           if (!item || !item.id) return state;
-      
-          const exists = state.cart.some((i) => i.id === item.id);
-          if (exists) return state;
-      
+
+          const exists = state.wishlist.some((i) => i.id === item.id);
+
+          if (exists) {
+            return {
+              wishlist: state.wishlist.filter((i) => i.id !== item.id),
+            };
+          }
+
           const normalized: Device = {
             ...item,
             base_price: String(item.base_price ?? item.price ?? 0),
@@ -82,31 +85,16 @@ export const useCartStore = create<CartStore>()(
             color: item.details?.color ?? item.color ?? "—",
             storage: item.details?.storage ?? item.storage ?? "—",
           };
-      
-          console.log("✅ Normalized:", normalized);
-      
-          return { cart: [normalized, ...state.cart] };
+
+          return { wishlist: [normalized, ...state.wishlist] };
         }),
-        
-      
 
-      removeFromCart: (id) =>
-        set((state) => ({
-          cart: state.cart.filter((item) => item.id !== id),
-        })),
+      clearWishlist: () => set({ wishlist: [] }),
 
-      clearCart: () => set({ cart: [] }),
+      isInWishlist: (id) => get().wishlist.some((i) => i.id === id),
 
-      getTotalPrice: () => {
-        const { cart } = get();
-        return cart.reduce(
-          (total, item) => total + parseFloat(item.base_price || "0"),
-          0
-        );
-      },
-
-      getItemCount: () => get().cart.length,
+      getItemCount: () => get().wishlist.length,
     }),
-    { name: "cart-storage" }
+    { name: "wishlist-storage" }
   )
 );
