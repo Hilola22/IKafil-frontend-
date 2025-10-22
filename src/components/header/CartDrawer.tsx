@@ -45,8 +45,8 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
             <FiX size={24} />
           </button>
         </div>
-          <div>
-          {/* <CartDrawerView/> */}
+          <div className="">
+          <CartDrawerView/>
           </div>
 
         <div className="flex flex-col justify-center items-center h-[80%] text-center text-gray-600">
