@@ -9,6 +9,7 @@ import { RiSearchLine } from "react-icons/ri";
 import { SiTelegram } from "react-icons/si";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import CartDrawer from "./CartDrawer"
+import { useCartStore } from "../../lib/useCart";
 
 const categoriesData = [
   {
@@ -28,6 +29,7 @@ const categoriesData = [
   },
 ];
 const Header = () => {
+  const { cart } = useCartStore();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [isCartOpen, setCartOpen] = useState(false);
 
@@ -56,6 +58,13 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
+  useEffect(() => {
+    if (isCartOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [isCartOpen]);
   return (
     <header className="px-10">
       <div className="w-full h-44 bg-white"></div>
@@ -151,12 +160,23 @@ const Header = () => {
             <div className="flex gap-3">
               <RiSearchLine className="size-6" />
               <LuUserRound className="size-6" />
+              {
+                cart.length ? (
               <div className="relative"  onClick={() => setCartOpen(true)}>
                 <p className="left-5 bottom-3 absolute bg-indigo-500 rounded-full size-4 text-[11px] font-bold text-white grid items-center justify-center">
-                  0
+                {cart.length}
                 </p>
                 <FiShoppingCart className="size-6" />
               </div>
+                )
+                :
+                <div className="relative"  onClick={() => setCartOpen(true)}>
+                <p className="left-5 bottom-3 absolute bg-indigo-500 rounded-full size-4 text-[11px] font-bold text-white grid items-center justify-center">
+                {cart.length}
+                </p>
+                <FiShoppingCart className="size-6" />
+              </div>
+              }
             </div>
           </div>
           <div

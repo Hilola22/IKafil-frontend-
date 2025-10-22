@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { FaShoppingCart } from "react-icons/fa";
+import DeviceButton from "../../../../components/device-view/DeviceButton";
+import Product from "../page";
 
 type Product = {
   id: number;
@@ -104,9 +104,7 @@ export default function ProductDetail({ data }: { data: Product }) {
               "No detailed description for this device."}
           </p>
 
-          <Button className="w-full bg-black text-white py-6 text-lg rounded-xl flex items-center justify-center gap-2">
-            <FaShoppingCart /> Buy Now
-          </Button>
+          <DeviceButton product={data as any}/>
         </CardContent>
       </Card>
     </div>

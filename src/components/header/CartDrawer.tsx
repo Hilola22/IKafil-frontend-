@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { FiX } from "react-icons/fi";
 import CartDrawerView from "./CartDrawerView";
+import { useCartStore } from "../../lib/useCart";
 
 interface CartDrawerProps {
   open: boolean;
@@ -10,6 +11,7 @@ interface CartDrawerProps {
 
 const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
   const router = useRouter();
+  const { cart } = useCartStore();
 
   const handleViewCart = () => {
     onClose();
@@ -17,6 +19,8 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
       router.push("/cart");
     }, 300);
   };
+
+  const isEmpty = cart.length === 0;
 
   return (
     <div
@@ -41,52 +45,59 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-700 transition"
-            >
+          >
             <FiX size={24} />
           </button>
         </div>
-          <div>
-          {/* <CartDrawerView/> */}
+
+        <div className="flex-1 overflow-y-auto">
+          {isEmpty ? (
+            <div className="flex flex-col justify-center items-center h-[80%] text-center text-gray-600">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-20 h-20 mb-4 text-indigo-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.293 6.707A1 1 0 007.7 21h8.6a1 1 0 00.993-.707L19 13M9 21a2 2 0 104 0"
+                />
+              </svg>
+              <p className="text-gray-500 text-lg">
+                Your cart is currently empty.
+              </p>
+              <button
+                onClick={onClose}
+                className="mt-6 px-6 py-2.5 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition-all"
+              >
+                Start shopping
+              </button>
+            </div>
+          ) : (
+            <CartDrawerView />
+          )}
+        </div>
+
+        {!isEmpty && (
+          <div className="flex justify-between items-center px-6 py-5 gap-5 border-t border-gray-200">
+            <button
+              onClick={handleViewCart}
+              className="px-6 py-2.5 w-[200px] bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-all"
+            >
+              View Cart
+            </button>
+
+            <button
+              className="px-6 py-2.5 w-[300px] bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all"
+            >
+              Proceed to Checkout
+            </button>
           </div>
-
-        <div className="flex flex-col justify-center items-center h-[80%] text-center text-gray-600">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-20 h-20 mb-4 text-indigo-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.293 6.707A1 1 0 007.7 21h8.6a1 1 0 00.993-.707L19 13M9 21a2 2 0 104 0"
-            />
-          </svg>
-          <p className="text-gray-500 text-lg">Your cart is currently empty.</p>
-          <button
-            onClick={onClose}
-            className="mt-6 px-6 py-2.5 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition-all"
-          >
-            Start shopping
-          </button>
-        </div>
-
-        <div className="flex justify-between items-center px-6 py-5 gap-5 border-t border-gray-200">
-          <button
-            onClick={handleViewCart}
-            className="px-6 py-2.5 w-[200px] bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-all"
-          >
-            View Cart
-          </button>
-
-          <button
-            className="px-6 py-2.5 w-[300px] bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all"
-          >
-            Proceed to Checkout
-          </button>
-        </div>
+        )}
       </div>
     </div>
   );
