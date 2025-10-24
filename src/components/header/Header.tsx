@@ -150,8 +150,10 @@ const Header = () => {
             </Link>
             <div className="flex gap-3">
               <RiSearchLine className="size-6" />
-              <LuUserRound className="size-6" />
-              <div className="relative"  onClick={() => setCartOpen(true)}>
+              <Link href="/auth/signin">
+                <LuUserRound className="size-6" />
+              </Link>
+              <div className="relative" onClick={() => setCartOpen(true)}>
                 <p className="left-5 bottom-3 absolute bg-indigo-500 rounded-full size-4 text-[11px] font-bold text-white grid items-center justify-center">
                   0
                 </p>
