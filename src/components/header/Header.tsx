@@ -8,6 +8,8 @@ import { RiSearchLine } from "react-icons/ri";
 import CartDrawer from "./CartDrawer";
 import SubHeader from "./SubHeader";
 import HeaderCategoryView from "./HeaderCategoryView";
+import { MenuIcon } from "lucide-react";
+import MenuExample from "./MenuHeader";
 
 const categoriesData = [
   {
@@ -31,6 +33,7 @@ const Header = () => {
   const [isCartOpen, setCartOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,17 +56,17 @@ const Header = () => {
 
   return (
     <header className="px-10">
-      <div className="w-full h-40 bg-transparent"></div>
+      <div className="w-full md:h-50 xl:h-32 bg-transparent"></div>
 
       <div
-        className={`fixed top-0 left-0 w-full z-50 bg-[#f5f5f5] shadow transition-transform duration-500 ${
+        className={`fixed top-0 left-0 w-full z-50  px-5 bg-[#f5f5f5] md:px-10 xl:px-0 shadow transition-transform duration-500 ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
         <SubHeader setOpenCategory={setOpenCategory} />
         <hr className="text-[#dadce0]" />
 
-        <div className="container h-32">
+        <div className="container xl:h-32 md:h-42">
           <div
             onMouseEnter={() => setOpenCategory(null)}
             className="flex justify-between place-items-center"
@@ -72,11 +75,13 @@ const Header = () => {
               IKafil
             </Link>
             <div className="flex gap-3">
-              <RiSearchLine className="size-6" />
+              <Link href="/search">
+                <RiSearchLine className="size-6 cursor-pointer transition-colors hover:text-indigo-500" />
+              </Link>
               <LuUserRound className="size-6" />
               <div className="relative" onClick={() => setCartOpen(true)}>
                 <p className="left-5 bottom-3 absolute bg-indigo-500 rounded-full size-4 text-[11px] font-bold text-white grid items-center justify-center">
-                  0
+                  {0}
                 </p>
                 <FiShoppingCart className="size-6" />
               </div>
@@ -87,7 +92,16 @@ const Header = () => {
             onMouseEnter={() => setOpenCategory(null)}
             className="font-[Nunito,sans-serif] font-light text-gray-600"
           >
-            <ul className="whitespace-nowrap flex gap-6 text-[15px] mt-4">
+            <div className=" md:hidden">
+              <MenuExample />
+            </div>
+            <ul
+              className={
+                show
+                  ? " whitespace-nowrap md:grid md:grid-cols-5 xl:flex  gap-6 text-[15px] mt-4"
+                  : "hidden whitespace-nowrap md:grid md:grid-cols-5 xl:flex  gap-6 text-[15px] mt-4"
+              }
+            >
               <li className="relative">
                 <div
                   className="relative"

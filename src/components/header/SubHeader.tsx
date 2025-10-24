@@ -9,7 +9,7 @@ const SubHeader = ({ setOpenCategory }: any) => {
   return (
     <div
       onMouseEnter={() => setOpenCategory(null)}
-      className="container text-[14px] h-8 place-items-center justify-between flex"
+      className="container hidden text-[14px] h-8 place-items-center justify-between md:flex"
     >
       <ul className="flex gap-5 text-[12px] font-[Montserrat,sans-serif] text-gray-600 font-normal">
         <li>
