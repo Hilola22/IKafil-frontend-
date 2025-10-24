@@ -40,12 +40,11 @@ export default function MenuExample() {
 
   return (
     <>
-      {/* Menu Trigger */}
       <button
         onClick={() => setIsOpen(true)}
         className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition-colors"
       >
-        <span className="text-[16px] font-medium">Menu</span>
+        <span className="text-[16px] font-medium">menu</span>
         <IoIosArrowDown
           className={`transition-transform duration-300 ${
             isOpen ? "rotate-180" : "rotate-0"
@@ -53,7 +52,6 @@ export default function MenuExample() {
         />
       </button>
 
-      {/* Overlay */}
       <div
         onClick={() => setIsOpen(false)}
         className={`fixed inset-0 bg-black/50 backdrop-blur-[3px] transition-opacity duration-300 ease-in-out ${
@@ -61,13 +59,11 @@ export default function MenuExample() {
         } z-[9998]`}
       ></div>
 
-      {/* Sidebar */}
       <div
         className={`fixed top-0 left-0 h-full w-[340px] bg-[#f5f5f5] shadow-2xl transform transition-transform duration-500 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } z-[9999]`}
       >
-        {/* Header */}
         <div className="flex justify-between items-center px-5 py-4 border-b border-gray-200 bg-white shadow-sm">
           <h2 className="text-lg font-semibold text-gray-800">Main Menu</h2>
           <button
@@ -78,7 +74,6 @@ export default function MenuExample() {
           </button>
         </div>
 
-        {/* Menu Content */}
         <div className="p-5 overflow-y-auto h-[calc(100%-60px)] space-y-5">
           {menuItems.map((item, i) => (
             <div key={i} className="border-b border-gray-200 pb-3">
