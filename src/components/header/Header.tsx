@@ -8,7 +8,6 @@ import { RiSearchLine } from "react-icons/ri";
 import CartDrawer from "./CartDrawer";
 import SubHeader from "./SubHeader";
 import HeaderCategoryView from "./HeaderCategoryView";
-import { MenuIcon } from "lucide-react";
 import MenuExample from "./MenuHeader";
 import { useCartStore } from "../../lib/useCart";
 
@@ -36,6 +35,11 @@ const Header = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [show, setShow] = useState(false);
   const { cart, getItemCount } = useCartStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,8 +61,9 @@ const Header = () => {
   }, [lastScrollY]);
 
   return (
-    <header className="px-10 relative">
-      <div className="w-full h-16 md:h-50 xl:h-32 bg-transparent"></div>
+    <header className="px-10 relative bg-[#f5f7f8]">
+      <div className="w-full h-16 md:h-50 xl:h-39 bg-[#f5f7f8] invisible"></div>
+
       <div className=" md:hidden bottom-5 z-200 absolute">
         <MenuExample />
       </div>
@@ -83,9 +88,11 @@ const Header = () => {
               <Link href="/search">
                 <RiSearchLine className="size-6 cursor-pointer transition-colors hover:text-indigo-500" />
               </Link>
-              <LuUserRound className="size-6" />
+              <Link href={"/profile"}>
+                <LuUserRound className="size-6" />
+              </Link>
               <div className="relative" onClick={() => setCartOpen(true)}>
-                {getItemCount() > 0 && (
+                {mounted && getItemCount() > 0 && (
                   <p className="left-5 bottom-3 absolute bg-indigo-500 rounded-full size-4 text-[11px] font-bold text-white grid items-center justify-center">
                     {getItemCount()}
                   </p>
@@ -103,7 +110,7 @@ const Header = () => {
               className={
                 show
                   ? "whitespace-nowrap md:grid md:grid-cols-5 xl:flex  gap-6 text-[15px] mt-4"
-                  : "hidden whitespace-nowrap md:grid md:grid-cols-5 xl:flex  gap-6 text-[15px] mt-4"
+                  : "hidden whitespace-nowrap md:grid md:grid-cols-5 xl:flex gap-7 xl:gap-10 text-[15px] mt-4"
               }
             >
               <li className="relative">
