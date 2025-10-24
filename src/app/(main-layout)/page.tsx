@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { DeviceView } from "../../components/device-view/DeviceView";
-import BackTo from "../../components/header/BackTo";
+import BackTo from "../../components/BackTo";
 import Hero from "../../components/hero/Hero";
 import CategoryView from "./components/categories/CategoryView";
 

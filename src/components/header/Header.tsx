@@ -1,14 +1,15 @@
 "use client";
 import Link from "next/link";
 import { memo, useEffect, useState } from "react";
-import { FaYoutube } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
 import { IoIosArrowDown } from "react-icons/io";
-import { LuInstagram, LuUserRound } from "react-icons/lu";
+import { LuUserRound } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
-import { SiTelegram } from "react-icons/si";
-import { LanguageSwitcher } from "./LanguageSwitcher";
-import CartDrawer from "./CartDrawer"
+import CartDrawer from "./CartDrawer";
+import SubHeader from "./SubHeader";
+import HeaderCategoryView from "./HeaderCategoryView";
+import { MenuIcon } from "lucide-react";
+import MenuExample from "./MenuHeader";
 import { useCartStore } from "../../lib/useCart";
 
 const categoriesData = [
@@ -29,131 +30,52 @@ const categoriesData = [
   },
 ];
 const Header = () => {
-  const { cart } = useCartStore();
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [isCartOpen, setCartOpen] = useState(false);
-
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [show, setShow] = useState(false);
+  const { cart, getItemCount } = useCartStore();
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScroll = window.scrollY;
 
-      // Only trigger hide/show after 200px scroll
       if (currentScroll > 200) {
         if (currentScroll > lastScrollY) {
-          // scrolling down
           setIsVisible(false);
         } else {
-          // scrolling up
           setIsVisible(true);
         }
       } else {
-        // Always visible at the top section
         setIsVisible(true);
       }
-
       setLastScrollY(currentScroll);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
-  useEffect(() => {
-    if (isCartOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-  }, [isCartOpen]);
-  return (
-    <header className="px-10">
-      <div className="w-full h-44 bg-white"></div>
 
+  return (
+    <header className="px-10 relative">
+      <div className="w-full h-16 md:h-50 xl:h-32 bg-transparent"></div>
+      <div className=" md:hidden bottom-5 z-200 absolute">
+        <MenuExample />
+      </div>
       <div
-        className={`fixed top-0 left-0 w-full z-50 bg-[#f5f5f5] shadow transition-transform duration-500 ${
+        className={`fixed top-0 left-0 w-full z-100  px-5 bg-[#f5f5f5] md:px-10 xl:px-0 shadow transition-transform duration-500 ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div
-          onMouseEnter={() => setOpenCategory(null)}
-          className="container text-[14px] h-8 place-items-center justify-between flex"
-        >
-          <ul className="flex gap-5 text-[12px] font-[Montserrat,sans-serif] text-gray-600 font-normal">
-            <li>
-              <Link
-                href={"/about"}
-                className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
-              >
-                About company
-                <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={"/delivery"}
-                className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
-              >
-                Delivery
-                <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={"/trade-in"}
-                className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
-              >
-                Trade in
-                <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={"/"}
-                className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
-              >
-                For CMI and blogers
-                <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={"/news"}
-                className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
-              >
-                News
-                <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={"/contacts"}
-                className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
-              >
-                Contacts
-                <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            </li>
-          </ul>
-          <div className="flex items-center gap-5 text-gray-800 justify-between cursor-pointer">
-            <p className="font-medium text-transparent bg-clip-text bg-[linear-gradient(90deg,#60a5fa_0%,#818cf8_25%,#a78bfa_50%,#f472b6_75%,#f87171_100%)]">
-              +998787772020
-            </p>
-
-            <LuInstagram />
-            <FaYoutube className="size-6" />
-            <SiTelegram />
-            <ul className="flex gap-6">
-              <LanguageSwitcher />
-            </ul>
-          </div>
-        </div>
+        <SubHeader setOpenCategory={setOpenCategory} />
         <hr className="text-[#dadce0]" />
 
-        <div className="container h-36">
+        <div className="container xl:h-32 md:h-42">
           <div
             onMouseEnter={() => setOpenCategory(null)}
-            className="flex justify-between place-items-center"
+            className="flex justify-between md:justify-between place-items-center"
           >
+            <div className="md:hidden size-10"></div>
             <Link href={"/"} className="text-[35px] mt-2 font-[serif]">
               IKafil
             </Link>
@@ -163,31 +85,33 @@ const Header = () => {
                 <LuUserRound className="size-6" />
               </Link>
               <div className="relative" onClick={() => setCartOpen(true)}>
+            <div className="flex gap-3 border md:border-0 border-gray-200">
+              <Link href="/search">
+                <RiSearchLine className="size-6 cursor-pointer transition-colors hover:text-indigo-500" />
+              </Link>
               <LuUserRound className="size-6" />
-              {
-                cart.length ? (
-              <div className="relative"  onClick={() => setCartOpen(true)}>
-                <p className="left-5 bottom-3 absolute bg-indigo-500 rounded-full size-4 text-[11px] font-bold text-white grid items-center justify-center">
-                {cart.length}
-                </p>
+              <div className="relative" onClick={() => setCartOpen(true)}>
+                {getItemCount() > 0 && (
+                  <p className="left-5 bottom-3 absolute bg-indigo-500 rounded-full size-4 text-[11px] font-bold text-white grid items-center justify-center">
+                    {getItemCount()}
+                  </p>
+                )}
                 <FiShoppingCart className="size-6" />
               </div>
-                )
-                :
-                <div className="relative"  onClick={() => setCartOpen(true)}>
-                <p className="left-5 bottom-3 absolute bg-indigo-500 rounded-full size-4 text-[11px] font-bold text-white grid items-center justify-center">
-                {cart.length}
-                </p>
-                <FiShoppingCart className="size-6" />
-              </div>
-              }
             </div>
           </div>
+
           <div
             onMouseEnter={() => setOpenCategory(null)}
             className="font-[Nunito,sans-serif] font-light text-gray-600"
           >
-            <ul className="whitespace-nowrap flex gap-6 text-[15px] mt-4">
+            <ul
+              className={
+                show
+                  ? "whitespace-nowrap md:grid md:grid-cols-5 xl:flex  gap-6 text-[15px] mt-4"
+                  : "hidden whitespace-nowrap md:grid md:grid-cols-5 xl:flex  gap-6 text-[15px] mt-4"
+              }
+            >
               <li className="relative">
                 <div
                   className="relative"
@@ -199,9 +123,9 @@ const Header = () => {
                   </div>
 
                   <div
-                    className={`fixed top-[177px] left-0 w-full h-[calc(100vh-1px)] z-40 transition-opacity duration-300 ${
+                    className={`fixed top-[158px] left-0 w-full h-[calc(110vh)] z-40 transition-opacity duration-300 ${
                       openCategory === "all"
-                        ? "opacity-100"
+                        ? "backdrop-blur-xs"
                         : "opacity-0 pointer-events-none"
                     }`}
                   >
@@ -209,33 +133,8 @@ const Header = () => {
                       className="absolute inset-0 backdrop-grain bg-gradient-to-b from-black/60 to-black/70"
                       onMouseEnter={() => setOpenCategory(null)}
                     />
-
                     <div className="relative bg-[#f5f5f5] h-100 transition-opacity duration-300">
-                      <div className="container pt-4 h-full p-2">
-                        <h2 className="text-2xl italic font-sans">
-                          Explore all devices
-                        </h2>
-                        <div className="flex gap-10 pt-10 ">
-                          {categoriesData?.map((e, inx) => (
-                            <div className="text-[16px]" key={inx}>
-                              <p>{e.name}</p>
-                              <div className="text-[14px] pt-4 flex flex-col gap-2">
-                                {e.columns?.map((e, inx) => (
-                                  <div
-                                    key={inx}
-                                    className="relative group align-bottom"
-                                  >
-                                    <span className="cursor-pointer hover:text-indigo-500 transition-all duration-300">
-                                      {e.title}
-                                    </span>
-                                    <span className="absolute left-0 bottom-0 w-0 h-px bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
+                      <HeaderCategoryView categoriesData={categoriesData} />
                     </div>
                   </div>
                 </div>
@@ -292,38 +191,7 @@ const Header = () => {
                   </li>
                 </ul>
               </li>
-              <li className="relative group">
-                <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-                  iPad <IoIosArrowDown />
-                  <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-                </div>
-                <ul className=" z-10 absolute left-0 mt-2 w-48 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                  <li>
-                    <Link
-                      href="/"
-                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                    >
-                      Option 1
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/"
-                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                    >
-                      Option 2
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/"
-                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                    >
-                      Option 3
-                    </Link>
-                  </li>
-                </ul>
-              </li>
+
               <li className="relative group">
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
                   Accessors <IoIosArrowDown />
@@ -359,7 +227,7 @@ const Header = () => {
               </li>
               <li className="relative group">
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-                  MacKalif Verified <IoIosArrowDown />
+                  MacKafil Verified <IoIosArrowDown />
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
                 </div>
 
@@ -404,42 +272,16 @@ const Header = () => {
                     href={"/"}
                     className="font-medium text-transparent bg-clip-text bg-[linear-gradient(90deg,#60a5fa_0%,#818cf8_25%,#a78bfa_50%,#f472b6_75%,#f87171_100%)]"
                   >
-                    Dyson
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href={"/"}
-                    className="font-medium text-transparent bg-clip-text bg-[linear-gradient(90deg,#60a5fa_0%,#818cf8_25%,#a78bfa_50%,#f472b6_75%,#f87171_100%)]"
-                  >
-                    Samsung
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href={"/"}
-                    className="font-medium text-transparent bg-clip-text bg-[linear-gradient(90deg,#60a5fa_0%,#818cf8_25%,#a78bfa_50%,#f472b6_75%,#f87171_100%)]"
-                  >
                     Golden Consept
                   </Link>
                 </li>
               </>
             </ul>
           </div>
-          <p
-            className=" mt-2.5 text-[15px] font-normal text-transparent bg-clip-text"
-            style={{
-              background:
-                "linear-gradient(87deg, rgba(13,10,69,1) 0%, rgba(197,197,250,1) 10%, rgba(195,190,229,1) 25%, rgba(193,184,214,1) 40%, rgba(203,122,240,1) 60%, rgba(188,168,240,1) 75%, rgba(250,120,122,1) 90%, rgba(245,5,5,0.98) 100%)",
-              WebkitBackgroundClip: "text",
-              backgroundClip: "text",
-            }}
-          >
-            BroService
-          </p>
         </div>
-        </div>
+        <div />
       </div>
+
       <CartDrawer open={isCartOpen} onClose={() => setCartOpen(false)} />
     </header>
   );
