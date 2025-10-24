@@ -159,17 +159,14 @@ const Header = () => {
             </Link>
             <div className="flex gap-3">
               <RiSearchLine className="size-6" />
-<<<<<<< HEAD
               <Link href="/auth/signin">
                 <LuUserRound className="size-6" />
               </Link>
               <div className="relative" onClick={() => setCartOpen(true)}>
-=======
               <LuUserRound className="size-6" />
               {
                 cart.length ? (
               <div className="relative"  onClick={() => setCartOpen(true)}>
->>>>>>> 755caa9b9b7f53e5090a8793868bcfff777ee619
                 <p className="left-5 bottom-3 absolute bg-indigo-500 rounded-full size-4 text-[11px] font-bold text-white grid items-center justify-center">
                 {cart.length}
                 </p>
@@ -441,7 +438,7 @@ const Header = () => {
             BroService
           </p>
         </div>
-        <div />
+        </div>
       </div>
       <CartDrawer open={isCartOpen} onClose={() => setCartOpen(false)} />
     </header>
