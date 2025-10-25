@@ -6,6 +6,8 @@ import Link from "next/link";
 
 const SignIn = () => {
   const router = useRouter();
+  const login = useAuthStore((state) => state.login);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -13,7 +15,6 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  const login = useAuthStore((state) => state.login);
 
   const validateInputs = () => {
     let valid = true;
@@ -21,16 +22,12 @@ const SignIn = () => {
     if (!email.trim()) {
       setEmailError("Email is required");
       valid = false;
-    } else {
-      setEmailError("");
-    }
+    } else setEmailError("");
 
     if (!password.trim()) {
       setPasswordError("Password is required");
       valid = false;
-    } else {
-      setPasswordError("");
-    }
+    } else setPasswordError("");
 
     return valid;
   };
@@ -38,12 +35,11 @@ const SignIn = () => {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const isValid = validateInputs();
-    if (!isValid) return;
+    if (!validateInputs()) return;
 
     setLoading(true);
-    setSuccess("");
     setError("");
+    setSuccess("");
 
     try {
       const res = await fetch("http://3.76.183.255:3030/api/auth/signin", {
@@ -52,22 +48,37 @@ const SignIn = () => {
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const errorData = await res.json();
-        setError(`Login failed: ${errorData.message}`);
+        setError(data.message || "Invalid credentials");
         setLoading(false);
         return;
       }
 
-      const data = await res.json();
-      login(data.user, data.token);
+      const token = data.accessToken;
+
+      const user = {
+        id: data?.id || "",
+        username: data?.username || "",
+        full_name: data?.full_name || "",
+        email: email,
+        phone: "",
+        role: data?.role || "",
+        region_id: 0,
+      };
+
+      login(user, token);
+
+      localStorage.setItem("accessToken", token);
+
       setSuccess("Successfully signed in!");
       setLoading(false);
 
-      setTimeout(() => router.push("/"), 1000);
+      setTimeout(() => router.push("/profile"), 1000);
     } catch (err) {
       console.error("Login error:", err);
-      setError("Something went wrong during login.");
+      setError("Something went wrong. Please try again.");
       setLoading(false);
     }
   };
@@ -86,9 +97,6 @@ const SignIn = () => {
               onChange={(e) => {
                 setEmail(e.target.value);
                 if (e.target.value.trim()) setEmailError("");
-              }}
-              onBlur={() => {
-                if (!email.trim()) setEmailError("Email is required");
               }}
               className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
                 emailError
@@ -110,9 +118,6 @@ const SignIn = () => {
                 setPassword(e.target.value);
                 if (e.target.value.trim()) setPasswordError("");
               }}
-              onBlur={() => {
-                if (!password.trim()) setPasswordError("Password is required");
-              }}
               className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${
                 passwordError
                   ? "border-red-500 focus:ring-red-400"
@@ -127,23 +132,21 @@ const SignIn = () => {
           {success && <p className="text-green-600 mb-4 text-sm">{success}</p>}
           {error && <p className="text-red-600 mb-4 text-sm">{error}</p>}
 
-          <div className="flex items-center justify-between mb-6">
-            <button
-              type="submit"
-              disabled={loading}
-              className={`w-full py-2 rounded-md text-white transition-colors ${
-                loading
-                  ? "bg-blue-400 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700"
-              }`}
-            >
-              {loading ? "Signing In..." : "Sign In"}
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-2 rounded-md text-white transition-colors ${
+              loading
+                ? "bg-blue-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+            }`}
+          >
+            {loading ? "Signing In..." : "Sign In"}
+          </button>
         </form>
 
         <p className="mt-4 text-center text-sm sm:text-base">
-          Don’t have an account?{" "}
+          Don't have an account?{" "}
           <Link href="/auth/signup" className="text-blue-500 hover:underline">
             Sign Up
           </Link>
