@@ -61,16 +61,22 @@ export const useCartStore = create<CartStore>()(
 
       addToCart: (item) =>
         set((state) => {
-          console.log("🧩 addToCart() kelgan item:", item);
-      
           if (!item || !item.id) return state;
       
           const exists = state.cart.some((i) => i.id === item.id);
           if (exists) return state;
       
+          const basePriceStr = String(item.base_price ?? "").replace(/[^\d.]/g, "");
+          const priceStr = String(item.price ?? "").replace(/[^\d.]/g, "");
+      
+          const cleanPrice =
+            parseFloat(basePriceStr) > 0
+              ? parseFloat(basePriceStr)
+              : parseFloat(priceStr) || 0;
+      
           const normalized: Device = {
             ...item,
-            base_price: String(item.base_price ?? item.price ?? 0),
+            base_price: cleanPrice.toString(),
             device_images: Array.isArray(item.device_images)
               ? item.device_images
               : item.image
@@ -83,11 +89,11 @@ export const useCartStore = create<CartStore>()(
             storage: item.details?.storage ?? item.storage ?? "—",
           };
       
-          console.log("✅ Normalized:", normalized);
+          console.log("✅ Normalized item:", normalized);
       
           return { cart: [normalized, ...state.cart] };
         }),
-        
+      
       
 
       removeFromCart: (id) =>
@@ -99,11 +105,18 @@ export const useCartStore = create<CartStore>()(
 
       getTotalPrice: () => {
         const { cart } = get();
-        return cart.reduce(
-          (total, item) => total + parseFloat(item.base_price || "0"),
-          0
-        );
+        if (!cart || cart.length === 0) return 0;
+      
+        const total = cart.reduce((acc, item) => {
+          const priceStr = String(item.base_price ?? item.price ?? "0");
+          const numericPrice = parseFloat(priceStr.replace(/[^\d.]/g, "")) || 0;
+          return acc + numericPrice;
+        }, 0);
+      
+        return total;
       },
+      
+      
 
       getItemCount: () => get().cart.length,
     }),

@@ -40,6 +40,7 @@ const DeviceButton = ({ product }: DeviceButtonProps) => {
       image: product.device_images?.[0]?.url
         ? `http://3.76.183.255:3030${product.device_images[0].url}`
         : "https://www.eclosio.ong/wp-content/uploads/2018/08/default.png",
+      base_price: ""
     });
 
     setIsAdded(true);
