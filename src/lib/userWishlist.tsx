@@ -48,9 +48,7 @@ export interface Device {
 type WishlistStore = {
   wishlist: Device[];
   toggleWishlist: (item: Device) => void;
-  // removeFromWishlist: (id: number) => void;
   clearWishlist: () => void;
-  isInWishlist: (id: number) => boolean;
   getItemCount: () => number;
 };
 
@@ -91,7 +89,6 @@ export const useWishlistStore = create<WishlistStore>()(
 
       clearWishlist: () => set({ wishlist: [] }),
 
-      isInWishlist: (id) => get().wishlist.some((i) => i.id === id),
 
       getItemCount: () => get().wishlist.length,
     }),
