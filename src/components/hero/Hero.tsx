@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
@@ -9,18 +9,18 @@ import "swiper/css/effect-fade";
 const heroImages = ["/assets/17pro.jpg"];
 
 export default function Hero() {
-  const [isShrunk, setIsShrunk] = useState(false);
-
+  const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
-    const handleScroll = () => setIsShrunk(window.scrollY > 100);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
     <section
-      className={`relative w-full overflow-hidden transition-all duration-700 ease-in-out ${
-        isShrunk ? "h-[70vh]" : "h-screen"
+      className={`relative w-full overflow-hidden bg-black text-white transition-all duration-700 ease-in-out ${
+        isMobile ? "h-[90vh]" : "h-screen"
       }`}
     >
       <Swiper
@@ -36,27 +36,57 @@ export default function Hero() {
       >
         {heroImages.map((src, index) => (
           <SwiperSlide key={index}>
-            <div className="relative w-full h-full">
-              <Image
-                src={src}
-                alt={`hero-${index}`}
-                fill
-                priority
-                unoptimized
-                className="object-cover object-center transition-transform duration-[2500ms] scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/70"></div>
-
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
-                <h1 className="text-5xl md:text-7xl font-bold mb-4 drop-shadow-md">
-                  Apple Products
+            <div className="relative w-full h-full flex flex-col items-center justify-center text-center">
+              <div
+                className={`absolute top-20 flex flex-col items-center ${
+                  isMobile ? "gap-1" : "gap-4"
+                }`}
+              >
+                <h1
+                  className={`font-bold ${
+                    isMobile ? "text-3xl" : "text-6xl"
+                  } drop-shadow-md`}
+                >
+                  iPhone 17 Pro
                 </h1>
-                <p className="text-lg md:text-2xl opacity-90 mb-6">
-                  Discover the power of the next generation.
+                <p
+                  className={`text-gray-300 ${
+                    isMobile ? "text-base" : "text-xl"
+                  }`}
+                >
+                  All out. Pro.
                 </p>
-                <button className="px-10 py-4 bg-white text-black font-semibold rounded-full shadow-md hover:bg-gray-200 transition-all duration-300">
-                  Learn More
-                </button>
+
+                <div
+                  className={`flex items-center justify-center gap-3 mt-3 ${
+                    isMobile ? "text-sm" : "text-base"
+                  }`}
+                >
+                  <button className="px-6 py-2 bg-blue-600 rounded-full font-medium hover:bg-blue-500 transition">
+                    Learn more
+                  </button>
+                  <button className="px-6 py-2 border border-blue-600 rounded-full font-medium hover:bg-blue-600 hover:text-white transition">
+                    Buy
+                  </button>
+                </div>
+              </div>
+
+              <div
+                className={`relative ${
+                  isMobile
+                    ? "w-[240px] sm:w-[300px] bottom-[-30px]"
+                    : "w-[550px] md:w-[650px] lg:w-[750px] mt-40"
+                } h-auto`}
+              >
+                <Image
+                  src={src}
+                  alt={`hero-${index}`}
+                  width={800}
+                  height={800}
+                  priority
+                  unoptimized
+                  className="object-cover mx-auto"
+                />
               </div>
             </div>
           </SwiperSlide>
