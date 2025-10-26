@@ -1,9 +1,31 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
+import { AddToCartButton } from "./AddToCartButton";
+import { useWishlistStore } from "../../lib/userWishlist";
+import { WishlistButton } from "./WishlistButton";
 
-export const DeviceView = ({ data }: any) => {
+type Product = {
+  id: number;
+  name: string;
+  base_price: string;
+  status: string;
+  details?: {
+    color?: string;
+    year?: number;
+    cpu?: string;
+    ram?: string;
+    storage?: string;
+    display_size?: string;
+    battery_health?: string;
+    description?: string;
+  };
+  device_images?: { url: string; is_primary?: boolean }[];
+};
+
+export const DeviceView = ({ data }: { data: Product | any }) => {
+
   const image_url = "http://3.76.183.255:3030";
   return (
     <div className="container">
@@ -19,30 +41,28 @@ export const DeviceView = ({ data }: any) => {
                   Скидка {p.discount}
                 </div>
               )}
-              {p.soldOut && (
+              {p.status !== "available" && (
                 <div className="absolute top-3 left-3 bg-black/70 text-white text-xs font-medium px-2 py-1 rounded-full z-10">
                   Нет в наличии
                 </div>
               )}
 
               <Link href={`/products/${p.id}`}>
-                <div className="relative w-full h-75 cursor-pointer">
+                <div className="relative w-full md:h-75 h-50 cursor-pointer">
                   {(() => {
                     const fallback =
                       "https://www.eclosio.ong/wp-content/uploads/2018/08/default.png";
-                    const validImages =
-                      p.device_images?.filter(
-                        (img: any) =>
-                          typeof img?.url === "string" &&
-                          img.url.startsWith("/")
-                      ) || [];
+                    const validImages = p.device_images?.filter(
+                      (img: any) =>
+                        typeof img?.url === "string" && img.url.startsWith("/")
+                    ) || [fallback];
 
                     const main = validImages[0]?.url
                       ? image_url + validImages[0].url
                       : fallback;
-                    const hover = validImages[2]?.url
-                      ? image_url + validImages[2].url
-                      : null;
+                    const hover = validImages[1]?.url
+                      ? image_url + validImages[1].url
+                      : fallback;
 
                     return (
                       <>
@@ -56,7 +76,7 @@ export const DeviceView = ({ data }: any) => {
                         {hover && (
                           <Image
                             src={hover}
-                            alt={p.name + "alt"}
+                            alt={p.name}
                             fill
                             unoptimized
                             className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -65,12 +85,7 @@ export const DeviceView = ({ data }: any) => {
                       </>
                     );
                   })()}
-              <button
-                type="button"
-                className="px-1.5 py-1.5 absolute top-2 right-3 border text-white text-lg rounded-full flex items-center justify-center hover:text-red-500 transition justify-self-center gap-2"
-              >
-                <FaRegHeart/>
-              </button>
+                 <WishlistButton data={p}/>
                 </div>
               </Link>
 
@@ -78,12 +93,7 @@ export const DeviceView = ({ data }: any) => {
                 <h3 className="font-semibold text-lg">{p.name}</h3>
                 <div className="flex gap-5 justify-between">
                   <p className="text-red-600 font-bold">{p.base_price}</p>
-                  <button
-                    type="button"
-                    className="px-1.5 py-[-20px] border text-black text-lg rounded-xl flex items-center justify-center hover:text-slate-500 transition justify-self-center gap-2"
-                  >
-                    +
-                  </button>
+                  <AddToCartButton data={p} />
                 </div>
               </div>
             </div>
