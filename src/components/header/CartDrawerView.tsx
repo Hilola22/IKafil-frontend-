@@ -2,119 +2,32 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Trash2, Loader2 } from "lucide-react";
+import { useCartStore } from "../../lib/useCart";
 
 const baseUrl = "http://3.76.183.255:3030";
 
-export type Product = {
-  id: number;
-  name: string;
-  base_price: string;
-  status: string;
-  details?: Record<string, any>;
-  device_images?: { url: string; is_primary?: boolean }[];
-};
-
-export type CartItem = {
-  id: number;
-  device_id: number;
-  device: Product;
-};
-
 const CartDrawerView = () => {
   const router = useRouter();
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { cart, fetchCart, removeFromCart, clearCart } = useCartStore();
   const [isRemoving, setIsRemoving] = useState<number | null>(null);
-
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-
-  // 🔹 Fetch cart data
-  const fetchCart = async () => {
-    if (!token) {
-      console.warn("Token topilmadi ❌");
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      const res = await fetch(`${baseUrl}/api/cart`, {
-        headers: { Authorization: `Bearer ${token}` },
-        cache: "no-store",
-      });
-
-      if (!res.ok) {
-        console.error("Cart fetch error:", res.status);
-        setCart([]);
-        return;
-      }
-
-      const result = await res.json();
-      setCart(result.data || result || []);
-    } catch (err) {
-      console.error("❌ Cart fetch xato:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // 🔹 Remove one item
-  const handleRemove = async (id: number) => {
-    if (!token) return alert("Avval tizimga kiring!");
-    try {
-      setIsRemoving(id);
-      const res = await fetch(`${baseUrl}/api/cart/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (res.ok) {
-        setCart((prev) => prev.filter((item) => item.id !== id));
-      } else {
-        console.error("Remove error:", res.status);
-      }
-    } catch (err) {
-      console.error("❌ Remove xato:", err);
-    } finally {
-      setIsRemoving(null);
-    }
-  };
-
-  // 🔹 Clear cart
-  const handleClearCart = async () => {
-    if (!token) return alert("Avval tizimga kiring!");
-    if (!confirm("Savatni tozalaysizmi?")) return;
-
-    try {
-      const res = await fetch(`${baseUrl}/api/cart/clear`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (res.ok) {
-        setCart([]);
-      } else {
-        console.error("Clear cart error:", res.status);
-      }
-    } catch (err) {
-      console.error("❌ Clear cart xato:", err);
-    }
-  };
+  const [isClearing, setIsClearing] = useState(false);
 
   useEffect(() => {
     fetchCart();
-  }, []);
+  }, [fetchCart]);
 
-  const getTotalPrice = () =>
-    cart.reduce((sum, item) => sum + Number(item.device.base_price || 0), 0);
+  const handleRemove = async (id: number) => {
+    setIsRemoving(id);
+    await removeFromCart(id);
+    setIsRemoving(null);
+  };
 
-  if (isLoading)
-    return <p className="text-center text-gray-500 mt-10">Yuklanmoqda...</p>;
-
-  if (!cart || cart.length === 0) {
-    return <p className="text-center text-gray-500 mt-10">Savat bo‘sh 😊</p>;
-  }
+  const handleClearCart = async () => {
+    if (!confirm("Savatni tozalaysizmi?")) return;
+    setIsClearing(true);
+    await clearCart();
+    setIsClearing(false);
+  };
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -126,18 +39,30 @@ const CartDrawerView = () => {
             ? `${baseUrl}${device.device_images[0].url}`
             : "/no-image.jpg";
 
+          const isThisRemoving = isRemoving === item.id;
+
           return (
             <div
               key={item.id}
-              className="flex items-center justify-between rounded-2xl p-4 shadow-sm transition-all duration-200"
+              className="flex items-center justify-between p-4 transition-all duration-200"
             >
               <div className="flex items-center gap-4">
-                <img
-                  src={imageUrl}
-                  alt={device.name}
-                  className="w-20 h-20 object-contain"
-                  onError={(e) => ((e.currentTarget.src = "/no-image.jpg"))}
-                />
+                {/* ✅ Spinner rasm ustida chiqadi */}
+                <div className="relative w-20 h-20">
+                  <img
+                    src={imageUrl}
+                    alt={device.name}
+                    className={`w-20 h-20 object-contain rounded-md transition-opacity ${
+                      isThisRemoving ? "opacity-50" : "opacity-100"
+                    }`}
+                    onError={(e) => ((e.currentTarget.src = "/no-image.jpg"))}
+                  />
+                  {isThisRemoving && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Loader2 className="w-7 h-7 text-gray-600 animate-spin" />
+                    </div>
+                  )}
+                </div>
 
                 <div className="text-[14px] leading-5">
                   <h4
@@ -180,7 +105,7 @@ const CartDrawerView = () => {
                   disabled={isRemoving === item.id}
                   className="mt-2 text-red-500 hover:text-red-600 transition disabled:opacity-50"
                 >
-                  {isRemoving === item.id ? (
+                  {isThisRemoving ? (
                     <Loader2 size={20} className="animate-spin" />
                   ) : (
                     <Trash2 size={20} />
@@ -195,9 +120,10 @@ const CartDrawerView = () => {
           <div className="pt-4 border-t flex justify-between items-center mt-3">
             <button
               onClick={handleClearCart}
-              className="text-red-600 hover:text-red-700 text-sm font-semibold transition"
+              disabled={isClearing}
+              className="text-red-600 hover:text-red-700 text-sm font-semibold transition disabled:opacity-50"
             >
-              Savatni tozalash
+              {isClearing ? "Tozalanmoqda..." : "Savatni tozalash"}
             </button>
           </div>
         )}

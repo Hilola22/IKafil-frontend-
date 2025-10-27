@@ -34,7 +34,7 @@ export default function Hero() {
   return (
     <section
       className={`relative w-full overflow-hidden bg-black text-white ${
-        isMobile ? "h-[30vh]" : "h-[70vh]"
+        isMobile ? "h-[450px]" : "h-[810px]"
       }`}
     >
       <Swiper

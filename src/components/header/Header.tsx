@@ -65,8 +65,9 @@ const Header = () => {
   }, [lastScrollY]);
 
   return (
-    <header className="px-10 relative">
-      <div className="w-full h-16 md:h-50 xl:h-41 bg-transparent"></div>
+    <header className="px-10 relative bg-[#f5f7f8]">
+      <div className="w-full h-16 md:h-50 xl:h-40 bg-[#f5f7f8] invisible"></div>
+
       <div className=" md:hidden bottom-5 z-200 absolute">
         <MenuExample />
       </div>

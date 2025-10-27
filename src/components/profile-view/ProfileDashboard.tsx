@@ -4,11 +4,14 @@ import { memo, useEffect, useState } from "react";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { useAuthStore } from "../../store/auth/useAuthStore";
 import { LuUserRound } from "react-icons/lu";
+import { MdEditNote } from "react-icons/md";
+import { FaCartShopping } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa";
 
 const menuItems = [
-  { title: "profile", href: "/profile" },
-  { title: "settings", href: "/profile/edit" },
-  { title: "cart", href: "profile/cart" },
+  { title: "profile", href: "/profile", logo: <FaUser /> },
+  { title: "settings", href: "/profile/edit", logo: <MdEditNote /> },
+  { title: "cart", href: "profile/cart", logo: <FaCartShopping /> },
 ];
 
 const ProfileDashboard = () => {
@@ -20,12 +23,9 @@ const ProfileDashboard = () => {
   }, [getAccessToken]);
 
   return (
-    <div className="flex flex-col gap-5 w-75 p-2  h-screen bg-gray-50">
+    <div className="flex flex-col gap-5 p-2  h-screen bg-white">
       <div className="flex place-items-center justify-between gap-2">
-        <Link
-          href={"/profile"}
-          className="flex place-items-center justify-between gap-2"
-        >
+        <div className="flex place-items-center justify-between gap-2">
           <div className="flex place-items-center text-shadow-gray-800  gap-2">
             <p>
               {token ? (
@@ -38,12 +38,14 @@ const ProfileDashboard = () => {
                 <LuUserRound className="size-6 text-gray-700" />
               )}
             </p>
-            <p className="font-semibold text-gray-800">IKafil</p>
+            <Link href={"/"}>
+              <p className="font-semibold text-gray-800">IKafil</p>
+            </Link>
           </div>
-        </Link>
+        </div>
         <div className="flex place-items-center px-1 text-[14px] mr-3 rounded-[3px]">
           <Link href={"/"}>
-            <ArrowRight className="size-4 text-gray-800" />
+            <ArrowRight className="size-4 text-gray-800 hover:bg-gray-200 rounded-full" />
           </Link>
         </div>
       </div>
@@ -55,10 +57,13 @@ const ProfileDashboard = () => {
             href={item.href}
             className="flex items-center justify-between px-2 py-2 hover:bg-gray-50 transition group"
           >
-            <span className="text-gray-700 font-medium group-hover:text-gray-900">
-              {item.title}
-            </span>
-            <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-700 transition" />
+            <div className="flex place-items-center gap-2">
+              {item.logo}
+              <span className="text-gray-700 font-normal group-hover:text-gray-900">
+                {item.title}
+              </span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
           </Link>
         ))}
       </div>
