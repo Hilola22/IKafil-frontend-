@@ -34,7 +34,7 @@ export default function Search() {
         return res.json();
       })
       .then((data) => {
-        setResults(data || []), console.log(data);
+        setResults(data);
       })
       .catch(() => setIsError(true))
       .finally(() => setIsLoading(false));
@@ -61,6 +61,12 @@ export default function Search() {
 
       {isError && debouncedTitle && (
         <p className="text-center text-red-400 mt-10">Error fetching results</p>
+      )}
+
+      {results?.data?.length === 0 && (
+        <p className="text-center text-gray-400 mt-10">
+          The product you are searching isn't found
+        </p>
       )}
 
       <DeviceView data={results?.data} />
