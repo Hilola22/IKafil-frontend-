@@ -1,6 +1,16 @@
 import { create } from "zustand";
 import { api } from "../api";
 
+// 🔹 CookieStorage'dan token olish funksiyasi
+const getCookie = (name: string): string | null => {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(name + "="));
+  if (!match) return null;
+  return decodeURIComponent(match.split("=")[1] || "") || null;
+};
+
 export interface DeviceDetails {
   id?: number;
   color?: string;
@@ -16,8 +26,6 @@ export interface DeviceDetails {
   device_id?: number;
   sim_type?: string;
 }
-
-
 
 export interface DeviceImage {
   url: string;
@@ -50,7 +58,7 @@ export interface Device {
 
 interface CartStore {
   cart: Device[];
-  initializeCart: () => void;
+  fetchCart: () => Promise<void>;
   addToCart: (item: Device) => Promise<void>;
   removeFromCart: (id: number) => Promise<void>;
   clearCart: () => Promise<void>;
@@ -61,22 +69,35 @@ interface CartStore {
 export const useCartStore = create<CartStore>((set, get) => ({
   cart: [],
 
-  initializeCart: () => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("cart");
-      if (stored) {
-        set({ cart: JSON.parse(stored) });
-      }
+  // 🔹 Cartni backenddan olish
+  fetchCart: async () => {
+    try {
+      const token =
+        getCookie("accessToken") ||
+        getCookie("token") ||
+        getCookie("access_token");
+
+      if (!token) throw new Error("Token topilmadi!");
+
+      const { data } = await api.get("/cart", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      set({ cart: data });
+      console.log("🛒 Cart yuklandi (cookie orqali token)");
+    } catch (error) {
+      console.error("❌ Cartni olishda xatolik:", error);
     }
   },
 
+  // 🔹 Cartga mahsulot qo‘shish
   addToCart: async (item) => {
-    const currentCart = get().cart;
-    const exists = currentCart.some((cartItem) => cartItem.id === item.id);
-    if (exists) return;
-
     try {
-      const token = localStorage.getItem("accessToken");
+      const token =
+        getCookie("accessToken") ||
+        getCookie("token") ||
+        getCookie("access_token");
+
       if (!token) throw new Error("Token topilmadi!");
 
       await api.post(
@@ -85,54 +106,50 @@ export const useCartStore = create<CartStore>((set, get) => ({
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      const updatedCart = [item, ...currentCart];
-      if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-      }
-      set({ cart: updatedCart });
-
-      console.log("✅ Mahsulot cartga qo‘shildi (backend + local)");
+      await get().fetchCart();
+      console.log("✅ Mahsulot cartga qo‘shildi (cookie orqali token)");
     } catch (error) {
       console.error("❌ Cartga qo‘shishda xatolik:", error);
     }
   },
 
+  // 🔹 Cartdan o‘chirish
   removeFromCart: async (id) => {
     try {
-      const token = localStorage.getItem("accessToken");
+      const token =
+        getCookie("accessToken") ||
+        getCookie("token") ||
+        getCookie("access_token");
+
       if (!token) throw new Error("Token topilmadi!");
 
       await api.delete(`/cart/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const updatedCart = get().cart.filter((item) => item.id !== id);
-      if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-      }
-      set({ cart: updatedCart });
-
-      console.log("✅ Cartdan o‘chirildi (backend + local)");
+      await get().fetchCart();
+      console.log("✅ Cartdan o‘chirildi (cookie orqali token)");
     } catch (error) {
       console.error("❌ Cartdan o‘chirishda xatolik:", error);
     }
   },
 
+  // 🔹 Cartni tozalash
   clearCart: async () => {
     try {
-      const token = localStorage.getItem("accessToken");
+      const token =
+        getCookie("accessToken") ||
+        getCookie("token") ||
+        getCookie("access_token");
+
       if (!token) throw new Error("Token topilmadi!");
 
       await api.delete("/cart", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("cart");
-      }
       set({ cart: [] });
-
-      console.log("✅ Cart tozalandi (backend + local)");
+      console.log("✅ Cart tozalandi (cookie orqali token)");
     } catch (error) {
       console.error("❌ Cartni tozalashda xatolik:", error);
     }
