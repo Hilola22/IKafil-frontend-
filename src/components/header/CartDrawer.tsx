@@ -11,7 +11,7 @@ interface CartDrawerProps {
 
 const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
   const router = useRouter();
-  const { cart } = useCartStore();
+  const { cart, getTotalPrice } = useCartStore();
 
   const handleViewCart = () => {
     onClose();
@@ -36,7 +36,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
       />
 
       <div
-        className={`absolute right-0 top-0 h-full w-[520px] bg-white shadow-2xl transform transition-transform duration-500 rounded-l-2xl ${
+        className={`absolute right-0 top-0 h-full w-[520px] bg-white shadow-2xl transform transition-transform duration-500 rounded-l-2xl flex flex-col ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -83,19 +83,27 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
         </div>
 
         {!isEmpty && (
-          <div className="flex justify-between items-center px-6 py-5 gap-5 border-t border-gray-200">
-            <button
-              onClick={handleViewCart}
-              className="px-6 py-2.5 w-[200px] bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-all"
-            >
-              View Cart
-            </button>
+          <div className="border-t border-gray-200 p-6 sticky bottom-0 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+            <div className="flex gap-5 items-center mb-4">
+              <span className="text-xl font-medium text-gray-700">Total:</span>
+              <span className="text-xl font-semibold text-gray-900">
+                {getTotalPrice().toLocaleString()} sum
+              </span>
+            </div>
 
-            <button
-              className="px-6 py-2.5 w-[300px] bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all"
-            >
-              Proceed to Checkout
-            </button>
+            <div className="flex justify-between gap-4">
+              <button
+                onClick={handleViewCart}
+                className="flex-1 px-6 py-2.5 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-all"
+              >
+                View Cart
+              </button>
+              <button
+                className="flex-1 px-6 py-2.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all"
+              >
+                Proceed to Checkout
+              </button>
+            </div>
           </div>
         )}
       </div>

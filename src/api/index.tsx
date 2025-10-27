@@ -1,19 +1,30 @@
 import axios from "axios";
+import { useAuthStore } from "@/store/auth/useAuthStore";
 
 export const api = axios.create({
-  baseURL: "http://3.76.183.255:3030/api/",
+  baseURL: "http://3.76.183.255:3030/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-import { NextResponse } from "next/server";
+api.interceptors.request.use(
+  (config) => {
+    const token = useAuthStore.getState().getAccessToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const query = searchParams.get("q");
-
-  const res = await fetch(
-    `http://3.76.183.255:3030/api/devices?search=${query}`
-  );
-  const data = await res.json();
-
-  return NextResponse.json(data);
-}
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      useAuthStore.getState().logout();
+    }
+    return Promise.reject(error);
+  }
+);

@@ -10,6 +10,7 @@ import SubHeader from "./SubHeader";
 import HeaderCategoryView from "./HeaderCategoryView";
 import MenuExample from "./MenuHeader";
 import { useCartStore } from "../../lib/useCart";
+import { useAuthStore } from "../../store/auth/useAuthStore";
 
 const categoriesData = [
   {
@@ -40,6 +41,13 @@ const Header = () => {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const getAccessToken = useAuthStore((state) => state.getAccessToken);
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    setToken(getAccessToken());
+  }, [getAccessToken]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,12 +92,20 @@ const Header = () => {
             <Link href={"/"} className="text-[35px] mt-2 font-[serif]">
               IKafil
             </Link>
-            <div className="flex gap-3 border md:border-0 border-gray-200">
+            <div className="flex items-center gap-3 border md:border-0 border-gray-200">
               <Link href="/search">
                 <RiSearchLine className="size-6 cursor-pointer transition-colors hover:text-indigo-500" />
               </Link>
-              <Link href={"/auth/signin"}>
-                <LuUserRound className="size-6 cursor-pointer transition-colors hover:text-indigo-500" />
+              <Link href={token ? "/profile" : "/auth/signin"}>
+                {token ? (
+                  <img
+                    src="/assets/profile-avatar.png" 
+                    alt="Profile"
+                    className="size-8 rounded-full border"
+                  />
+                ) : (
+                  <LuUserRound className="size-6 text-gray-700" />
+                )}
               </Link>
               <div className="relative" onClick={() => setCartOpen(true)}>
                 {mounted && getItemCount() > 0 && (
