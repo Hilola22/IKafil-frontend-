@@ -31,9 +31,7 @@ const SignUp = () => {
   useEffect(() => {
     const fetchRegions = async () => {
       try {
-        const res = await fetch("http://3.76.183.255:3030/api/regions", {
-          
-        });
+        const res = await fetch("http://3.76.183.255:3030/api/regions", {});
         const data = await res.json();
 
         if (Array.isArray(data)) {
