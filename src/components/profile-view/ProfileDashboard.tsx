@@ -11,7 +11,7 @@ import { FaUser } from "react-icons/fa";
 const menuItems = [
   { title: "profile", href: "/profile", logo: <FaUser /> },
   { title: "settings", href: "/profile/edit", logo: <MdEditNote /> },
-  { title: "cart", href: "profile/cart", logo: <FaCartShopping /> },
+  { title: "cart", href: "/profile/cart", logo: <FaCartShopping /> },
 ];
 
 const ProfileDashboard = () => {
