@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { api } from "@/api";
 
 const cookieStorage = () => {
   const isClient = typeof document !== "undefined";
@@ -16,7 +17,7 @@ const cookieStorage = () => {
 
     setItem: (name: string, value: string, options?: { maxAge?: number }) => {
       if (!isClient) return;
-      const maxAge = options?.maxAge ?? 7 * 24 * 60 * 60; 
+      const maxAge = options?.maxAge ?? 7 * 24 * 60 * 60;
       const secure = window.location.protocol === "https:";
       document.cookie = `${name}=${encodeURIComponent(
         value
@@ -60,18 +61,10 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       isAuthenticated: false,
 
-   
-      login: async (email: string, password: string) => {
+      login: async (email, password) => {
         try {
-          const res = await fetch("http://3.76.183.255:3030/api/auth/signin", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-          });
-
-          const data = await res.json();
-
-          if (!res.ok) throw new Error(data?.message || "Login failed");
+          const res = await api.post("/auth/signin", { email, password });
+          const data = res.data;
 
           const accessToken =
             data.access_token ||
@@ -82,17 +75,18 @@ export const useAuthStore = create<AuthState>()(
 
           if (!accessToken) throw new Error("Access token topilmadi!");
 
-          const user = data.user || {
-            id: data.id,
-            username: data.username,
-            full_name: data.full_name,
-            email: data.email,
-            role: data.role,
-            photo: data.photo,
-          };
+          const user = data.user ||
+            data.data?.user || {
+              id: data.id,
+              username: data.username,
+              full_name: data.full_name,
+              email: data.email,
+              role: data.role,
+              photo: data.photo,
+            };
 
           cookieStorage().setItem("accessToken", accessToken, {
-            maxAge: 5 * 60 * 60, 
+            maxAge: 5 * 60 * 60,
           });
 
           set({
@@ -102,26 +96,19 @@ export const useAuthStore = create<AuthState>()(
           });
 
           console.log("🎉 Login muvaffaqiyatli");
-        } catch (error) {
-          console.error("❌ Login error:", error);
+        } catch (error: any) {
+          console.error(
+            "❌ Login error:",
+            error.response?.data || error.message
+          );
           throw error;
         }
       },
 
       signup: async (userData) => {
         try {
-          const res = await fetch(
-            "http://3.76.183.255:3030/api/auth/register",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(userData),
-            }
-          );
-
-          const data = await res.json();
-
-          if (!res.ok) throw new Error(data?.message || "Sign up failed");
+          const res = await api.post("/auth/register", userData);
+          const data = res.data;
 
           const accessToken =
             data.access_token ||
@@ -132,14 +119,15 @@ export const useAuthStore = create<AuthState>()(
 
           if (!accessToken) throw new Error("Access token topilmadi!");
 
-          const user = data.user || {
-            id: data.id,
-            username: data.username,
-            full_name: data.full_name,
-            email: data.email,
-            role: data.role,
-            photo: data.photo,
-          };
+          const user = data.user ||
+            data.data?.user || {
+              id: data.id,
+              username: data.username,
+              full_name: data.full_name,
+              email: data.email,
+              role: data.role,
+              photo: data.photo,
+            };
 
           cookieStorage().setItem("accessToken", accessToken, {
             maxAge: 5 * 60 * 60,
@@ -152,8 +140,11 @@ export const useAuthStore = create<AuthState>()(
           });
 
           console.log("🎉 Sign up muvaffaqiyatli");
-        } catch (error) {
-          console.error("❌ Sign up error:", error);
+        } catch (error: any) {
+          console.error(
+            "❌ Sign up error:",
+            error.response?.data || error.message
+          );
           throw error;
         }
       },

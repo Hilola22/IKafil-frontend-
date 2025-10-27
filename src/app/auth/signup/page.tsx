@@ -5,6 +5,7 @@ import { useAuthStore } from "@/store/auth/useAuthStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+import { api } from "../../../api";
 
 const SignUp = () => {
   const router = useRouter();
@@ -18,7 +19,7 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
     role: "buyer",
-    region_id: 2,
+    region_id: "",
   });
 
   const [regions, setRegions] = useState<{ id: number; name: string }[]>([]);
@@ -31,8 +32,8 @@ const SignUp = () => {
   useEffect(() => {
     const fetchRegions = async () => {
       try {
-        const res = await fetch("http://3.76.183.255:3030/api/regions", {});
-        const data = await res.json();
+        const res = await api.get("/regions");
+        const data = res.data;
 
         if (Array.isArray(data)) {
           setRegions(data);
@@ -67,28 +68,24 @@ const SignUp = () => {
     }
 
     try {
-      const res = await fetch("http://3.76.183.255:3030/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      const res = await api.post("/auth/register", form);
+      const data = res.data;
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        setError(`Sign up failed: ${errorData.message || "Unknown error"}`);
-        setLoading(false);
-        return;
+      if (data && data.user && data.token) {
+        login(data.user, data.token);
+        setSuccess("Successfully signed up!");
+        setTimeout(() => router.push("/profile"), 1200);
+      } else {
+        setError("Unexpected server response.");
       }
-
-      const data = await res.json();
-      login(data.user, data.token);
-      setSuccess("Successfully signed up!");
-      setLoading(false);
-
-      setTimeout(() => router.push("/profile"), 1000);
-    } catch (err) {
-      console.error(err);
-      setError("Something went wrong during sign up.");
+    } catch (err: any) {
+      console.error("Sign up error:", err);
+      const message =
+        err.response?.data?.message ||
+        err.response?.data?.errors?.[0]?.errors?.[0] ||
+        "Something went wrong during sign up.";
+      setError(message);
+    } finally {
       setLoading(false);
     }
   };
