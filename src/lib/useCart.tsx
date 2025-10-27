@@ -17,8 +17,6 @@ export interface DeviceDetails {
   sim_type?: string;
 }
 
-
-
 export interface DeviceImage {
   url: string;
 }
@@ -50,7 +48,7 @@ export interface Device {
 
 interface CartStore {
   cart: Device[];
-  initializeCart: () => void;
+  fetchCart: () => Promise<void>;
   addToCart: (item: Device) => Promise<void>;
   removeFromCart: (id: number) => Promise<void>;
   clearCart: () => Promise<void>;
@@ -61,20 +59,25 @@ interface CartStore {
 export const useCartStore = create<CartStore>((set, get) => ({
   cart: [],
 
-  initializeCart: () => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("cart");
-      if (stored) {
-        set({ cart: JSON.parse(stored) });
-      }
+  // 🔹 Backenddan cartni olish
+  fetchCart: async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) throw new Error("Token topilmadi!");
+
+      const { data } = await api.get("/cart", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      set({ cart: data });
+      console.log("🛒 Cart yuklandi (backenddan)");
+    } catch (error) {
+      console.error("❌ Cartni olishda xatolik:", error);
     }
   },
 
+  // 🔹 Backendga cartga qo‘shish
   addToCart: async (item) => {
-    const currentCart = get().cart;
-    const exists = currentCart.some((cartItem) => cartItem.id === item.id);
-    if (exists) return;
-
     try {
       const token = localStorage.getItem("accessToken");
       if (!token) throw new Error("Token topilmadi!");
@@ -85,18 +88,15 @@ export const useCartStore = create<CartStore>((set, get) => ({
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      const updatedCart = [item, ...currentCart];
-      if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-      }
-      set({ cart: updatedCart });
-
-      console.log("✅ Mahsulot cartga qo‘shildi (backend + local)");
+      // Backendni yangilab qayta yuklaymiz
+      await get().fetchCart();
+      console.log("✅ Mahsulot cartga qo‘shildi (faqat backend)");
     } catch (error) {
       console.error("❌ Cartga qo‘shishda xatolik:", error);
     }
   },
 
+  // 🔹 Backenddan cartdan o‘chirish
   removeFromCart: async (id) => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -106,18 +106,14 @@ export const useCartStore = create<CartStore>((set, get) => ({
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const updatedCart = get().cart.filter((item) => item.id !== id);
-      if (typeof window !== "undefined") {
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-      }
-      set({ cart: updatedCart });
-
-      console.log("✅ Cartdan o‘chirildi (backend + local)");
+      await get().fetchCart();
+      console.log("✅ Cartdan o‘chirildi (faqat backend)");
     } catch (error) {
       console.error("❌ Cartdan o‘chirishda xatolik:", error);
     }
   },
 
+  // 🔹 Cartni butunlay tozalash
   clearCart: async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -127,12 +123,8 @@ export const useCartStore = create<CartStore>((set, get) => ({
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("cart");
-      }
       set({ cart: [] });
-
-      console.log("✅ Cart tozalandi (backend + local)");
+      console.log("✅ Cart tozalandi (faqat backend)");
     } catch (error) {
       console.error("❌ Cartni tozalashda xatolik:", error);
     }

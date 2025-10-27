@@ -1,8 +1,8 @@
-"use client";
-import { useRouter } from "next/navigation";
-import { FiX } from "react-icons/fi";
-import CartDrawerView from "./CartDrawerView";
-import { useCartStore } from "../../lib/useCart";
+'use client';
+import { useRouter } from 'next/navigation';
+import { FiX } from 'react-icons/fi';
+import CartDrawerView from './CartDrawerView';
+import { useCartStore } from '../../lib/useCart';
 
 interface CartDrawerProps {
   open: boolean;
@@ -11,13 +11,18 @@ interface CartDrawerProps {
 
 const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
   const router = useRouter();
-  const { cart, getTotalPrice } = useCartStore();
+  const { cart, getTotalPrice, clearCart } = useCartStore();
 
   const handleViewCart = () => {
     onClose();
     setTimeout(() => {
-      router.push("/cart");
+      router.push('/cart');
     }, 300);
+  };
+
+  const handleClearCart = async () => {
+    if (!confirm('Savatchani tozalaysizmi?')) return;
+    await clearCart();
   };
 
   const isEmpty = cart.length === 0;
@@ -25,19 +30,19 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
   return (
     <div
       className={`fixed inset-0 z-[999] transition-all duration-500 ${
-        open ? "visible opacity-100" : "invisible opacity-0"
+        open ? 'visible opacity-100' : 'invisible opacity-0'
       }`}
     >
       <div
         className={`absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-500 ${
-          open ? "opacity-100" : "opacity-0"
+          open ? 'opacity-100' : 'opacity-0'
         }`}
         onClick={onClose}
       />
 
       <div
         className={`absolute right-0 top-0 h-full w-[520px] bg-white shadow-2xl transform transition-transform duration-500 rounded-l-2xl flex flex-col ${
-          open ? "translate-x-0" : "translate-x-full"
+          open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="flex justify-between items-center p-5 border-b border-gray-200">
@@ -71,7 +76,12 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
                 Your cart is currently empty.
               </p>
               <button
-                onClick={onClose}
+                onClick={() => {
+                  onClose();
+                  setTimeout(() => {
+                    router.push('/products');
+                  }, 300);
+                }}
                 className="mt-6 px-6 py-2.5 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition-all"
               >
                 Start shopping
@@ -99,6 +109,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
                 View Cart
               </button>
               <button
+                onClick={handleClearCart}
                 className="flex-1 px-6 py-2.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all"
               >
                 Proceed to Checkout

@@ -18,12 +18,22 @@ type DeviceButtonProps = {
 };
 
 const DeviceButton = ({ product }: DeviceButtonProps) => {
-  const { addToCart, cart } = useCartStore();
+  const { addToCart, fetchCart, cart } = useCartStore();
   const [loading, setLoading] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
 
+  // 🔹 Cartni backenddan yuklab olish
   useEffect(() => {
-    const exists = cart.some((item) => item.id === product.id);
+    fetchCart();
+  }, [fetchCart]);
+
+  // 🔹 Cart yangilansa, mavjudligini tekshiramiz
+  useEffect(() => {
+    const exists = cart.some(
+      (item) =>
+        item.device?.id === product.id || // cartdagi device ID mos kelsa
+        item.id === product.id // ba'zida item.id bo‘lishi mumkin
+    );
     setIsAdded(exists);
   }, [cart, product.id]);
 
@@ -62,13 +72,25 @@ const DeviceButton = ({ product }: DeviceButtonProps) => {
             created_at: "",
             updated_at: "",
             device_id: product.id,
+            sim_type: "",
           },
           device_images:
             product.device_images?.length && product.device_images[0].url
-              ? [{ url: `http://3.76.183.255:3030${product.device_images[0].url}` }]
-              : [{ url: "https://www.eclosio.ong/wp-content/uploads/2018/08/default.png" }],
+              ? [
+                  {
+                    url: `http://3.76.183.255:3030${product.device_images[0].url}`,
+                  },
+                ]
+              : [
+                  {
+                    url: "https://www.eclosio.ong/wp-content/uploads/2018/08/default.png",
+                  },
+                ],
         },
       });
+
+      // ✅ Backend yangilangandan so‘ng cartni qayta yuklash
+      await fetchCart();
     } catch (err) {
       console.error("Cartga qo‘shishda xatolik:", err);
       alert("Savatga qo‘shishda xato yuz berdi!");
@@ -85,7 +107,7 @@ const DeviceButton = ({ product }: DeviceButtonProps) => {
     >
       {loading ? (
         <>
-          <Loader2 className="h-5 w-5 animate-spin" /> Yuklanmoqda...
+          <Loader2 className="h-5 w-5 animate-spin" /> 
         </>
       ) : isAdded ? (
         <>
@@ -93,7 +115,7 @@ const DeviceButton = ({ product }: DeviceButtonProps) => {
         </>
       ) : (
         <>
-          <FaShoppingCart /> Buy Now
+          <FaShoppingCart /> Add to Cart
         </>
       )}
     </Button>
