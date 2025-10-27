@@ -64,7 +64,7 @@ const SignIn = () => {
       setSuccess("Successfully signed in!");
       setLoading(false);
 
-      setTimeout(() => router.push("/"), 1000);
+      setTimeout(() => router.push("/profile"), 1000);
     } catch (err) {
       console.error("Login error:", err);
       setError("Something went wrong during login.");

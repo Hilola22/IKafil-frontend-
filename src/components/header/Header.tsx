@@ -62,7 +62,7 @@ const Header = () => {
 
   return (
     <header className="px-10 relative bg-[#f5f7f8]">
-      <div className="w-full h-16 md:h-50 xl:h-39 bg-[#f5f7f8] invisible"></div>
+      <div className="w-full h-16 md:h-50 xl:h-41 bg-[#f5f7f8] invisible"></div>
 
       <div className=" md:hidden bottom-5 z-200 absolute">
         <MenuExample />
@@ -88,8 +88,8 @@ const Header = () => {
               <Link href="/search">
                 <RiSearchLine className="size-6 cursor-pointer transition-colors hover:text-indigo-500" />
               </Link>
-              <Link href={"/profile"}>
-                <LuUserRound className="size-6" />
+              <Link href={"/auth/signin"}>
+                <LuUserRound className="size-6 cursor-pointer transition-colors hover:text-indigo-500" />
               </Link>
               <div className="relative" onClick={() => setCartOpen(true)}>
                 {mounted && getItemCount() > 0 && (
