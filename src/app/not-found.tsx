@@ -31,7 +31,7 @@ export default function NotFoundPage() {
       >
         <Link
           href="/"
-          className="flex items-center gap-2 bg-gradient-to-r from-gray-800 to-gray-600 hover:from-gray-700 hover:to-gray-500 px-6 py-3 rounded-full font-medium text-gray-100 shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105"
+          className="cursor-pointer flex items-center gap-2 bg-gradient-to-r from-gray-800 to-gray-600 hover:from-gray-700 hover:to-gray-500 px-6 py-3 rounded-full font-medium text-gray-100 shadow-lg shadow-black/30 transition-all duration-300 hover:scale-105"
         >
           <FaArrowLeft />
           Back to Home
