@@ -1,6 +1,16 @@
 import { create } from "zustand";
 import { api } from "../api";
 
+// 🔹 CookieStorage'dan token olish funksiyasi
+const getCookie = (name: string): string | null => {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(name + "="));
+  if (!match) return null;
+  return decodeURIComponent(match.split("=")[1] || "") || null;
+};
+
 export interface DeviceDetails {
   id?: number;
   color?: string;
@@ -59,10 +69,14 @@ interface CartStore {
 export const useCartStore = create<CartStore>((set, get) => ({
   cart: [],
 
-  // 🔹 Backenddan cartni olish
+  // 🔹 Cartni backenddan olish
   fetchCart: async () => {
     try {
-      const token = localStorage.getItem("accessToken");
+      const token =
+        getCookie("accessToken") ||
+        getCookie("token") ||
+        getCookie("access_token");
+
       if (!token) throw new Error("Token topilmadi!");
 
       const { data } = await api.get("/cart", {
@@ -70,16 +84,20 @@ export const useCartStore = create<CartStore>((set, get) => ({
       });
 
       set({ cart: data });
-      console.log("🛒 Cart yuklandi (backenddan)");
+      console.log("🛒 Cart yuklandi (cookie orqali token)");
     } catch (error) {
       console.error("❌ Cartni olishda xatolik:", error);
     }
   },
 
-  // 🔹 Backendga cartga qo‘shish
+  // 🔹 Cartga mahsulot qo‘shish
   addToCart: async (item) => {
     try {
-      const token = localStorage.getItem("accessToken");
+      const token =
+        getCookie("accessToken") ||
+        getCookie("token") ||
+        getCookie("access_token");
+
       if (!token) throw new Error("Token topilmadi!");
 
       await api.post(
@@ -88,18 +106,21 @@ export const useCartStore = create<CartStore>((set, get) => ({
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Backendni yangilab qayta yuklaymiz
       await get().fetchCart();
-      console.log("✅ Mahsulot cartga qo‘shildi (faqat backend)");
+      console.log("✅ Mahsulot cartga qo‘shildi (cookie orqali token)");
     } catch (error) {
       console.error("❌ Cartga qo‘shishda xatolik:", error);
     }
   },
 
-  // 🔹 Backenddan cartdan o‘chirish
+  // 🔹 Cartdan o‘chirish
   removeFromCart: async (id) => {
     try {
-      const token = localStorage.getItem("accessToken");
+      const token =
+        getCookie("accessToken") ||
+        getCookie("token") ||
+        getCookie("access_token");
+
       if (!token) throw new Error("Token topilmadi!");
 
       await api.delete(`/cart/${id}`, {
@@ -107,16 +128,20 @@ export const useCartStore = create<CartStore>((set, get) => ({
       });
 
       await get().fetchCart();
-      console.log("✅ Cartdan o‘chirildi (faqat backend)");
+      console.log("✅ Cartdan o‘chirildi (cookie orqali token)");
     } catch (error) {
       console.error("❌ Cartdan o‘chirishda xatolik:", error);
     }
   },
 
-  // 🔹 Cartni butunlay tozalash
+  // 🔹 Cartni tozalash
   clearCart: async () => {
     try {
-      const token = localStorage.getItem("accessToken");
+      const token =
+        getCookie("accessToken") ||
+        getCookie("token") ||
+        getCookie("access_token");
+
       if (!token) throw new Error("Token topilmadi!");
 
       await api.delete("/cart", {
@@ -124,7 +149,7 @@ export const useCartStore = create<CartStore>((set, get) => ({
       });
 
       set({ cart: [] });
-      console.log("✅ Cart tozalandi (faqat backend)");
+      console.log("✅ Cart tozalandi (cookie orqali token)");
     } catch (error) {
       console.error("❌ Cartni tozalashda xatolik:", error);
     }
