@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import Link from "next/link";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 const SignIn = () => {
   const router = useRouter();
@@ -10,6 +11,8 @@ const SignIn = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -42,43 +45,15 @@ const SignIn = () => {
     setSuccess("");
 
     try {
-      const res = await fetch("http://3.76.183.255:3030/api/auth/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || "Invalid credentials");
-        setLoading(false);
-        return;
-      }
-
-      const token = data.accessToken;
-
-      const user = {
-        id: data?.id || "",
-        username: data?.username || "",
-        full_name: data?.full_name || "",
-        email: email,
-        phone: "",
-        role: data?.role || "",
-        region_id: 0,
-      };
-
-      login(user, token);
-
-      localStorage.setItem("accessToken", token);
+      await login(email, password);
 
       setSuccess("Successfully signed in!");
       setLoading(false);
 
       setTimeout(() => router.push("/profile"), 1000);
-    } catch (err) {
+    } catch (err: any) {
       console.error("Login error:", err);
-      setError("Something went wrong. Please try again.");
+      setError(err.message || "Something went wrong. Please try again.");
       setLoading(false);
     }
   };
@@ -109,9 +84,9 @@ const SignIn = () => {
             )}
           </div>
 
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => {
@@ -124,6 +99,13 @@ const SignIn = () => {
                   : "focus:ring-blue-500"
               }`}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
+            >
+              {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+            </button>
             {passwordError && (
               <p className="text-red-500 text-sm mt-1">{passwordError}</p>
             )}

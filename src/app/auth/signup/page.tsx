@@ -87,7 +87,7 @@ const SignUp = () => {
       setSuccess("Successfully signed up!");
       setLoading(false);
 
-      setTimeout(() => router.push("/"), 1000);
+      setTimeout(() => router.push("/profile"), 1000);
     } catch (err) {
       console.error(err);
       setError("Something went wrong during sign up.");

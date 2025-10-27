@@ -1,0 +1,15 @@
+.swiper-slide {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0s linear 0.5s;
+}
+
+.swiper-slide-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s ease, visibility 0s linear 0s;
+}
+
+.swiper-wrapper {
+  transition-timing-function: ease-in-out;
+}

@@ -26,7 +26,7 @@ export const DeviceView = ({ data }: { data: Product | any }) => {
   const image_url = "http://3.76.183.255:3030";
 
   return (
-    <div className="container">
+    <div className="">
       <section className="max-w-7xl mx-auto py-20 sm:px-4 px-2">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
           {data?.map((p: any, i: any) => (
