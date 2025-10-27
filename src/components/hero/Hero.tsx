@@ -2,14 +2,28 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectFade } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/effect-fade";
+import "./Hero.css";
 
-const heroImages = ["/assets/17pro.jpg"];
+const heroData = [
+  {
+    id: 1,
+    title: "iPhone 17 Pro",
+    subtitle: "All out. Pro.",
+    image: "/assets/apple-hero2.webp",
+  },
+  {
+    id: 2,
+    title: "MacBook Air M3",
+    subtitle: "Light. Speed. Power.",
+    image: "/assets/mac2.jpg",
+  },
+];
 
 export default function Hero() {
   const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
@@ -19,49 +33,40 @@ export default function Hero() {
 
   return (
     <section
-      className={`relative w-full overflow-hidden bg-black text-white transition-all duration-700 ease-in-out ${
-        isMobile ? "h-[90vh]" : "h-screen"
+      className={`relative w-full overflow-hidden bg-black text-white ${
+        isMobile ? "h-[50vh]" : "h-[90vh]"
       }`}
     >
       <Swiper
-        modules={[Autoplay, EffectFade]}
-        effect="fade"
+        modules={[Autoplay]}
         autoplay={{
           delay: 4000,
           disableOnInteraction: false,
         }}
-        speed={1200}
         loop
+        speed={600}
         className="w-full h-full"
       >
-        {heroImages.map((src, index) => (
-          <SwiperSlide key={index}>
+        {heroData.map((hero) => (
+          <SwiperSlide key={hero.id}>
             <div className="relative w-full h-full flex flex-col items-center justify-center text-center">
-              <div
-                className={`absolute top-20 flex flex-col items-center ${
-                  isMobile ? "gap-1" : "gap-4"
-                }`}
-              >
+              <div className="absolute top-20 flex flex-col items-center gap-3 z-10">
                 <h1
-                  className={`font-bold ${
+                  className={`font-semibold ${
                     isMobile ? "text-3xl" : "text-6xl"
-                  } drop-shadow-md`}
+                  }`}
                 >
-                  iPhone 17 Pro
+                  {hero.title}
                 </h1>
                 <p
                   className={`text-gray-300 ${
                     isMobile ? "text-base" : "text-xl"
                   }`}
                 >
-                  All out. Pro.
+                  {hero.subtitle}
                 </p>
 
-                <div
-                  className={`flex items-center justify-center gap-3 mt-3 ${
-                    isMobile ? "text-sm" : "text-base"
-                  }`}
-                >
+                <div className="flex items-center justify-center gap-5 mt-4">
                   <button className="px-6 py-2 bg-blue-600 rounded-full font-medium hover:bg-blue-500 transition">
                     Learn more
                   </button>
@@ -72,20 +77,18 @@ export default function Hero() {
               </div>
 
               <div
-                className={`relative ${
-                  isMobile
-                    ? "w-[240px] sm:w-[300px] bottom-[-30px]"
-                    : "w-[550px] md:w-[650px] lg:w-[750px] mt-40"
-                } h-auto`}
+                className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center`}
               >
                 <Image
-                  src={src}
-                  alt={`hero-${index}`}
-                  width={800}
-                  height={800}
+                  src={hero.image}
+                  alt={hero.title}
+                  width={isMobile ? 320 : 900}
+                  height={isMobile ? 320 : 900}
                   priority
                   unoptimized
-                  className="object-cover mx-auto"
+                  className={`object-contain ${
+                    isMobile ? "w-[260px] sm:w-[320px]" : "w-[800px]"
+                  }`}
                 />
               </div>
             </div>

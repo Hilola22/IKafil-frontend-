@@ -6,7 +6,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 export const DeviceView = ({ data }: any) => {
   const image_url = "http://3.76.183.255:3030";
   return (
-    <div className="container">
+    <div className="">
       <section className="max-w-7xl mx-auto py-20 px-4">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
           {data?.map((p: any, i: any) => (

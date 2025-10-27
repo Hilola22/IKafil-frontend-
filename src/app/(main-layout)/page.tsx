@@ -17,7 +17,7 @@ const Home = async () => {
       <Hero />
       <CategoryView />
       <div>
-        <div className="container mx-auto flex justify-between items-center py-10 px-4">
+        <div className="container mx-auto flex justify-between items-center py-10  px-4">
           <h2 className="text-3xl font-bold">Top products</h2>
           <Link
             href={"/products"}
