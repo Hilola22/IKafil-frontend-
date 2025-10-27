@@ -1,62 +1,95 @@
 "use client";
-import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectFade } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/effect-fade";
+import "./Hero.css";
 
-const heroImages = ["/assets/17pro.jpg"];
+const heroData = [
+  {
+    id: 1,
+    title: "iPhone 17 Pro",
+    subtitle: "All out. Pro.",
+    image: "/assets/apple-hero2.webp",
+  },
+  {
+    id: 2,
+    title: "MacBook Air M3",
+    subtitle: "Light. Speed. Power.",
+    image: "/assets/mac2.jpg",
+  },
+];
 
 export default function Hero() {
-  const [isShrunk, setIsShrunk] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsShrunk(window.scrollY > 100);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
     <section
-      className={`relative w-full overflow-hidden transition-all duration-700 ease-in-out ${
-        isShrunk ? "h-[70vh]" : "h-screen"
+      className={`relative w-full overflow-hidden bg-black text-white ${
+        isMobile ? "h-[30vh]" : "h-[70vh]"
       }`}
     >
       <Swiper
-        modules={[Autoplay, EffectFade]}
-        effect="fade"
+        modules={[Autoplay]}
         autoplay={{
           delay: 4000,
           disableOnInteraction: false,
         }}
-        speed={1200}
         loop
+        speed={600}
         className="w-full h-full"
       >
-        {heroImages.map((src, index) => (
-          <SwiperSlide key={index}>
-            <div className="relative w-full h-full">
-              <Image
-                src={src}
-                alt={`hero-${index}`}
-                fill
-                priority
-                unoptimized
-                className="object-cover object-center transition-transform duration-[2500ms] scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/70"></div>
-
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
-                <h1 className="text-5xl md:text-7xl font-bold mb-4 drop-shadow-md">
-                  Apple Products
+        {heroData.map((hero) => (
+          <SwiperSlide key={hero.id}>
+            <div className="relative w-full h-full flex flex-col items-center justify-center text-center">
+              <div className="absolute top-20 flex flex-col items-center gap-3 z-10">
+                <h1
+                  className={`font-semibold ${
+                    isMobile ? "text-3xl" : "text-6xl"
+                  }`}
+                >
+                  {hero.title}
                 </h1>
-                <p className="text-lg md:text-2xl opacity-90 mb-6">
-                  Discover the power of the next generation.
+                <p
+                  className={`text-gray-300 ${
+                    isMobile ? "text-base" : "text-xl"
+                  }`}
+                >
+                  {hero.subtitle}
                 </p>
-                <button className="px-10 py-4 bg-white text-black font-semibold rounded-full shadow-md hover:bg-gray-200 transition-all duration-300">
-                  Learn More
-                </button>
+
+                <div className="flex items-center justify-center gap-5 mt-4">
+                  <button className="px-6 py-2 bg-blue-600 rounded-full font-medium hover:bg-blue-500 transition">
+                    Learn more
+                  </button>
+                  <button className="px-6 py-2 border border-blue-600 rounded-full font-medium hover:bg-blue-600 hover:text-white transition">
+                    Buy
+                  </button>
+                </div>
+              </div>
+
+              <div
+                className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center`}
+              >
+                <Image
+                  src={hero.image}
+                  alt={hero.title}
+                  width={isMobile ? 320 : 900}
+                  height={isMobile ? 320 : 900}
+                  priority
+                  unoptimized
+                  className={`object-contain ${
+                    isMobile ? "w-[260px] sm:w-[320px]" : "w-[800px]"
+                  }`}
+                />
               </div>
             </div>
           </SwiperSlide>

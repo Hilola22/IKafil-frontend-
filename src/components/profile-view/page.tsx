@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProfilePage() {
   const [user, setUser] = useState<any>(null);
@@ -12,32 +13,25 @@ export default function ProfilePage() {
 
   if (!user)
     return (
-      <div className="flex justify-center items-center h-[70vh]">
-        <div className="animate-pulse w-full max-w-[700px] bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
-          {/* Header skeleton */}
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-20 h-20 rounded-full bg-gray-200"></div>
-            <div className="flex flex-col gap-2 w-1/2">
-              <div className="h-5 bg-gray-200 rounded w-3/4"></div>
-              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-            </div>
+      <div className="flex flex-col gap-8 p-8 animate-in fade-in duration-500">
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Left side */}
+          <div className="w-full md:w-1/3 flex flex-col gap-4">
+            <Skeleton className="w-full h-64 rounded-xl" />
+            <Skeleton className="w-full h-12 rounded-lg" />
+            <Skeleton className="w-full h-12 rounded-lg" />
+            <Skeleton className="w-full h-12 rounded-lg" />
+            <Skeleton className="w-full h-12 rounded-lg" />
           </div>
 
-          <hr className="my-4" />
-
-          {/* Body skeleton */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="space-y-2">
-                <div className="h-3 bg-gray-200 rounded w-1/3"></div>
-                <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-              </div>
+          {/* Right side */}
+          <div className="w-full md:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <Skeleton key={i} className="h-12 rounded-lg" />
             ))}
-          </div>
-
-          {/* Button skeleton */}
-          <div className="mt-8 flex justify-end">
-            <div className="h-10 bg-gray-200 rounded-lg w-32"></div>
+            <div className="col-span-2">
+              <Skeleton className="h-28 rounded-lg" />
+            </div>
           </div>
         </div>
       </div>

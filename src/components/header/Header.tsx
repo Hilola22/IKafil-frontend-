@@ -8,8 +8,10 @@ import { RiSearchLine } from "react-icons/ri";
 import CartDrawer from "./CartDrawer";
 import SubHeader from "./SubHeader";
 import HeaderCategoryView from "./HeaderCategoryView";
+import { MenuIcon } from "lucide-react";
 import MenuExample from "./MenuHeader";
 import { useCartStore } from "../../lib/useCart";
+import { useAuthStore } from "../../store/auth/useAuthStore";
 
 const categoriesData = [
   {
@@ -35,11 +37,13 @@ const Header = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [show, setShow] = useState(false);
   const { cart, getItemCount } = useCartStore();
-  const [mounted, setMounted] = useState(false);
+
+  const getAccessToken = useAuthStore((state) => state.getAccessToken);
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setToken(getAccessToken());
+  }, [getAccessToken]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,9 +65,8 @@ const Header = () => {
   }, [lastScrollY]);
 
   return (
-    <header className="px-10 relative bg-[#f5f7f8]">
-      <div className="w-full h-16 md:h-50 xl:h-41 bg-[#f5f7f8] invisible"></div>
-
+    <header className="px-10 relative">
+      <div className="w-full h-16 md:h-50 xl:h-41 bg-transparent"></div>
       <div className=" md:hidden bottom-5 z-200 absolute">
         <MenuExample />
       </div>
@@ -84,15 +87,23 @@ const Header = () => {
             <Link href={"/"} className="text-[35px] mt-2 font-[serif]">
               IKafil
             </Link>
-            <div className="flex gap-3 border md:border-0 border-gray-200">
+            <div className="flex items-center gap-3 border md:border-0 border-gray-200">
               <Link href="/search">
                 <RiSearchLine className="size-6 cursor-pointer transition-colors hover:text-indigo-500" />
               </Link>
-              <Link href={"/auth/signin"}>
-                <LuUserRound className="size-6 cursor-pointer transition-colors hover:text-indigo-500" />
+              <Link href={token ? "/profile" : "/auth/signin"}>
+                {token ? (
+                  <img
+                    src="/assets/profile-avatar.png"
+                    alt="Profile"
+                    className="size-8 rounded-full border"
+                  />
+                ) : (
+                  <LuUserRound className="size-6 text-gray-700" />
+                )}
               </Link>
               <div className="relative" onClick={() => setCartOpen(true)}>
-                {mounted && getItemCount() > 0 && (
+                {getItemCount() > 0 && (
                   <p className="left-5 bottom-3 absolute bg-indigo-500 rounded-full size-4 text-[11px] font-bold text-white grid items-center justify-center">
                     {getItemCount()}
                   </p>
@@ -110,7 +121,7 @@ const Header = () => {
               className={
                 show
                   ? "whitespace-nowrap md:grid md:grid-cols-5 xl:flex  gap-6 text-[15px] mt-4"
-                  : "hidden whitespace-nowrap md:grid md:grid-cols-5 xl:flex gap-7 xl:gap-10 text-[15px] mt-4"
+                  : "hidden whitespace-nowrap md:grid md:grid-cols-5 xl:flex  gap-6 text-[15px] mt-4"
               }
             >
               <li className="relative">
