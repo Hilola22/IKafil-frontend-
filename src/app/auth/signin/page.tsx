@@ -46,10 +46,8 @@ const SignIn = () => {
 
     try {
       await login(email, password);
-
       setSuccess("Successfully signed in!");
       setLoading(false);
-
       setTimeout(() => router.push("/profile"), 1000);
     } catch (err: any) {
       console.error("Login error:", err);
@@ -84,7 +82,7 @@ const SignIn = () => {
             )}
           </div>
 
-          <div className="mb-4 relative">
+          <div className="mb-2 relative">
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
@@ -109,6 +107,15 @@ const SignIn = () => {
             {passwordError && (
               <p className="text-red-500 text-sm mt-1">{passwordError}</p>
             )}
+          </div>
+
+          <div className="text-right mb-4">
+            <Link
+              href="/auth/forgot-password"
+              className="text-sm text-blue-500 hover:underline"
+            >
+              Forgot password?
+            </Link>
           </div>
 
           {success && <p className="text-green-600 mb-4 text-sm">{success}</p>}
