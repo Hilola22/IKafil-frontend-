@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { Button } from '../ui/button';
-import { FaShoppingCart } from 'react-icons/fa';
-import { Loader2 } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { useCartStore } from '@/lib/useCart';
-import { useRouter } from 'next/navigation';
+import { Button } from "../ui/button";
+import { FaShoppingCart } from "react-icons/fa";
+import { Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useCartStore } from "@/lib/useCart";
+import { useRouter } from "next/navigation";
 
 // 🔹 Cookie'dan token olish helper
 const getCookie = (name: string): string | null => {
-  if (typeof document === 'undefined') return null;
+  if (typeof document === "undefined") return null;
   const match = document.cookie
-    .split('; ')
-    .find((row) => row.startsWith(name + '='));
+    .split("; ")
+    .find((row) => row.startsWith(name + "="));
   if (!match) return null;
-  return decodeURIComponent(match.split('=')[1] || '') || null;
+  return decodeURIComponent(match.split("=")[1] || "") || null;
 };
 
 type DeviceButtonProps = {
@@ -42,9 +42,7 @@ const DeviceButton = ({ product }: DeviceButtonProps) => {
   // 🔹 Cart yangilansa, mavjudligini tekshirish
   useEffect(() => {
     const exists = cart.some(
-      (item) =>
-        item.device?.id === product.id ||
-        item.id === product.id
+      (item) => item.device?.id === product.id || item.id === product.id
     );
     setIsAdded(exists);
   }, [cart, product.id]);
@@ -103,7 +101,7 @@ const DeviceButton = ({ product }: DeviceButtonProps) => {
 
       await fetchCart();
     } catch (err) {
-      console.error('Cartga qo‘shishda xatolik:', err);
+      console.error("Cartga qo‘shishda xatolik:", err);
     } finally {
       setLoading(false);
     }
@@ -112,12 +110,12 @@ const DeviceButton = ({ product }: DeviceButtonProps) => {
   // 🔹 Tokenni tekshirib, bo‘lmasa /signin sahifasiga yo‘naltirish
   const attemptAdd = () => {
     const token =
-      getCookie('accessToken') ||
-      getCookie('token') ||
-      getCookie('access_token');
+      getCookie("accessToken") ||
+      getCookie("token") ||
+      getCookie("access_token");
 
     if (!token) {
-      router.push('/auth/signin');
+      router.push("/auth/signin");
       return;
     }
 

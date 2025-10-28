@@ -42,9 +42,8 @@ export const AddToCartButton = ({ data }: DeviceButtonProps) => {
   // 🔹 Cart yangilanganda tekshirish
   useEffect(() => {
     const exists =
-      cart.some(
-        (item) => item.device?.id === data.id || item.id === data.id
-      ) || false;
+      cart.some((item) => item.device?.id === data.id || item.id === data.id) ||
+      false;
     setIsAdded(exists);
   }, [cart, data.id]);
 
