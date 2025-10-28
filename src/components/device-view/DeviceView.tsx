@@ -23,7 +23,7 @@ type Product = {
 };
 
 export const DeviceView = ({ data }: { data: Product | any }) => {
-  const image_url = "http://3.76.183.255:3030";
+  const image_url = "https://api.ikafil.uz";
 
   return (
     <div className="">

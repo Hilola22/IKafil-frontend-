@@ -1,9 +1,9 @@
-'use client';
-import React from 'react';
-import Link from 'next/link';
-import { Trash2, Loader2 } from 'lucide-react';
+"use client";
+import React from "react";
+import Link from "next/link";
+import { Trash2, Loader2 } from "lucide-react";
 
-const baseUrl = 'http://3.76.183.255:3030';
+const baseUrl = "https://api.ikafil.uz";
 
 interface CartItemRowProps {
   item: any;
@@ -16,10 +16,9 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({
   isRemoving,
   handleRemove,
 }) => {
-  const imageUrl =
-    item.device.device_images?.[0]?.url
-      ? `${baseUrl}${item.device.device_images[0].url}`
-      : '/no-image.jpg';
+  const imageUrl = item.device.device_images?.[0]?.url
+    ? `${baseUrl}${item.device.device_images[0].url}`
+    : "/no-image.jpg";
   const details = item.device.details || {};
 
   return (
@@ -40,17 +39,17 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({
             </Link>
             <div className="text-gray-600 mt-1 space-y-0.5">
               <p>
-                Цвет:{' '}
-                <span className="text-gray-800">{details.color || '-'}</span>
+                Цвет:{" "}
+                <span className="text-gray-800">{details.color || "-"}</span>
               </p>
               <p>
-                Ёмкость:{' '}
-                <span className="text-gray-800">{details.storage || '-'}</span>
+                Ёмкость:{" "}
+                <span className="text-gray-800">{details.storage || "-"}</span>
               </p>
               <p>
-                SIM:{' '}
+                SIM:{" "}
                 <span className="text-gray-800">
-                  {details.sim_type || 'Single SIM'}
+                  {details.sim_type || "Single SIM"}
                 </span>
               </p>
             </div>

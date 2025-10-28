@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Trash2, Loader2 } from "lucide-react";
 import { useCartStore } from "../../lib/useCart";
 
-const baseUrl = "http://3.76.183.255:3030";
+const baseUrl = "https://api.ikafil.uz";
 
 const CartDrawerView = () => {
   const router = useRouter();
@@ -55,7 +55,7 @@ const CartDrawerView = () => {
                     className={`w-20 h-20 object-contain rounded-md transition-opacity ${
                       isThisRemoving ? "opacity-50" : "opacity-100"
                     }`}
-                    onError={(e) => ((e.currentTarget.src = "/no-image.jpg"))}
+                    onError={(e) => (e.currentTarget.src = "/no-image.jpg")}
                   />
                   {isThisRemoving && (
                     <div className="absolute inset-0 flex items-center justify-center">

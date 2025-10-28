@@ -1,14 +1,14 @@
-import React from 'react'
-import Carts from '../../../components/cart-view/Carts'
+import React from "react";
+import Carts from "../../../components/cart-view/Carts";
 
 const Cart = async () => {
-  // const response = await fetch('http://3.76.183.255:3030/api/cart');
+  // const response = await fetch('https://api.ikafil.uz/api/cart');
   // const data = await response.json();
   return (
     <div>
-        <Carts/>
+      <Carts />
     </div>
-  )
-}
+  );
+};
 
-export default Cart
+export default Cart;

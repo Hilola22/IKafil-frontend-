@@ -1,19 +1,20 @@
-'use client';
-import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { DeviceView } from '../device-view/DeviceView';
-import { useCartStore } from '../../lib/useCart';
-import { CartItemRow } from './CartItemRow';
+"use client";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { DeviceView } from "../device-view/DeviceView";
+import { useCartStore } from "../../lib/useCart";
+import { CartItemRow } from "./CartItemRow";
 
-const baseUrl = 'http://3.76.183.255:3030';
+const baseUrl = "https://api.ikafil.uz";
 
 const Carts = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [isLoadingRelated, setIsLoadingRelated] = useState(true);
   const [isRemoving, setIsRemoving] = useState<number | null>(null);
 
-  const { cart, fetchCart, removeFromCart, clearCart, getTotalPrice } = useCartStore();
+  const { cart, fetchCart, removeFromCart, clearCart, getTotalPrice } =
+    useCartStore();
 
   const fetchRelatedProducts = async () => {
     try {
@@ -31,7 +32,7 @@ const Carts = () => {
 
       setRelatedProducts(normalized.slice(0, 4));
     } catch (error) {
-      console.error('Failed to fetch related products:', error);
+      console.error("Failed to fetch related products:", error);
     } finally {
       setIsLoadingRelated(false);
     }
@@ -49,7 +50,7 @@ const Carts = () => {
   };
 
   const handleClearCart = async () => {
-    if (!confirm('Savatchani tozalaysizmi?')) return;
+    if (!confirm("Savatchani tozalaysizmi?")) return;
     await clearCart();
   };
 
@@ -57,7 +58,10 @@ const Carts = () => {
     <div className="container mx-auto px-3 sm:px-6 lg:px-8">
       {/* 🔹 Breadcrumb */}
       <div className="flex flex-wrap gap-3 text-sm sm:text-base mt-3">
-        <Link href="/" className="hover:text-blue-500 underline underline-offset-4">
+        <Link
+          href="/"
+          className="hover:text-blue-500 underline underline-offset-4"
+        >
           Home
         </Link>
         <span className="text-gray-300">/</span>
@@ -65,10 +69,12 @@ const Carts = () => {
       </div>
 
       {/* 🔹 Title */}
-      <h3 className="mt-5 text-2xl sm:text-3xl lg:text-4xl font-medium">Your Cart</h3>
+      <h3 className="mt-5 text-2xl sm:text-3xl lg:text-4xl font-medium">
+        Your Cart
+      </h3>
 
       {/* 🔹 Agar cart bo‘sh bo‘lsa */}
-      {(!cart || cart.length === 0) ? (
+      {!cart || cart.length === 0 ? (
         <p className="mt-5 text-gray-400 text-center">Savatchangiz bo‘sh 😊</p>
       ) : (
         <div className="mt-6 flex flex-col lg:flex-row gap-8 items-start">
@@ -97,7 +103,9 @@ const Carts = () => {
 
           {/* 💰 Order Summary */}
           <div className="w-full sm:max-w-md lg:w-[320px] border rounded-2xl p-5 sm:p-6 shadow-md bg-white sticky top-20">
-            <h4 className="text-lg sm:text-xl font-semibold mb-3">Order Summary</h4>
+            <h4 className="text-lg sm:text-xl font-semibold mb-3">
+              Order Summary
+            </h4>
             <div className="flex justify-between text-base sm:text-lg mb-4">
               <span>Total:</span>
               <span className="font-bold text-gray-900">
