@@ -1,9 +1,10 @@
 import { memo } from "react";
+import ProfileEditPage from "../../../../components/profile-view/ProfileEdit";
 
 const EditUser = () => {
   return (
     <div>
-      <h2>EditUser</h2>
+      <ProfileEditPage />
     </div>
   );
 };

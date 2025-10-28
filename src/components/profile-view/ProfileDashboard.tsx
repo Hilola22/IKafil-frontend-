@@ -23,49 +23,51 @@ const ProfileDashboard = () => {
   }, [getAccessToken]);
 
   return (
-    <div className="flex flex-col gap-5 p-2  h-screen bg-white">
-      <div className="flex place-items-center justify-between gap-2">
+    <div className="fixed w-64">
+      <div className="flex flex-col gap-5 p-2  h-screen bg-white">
         <div className="flex place-items-center justify-between gap-2">
-          <div className="flex place-items-center text-shadow-gray-800  gap-2">
-            <p>
-              {token ? (
-                <img
-                  src="/assets/profile-avatar.png"
-                  alt="Profile"
-                  className="size-8 rounded-full border"
-                />
-              ) : (
-                <LuUserRound className="size-6 text-gray-700" />
-              )}
-            </p>
+          <div className="flex place-items-center justify-between gap-2">
+            <div className="flex place-items-center text-shadow-gray-800  gap-2">
+              <p>
+                {token ? (
+                  <img
+                    src="/assets/profile-avatar.png"
+                    alt="Profile"
+                    className="size-8 rounded-full border"
+                  />
+                ) : (
+                  <LuUserRound className="size-6 text-gray-700" />
+                )}
+              </p>
+              <Link href={"/"}>
+                <p className="font-semibold text-gray-800">IKafil</p>
+              </Link>
+            </div>
+          </div>
+          <div className="flex place-items-center px-1 text-[14px] mr-3 rounded-[3px]">
             <Link href={"/"}>
-              <p className="font-semibold text-gray-800">IKafil</p>
+              <ArrowRight className="size-4 text-gray-800 hover:bg-gray-200 rounded-full" />
             </Link>
           </div>
         </div>
-        <div className="flex place-items-center px-1 text-[14px] mr-3 rounded-[3px]">
-          <Link href={"/"}>
-            <ArrowRight className="size-4 text-gray-800 hover:bg-gray-200 rounded-full" />
-          </Link>
-        </div>
-      </div>
 
-      <div className="flex flex-col divide-y w-full max-w-3xl">
-        {menuItems.map((item, idx) => (
-          <Link
-            key={idx}
-            href={item.href}
-            className="flex items-center justify-between px-2 py-2 hover:bg-gray-50 transition group"
-          >
-            <div className="flex place-items-center gap-2">
-              {item.logo}
-              <span className="text-gray-700 font-normal group-hover:text-gray-900">
-                {item.title}
-              </span>
-            </div>
-            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
-          </Link>
-        ))}
+        <div className="flex flex-col divide-y w-full max-w-3xl">
+          {menuItems.map((item, idx) => (
+            <Link
+              key={idx}
+              href={item.href}
+              className="flex items-center justify-between px-2 py-2 hover:bg-gray-50 transition group"
+            >
+              <div className="flex place-items-center gap-2">
+                {item.logo}
+                <span className="text-gray-700 font-normal group-hover:text-gray-900">
+                  {item.title}
+                </span>
+              </div>
+              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );
