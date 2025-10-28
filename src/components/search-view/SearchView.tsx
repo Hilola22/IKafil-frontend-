@@ -33,7 +33,7 @@ export default function Search() {
     setIsLoading(true);
     setIsError(false);
 
-    fetch(`http://3.76.183.255:3030/api/devices?search=${debouncedTitle}`)
+    fetch(`https://api.ikafil.uz/api/devices?search=${debouncedTitle}`)
       .then((res) => {
         if (!res.ok) throw new Error("Fetch failed");
         return res.json();

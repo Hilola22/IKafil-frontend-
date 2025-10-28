@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DeviceFilter } from "./DeviceFilter";
 import { DeviceView } from "./DeviceView";
 import { DevicePagination } from "../device-pagination/DevicePagination";
@@ -13,8 +13,16 @@ export const FilterCaller = ({
   pagination: { page: number; totalPages: number };
 }) => {
   const [filteredData, setFilteredData] = useState<any[]>(data);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setFilteredData(data);
+      setIsLoading(true);
+    }, 1000);
+  }, [data]);
 
   const handleFilterChange = (filters: any) => {
+    setIsLoading(true);
     const filtered = data.filter((p: any) => {
       const price = parseFloat(p.base_price);
       return (
@@ -31,7 +39,11 @@ export const FilterCaller = ({
         (!filters.color || p.details?.color === filters.color)
       );
     });
-    setFilteredData(filtered);
+
+    setTimeout(() => {
+      setFilteredData(filtered);
+      setIsLoading(false);
+    }, 1000);
   };
 
   return (
@@ -40,7 +52,7 @@ export const FilterCaller = ({
         <DeviceFilter onFilterChange={handleFilterChange} />
       </div>
       <div className="lg:w-4/4 w-full">
-        <DeviceView data={filteredData} />
+        <DeviceView isLoading={isLoading} data={filteredData} />
         {filteredData.length !== 0 ? (
           <DevicePagination
             page={pagination.page}
