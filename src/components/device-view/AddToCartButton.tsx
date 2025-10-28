@@ -89,7 +89,7 @@ export const AddToCartButton = ({ data }: DeviceButtonProps) => {
             data.device_images?.length && data.device_images[0].url
               ? [
                   {
-                    url: `http://3.76.183.255:3030${data.device_images[0].url}`,
+                    url: `https://api.ikafil.uz${data.device_images[0].url}`,
                   },
                 ]
               : [

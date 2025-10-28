@@ -37,7 +37,7 @@ export type Product = {
 };
 
 export default function ProductDetail({ data }: { data: Product }) {
-  const baseUrl = "http://3.76.183.255:3030";
+  const baseUrl = "https://api.ikafil.uz";
 
   const hasImages = data.device_images && data.device_images.length > 0;
   const images = hasImages
