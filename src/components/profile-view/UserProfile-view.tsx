@@ -29,6 +29,7 @@ export default function UserProfilePage() {
       .catch((err) => console.error("Error fetching user:", err));
   }, [getAccessToken]);
 
+  console.log(user);
   if (!user)
     return (
       <div className="flex flex-col gap-10 w-full p-6 md:p-10 animate-in fade-in duration-500 bg-gray-50 dark:bg-neutral-900 min-h-[80vh]">
@@ -66,10 +67,7 @@ export default function UserProfilePage() {
         <strong>Phone:</strong> {user.phone}
       </p>
       <p>
-        <strong>Region:</strong> {user.region_id.name}
-      </p>
-      <p>
-        <strong>Role:</strong> {user.role}
+        <strong>Region:</strong> {user.region.name}
       </p>
     </div>
   );
