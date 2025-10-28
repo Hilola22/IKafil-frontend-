@@ -9,7 +9,7 @@ const Product = async ({ searchParams }: Props) => {
   const page = Number(searchParams.page) || 1;
 
   const response = await fetch(
-    `http://3.76.183.255:3030/api/devices?limit=16&page=${page}`,
+    `https://api.ikafil.uz/api/devices?limit=16&page=${page}`,
     {
       next: { revalidate: 60 },
     }

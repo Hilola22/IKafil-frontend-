@@ -6,7 +6,7 @@ import { DeviceView } from '../device-view/DeviceView';
 import { useCartStore } from '../../lib/useCart';
 import { CartItemRow } from './CartItemRow';
 
-const baseUrl = 'http://3.76.183.255:3030';
+const baseUrl = "https://api.ikafil.uz";
 
 const Carts = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);

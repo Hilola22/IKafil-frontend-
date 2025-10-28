@@ -3,7 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Trash2, Loader2 } from 'lucide-react';
 
-const baseUrl = 'http://3.76.183.255:3030';
+const baseUrl = "https://api.ikafil.uz";
 
 interface CartItemRowProps {
   item: any;

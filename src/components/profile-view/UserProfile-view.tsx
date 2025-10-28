@@ -13,7 +13,7 @@ export default function UserProfilePage() {
     const token = getAccessToken();
     if (!token) return;
 
-    fetch("http://3.76.183.255:3030/api/auth/me", {
+    fetch("https://api.ikafil.uz/api/auth/me", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

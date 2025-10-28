@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Trash2, Loader2 } from "lucide-react";
 import { useCartStore } from "../../lib/useCart";
 
-const baseUrl = "http://3.76.183.255:3030";
+const baseUrl = "https://api.ikafil.uz";
 
 const CartDrawerView = () => {
   const router = useRouter();
