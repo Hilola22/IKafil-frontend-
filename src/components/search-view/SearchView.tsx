@@ -3,11 +3,17 @@
 import { useState, useEffect } from "react";
 import { Input } from "../ui/input";
 import { DeviceView } from "../device-view/DeviceView";
+import { useSearch } from "../../context/useSearch";
+
+interface DeviceResponse {
+  data: any[];
+}
 
 export default function Search() {
-  const [title, setTitle] = useState("");
-  const [debouncedTitle, setDebouncedTitle] = useState("");
-  const [results, setResults] = useState<any | any[]>([]);
+  const { searchTitle } = useSearch(); 
+  const [title, setTitle] = useState(searchTitle || "");
+  const [debouncedTitle, setDebouncedTitle] = useState(searchTitle || "");
+  const [results, setResults] = useState<DeviceResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -15,13 +21,12 @@ export default function Search() {
     const handler = setTimeout(() => {
       setDebouncedTitle(title.trim());
     }, 300);
-
     return () => clearTimeout(handler);
   }, [title]);
 
   useEffect(() => {
     if (!debouncedTitle) {
-      setResults([]);
+      setResults(null);
       return;
     }
 
@@ -33,9 +38,7 @@ export default function Search() {
         if (!res.ok) throw new Error("Fetch failed");
         return res.json();
       })
-      .then((data) => {
-        setResults(data);
-      })
+      .then((data) => setResults(data))
       .catch(() => setIsError(true))
       .finally(() => setIsLoading(false));
   }, [debouncedTitle]);
@@ -62,20 +65,16 @@ export default function Search() {
       {isError && debouncedTitle && (
         <p className="text-center text-red-400 mt-10">Error fetching results</p>
       )}
+      <DeviceView data={results?.data || []} />
 
-      {results?.data?.length === 0 && (
-        <p className="text-center text-gray-400 mt-10">
-          The product you are searching isn't found
-        </p>
-      )}
-
-      <DeviceView data={results?.data} />
-
-      {debouncedTitle && results.length === 0 && !isLoading && !isError && (
-        <p className="text-center text-gray-400 mt-10">
-          No results found for “{debouncedTitle}”
-        </p>
-      )}
+      {debouncedTitle &&
+        !isLoading &&
+        !isError &&
+        results?.data?.length === 0 && (
+          <p className="text-center text-gray-400 mt-10">
+            No results found for “{debouncedTitle}”
+          </p>
+        )}
     </div>
   );
 }

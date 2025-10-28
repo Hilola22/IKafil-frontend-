@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSearch } from "../../context/useSearch";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -23,6 +25,9 @@ const heroData = [
 
 export default function Hero() {
   const [isMobile, setIsMobile] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { setSearchTitle } = useSearch();
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -30,6 +35,17 @@ export default function Hero() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const handleBuyClick = async (title: string) => {
+    try {
+      setLoading(true);
+      setSearchTitle(title); 
+      await new Promise((r) => setTimeout(r, 300));
+      router.push("/search");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section
@@ -67,18 +83,21 @@ export default function Hero() {
                 </p>
 
                 <div className="flex items-center justify-center gap-5 mt-4">
-                  <button className="px-6 py-2 bg-blue-600 rounded-full font-medium hover:bg-blue-500 transition">
-                    Learn more
-                  </button>
-                  <button className="px-6 py-2 border border-blue-600 rounded-full font-medium hover:bg-blue-600 hover:text-white transition">
-                    Buy
+                  <button
+                    onClick={() => handleBuyClick(hero.title)}
+                    disabled={loading}
+                    className={`px-6 py-2 border border-blue-600 rounded-full font-medium transition ${
+                      loading
+                        ? "opacity-70 cursor-not-allowed"
+                        : "hover:bg-blue-600 hover:text-white"
+                    }`}
+                  >
+                    {loading ? "Loading..." : "Buy"}
                   </button>
                 </div>
               </div>
 
-              <div
-                className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center`}
-              >
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center">
                 <Image
                   src={hero.image}
                   alt={hero.title}
