@@ -3,6 +3,7 @@ import { useAuthStore } from "@/store/auth/useAuthStore";
 
 export const api = axios.create({
   baseURL: "https://api.ikafil.uz/api",
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },

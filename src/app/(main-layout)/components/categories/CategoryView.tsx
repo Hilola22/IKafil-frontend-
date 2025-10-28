@@ -23,10 +23,10 @@ const CategoryView = () => {
           series to the innovative iPhone lineup.
         </p>
       </div>
-
+      
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 items-stretch">
         <div
-          onClick={() => handleClick("MacBook")}
+          onClick={() => handleClick("macbook")}
           className="relative rounded-2xl h-[200px] sm:h-[220px] lg:h-[220px] bg-[#fafafa] flex items-center justify-center overflow-hidden group cursor-pointer"
         >
           <div className="w-full h-full relative">
@@ -45,7 +45,7 @@ const CategoryView = () => {
         </div>
 
         <div
-          onClick={() => handleClick("iPhone")}
+          onClick={() => handleClick("iphone")}
           className="relative rounded-2xl h-[180px] sm:h-[260px] lg:h-[220px] bg-[#f5f5f5] flex items-center justify-center overflow-hidden group cursor-pointer"
         >
           <div className="w-[70%] h-[70%] relative">
