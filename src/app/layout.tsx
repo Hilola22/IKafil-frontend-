@@ -7,6 +7,7 @@ import {
   Montserrat,
 } from "next/font/google";
 import "./globals.css";
+import { SearchProvider } from "../context/useSearch";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <SearchProvider>{children}</SearchProvider>
       </body>
     </html>
   );
