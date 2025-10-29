@@ -9,8 +9,8 @@ const ProfileLayout = ({ children }: { children: ReactNode }) => {
         <ProfileDashboard />
       </aside>
 
-      <main className="flex-1 overflow-y-auto p-6 md:p-10">
-        <div className="max-w-6xl mx-auto w-full">{children}</div>
+      <main className="flex-1 overflow-y-auto md:p-10 xl:p-0">
+        <div className=" mx-auto w-full">{children}</div>
       </main>
     </div>
   );

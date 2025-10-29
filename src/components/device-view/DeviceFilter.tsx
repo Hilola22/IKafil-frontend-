@@ -8,6 +8,10 @@ const ramOptions = ["8GB", "12GB", "16GB"];
 const cpuOptions = ["Snapdragon 8 Gen 2", "A17 Pro", "Apple M2 Pro"];
 const yearOptions = ["2022", "2024"];
 const colorOptions = ["Midnight Blue", "Purple", "Black", "Space Gray"];
+const types = ["iphone", "mac", "ipad"];
+const iphoneModels = ["iPhone 15", "iPhone 16", "iPhone 17"];
+const ipadModels = ["Ipad", "Ipad Pro", "Ipad Air"];
+const macModels = ["MacBook Air", "MacBook Pro", "iMac"];
 
 export const DeviceFilter = ({
   onFilterChange,
@@ -19,6 +23,8 @@ export const DeviceFilter = ({
   const [selectedCpu, setSelectedCpu] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedName, setSelectedName] = useState<string | null>(null);
 
   const applyFilter = (field: string, value: string | null) => {
     const filters: any = {
@@ -27,18 +33,20 @@ export const DeviceFilter = ({
       cpu: selectedCpu,
       year: selectedYear,
       color: selectedColor,
+      type: selectedType,
+      name: selectedName,
     };
     filters[field] = value;
     onFilterChange(filters);
   };
 
   return (
-    <div className="bg-white shadow-md rounded-2xl p-6 mb-10 max-w-7xl mx-auto">
-      <h2 className="text-xl font-semibold mb-4">Фильтр устройств</h2>
+    <div className="bg-white shadow-md rounded-2xl p-6 mb-10">
+      <h2 className="text-xl font-semibold mb-4">Device Filter</h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="space-y-10">
         <div>
-          <label className="block text-sm font-medium mb-2">Цена ($)</label>
+          <label className="block text-sm font-medium mb-2">Price ($)</label>
           <Slider
             range
             min={1000}
@@ -54,6 +62,8 @@ export const DeviceFilter = ({
                 cpu: selectedCpu,
                 year: selectedYear,
                 color: selectedColor,
+                type: selectedType,
+                name: selectedName,
               });
             }}
           />
@@ -63,105 +73,155 @@ export const DeviceFilter = ({
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-2">RAM</label>
-          <div className="flex flex-wrap gap-2">
-            {ramOptions.map((ram) => {
-              const newValue = ram === selectedRam ? null : ram;
-              return (
-                <button
-                  key={ram}
-                  onClick={() => {
-                    setSelectedRam(newValue);
-                    applyFilter("ram", newValue);
-                  }}
-                  className={`px-3 py-1 rounded-full border ${
-                    selectedRam === ram
-                      ? "bg-black text-white"
-                      : "bg-gray-100 text-gray-800"
-                  } transition`}
-                >
-                  {ram}
-                </button>
-              );
-            })}
+        {[
+          {
+            label: "RAM",
+            options: ramOptions,
+            selected: selectedRam,
+            set: setSelectedRam,
+            key: "ram",
+          },
+          {
+            label: "CPU",
+            options: cpuOptions,
+            selected: selectedCpu,
+            set: setSelectedCpu,
+            key: "cpu",
+          },
+          {
+            label: "Release Year",
+            options: yearOptions,
+            selected: selectedYear,
+            set: setSelectedYear,
+            key: "year",
+          },
+          {
+            label: "Color",
+            options: colorOptions,
+            selected: selectedColor,
+            set: setSelectedColor,
+            key: "color",
+          },
+          {
+            label: "Type",
+            options: types,
+            selected: selectedType,
+            set: setSelectedType,
+            key: "type",
+          },
+        ].map(({ label, options, selected, set, key }) => (
+          <div key={key}>
+            <label className="block text-sm font-medium mb-2">{label}</label>
+            <div className="flex flex-wrap gap-2">
+              {options.map((option) => {
+                const newValue = option === selected ? null : option;
+                return (
+                  <button
+                    key={option}
+                    onClick={() => {
+                      set(newValue);
+                      applyFilter(key, newValue);
+                      if (key === "type") {
+                        setSelectedName(null);
+                        applyFilter("name", null);
+                      }
+                    }}
+                    className={`px-3 py-1 rounded-full border ${
+                      selected === option
+                        ? "bg-black text-white"
+                        : "bg-gray-100 text-gray-800"
+                    } transition`}
+                  >
+                    {option}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        ))}
 
-        <div>
-          <label className="block text-sm font-medium mb-2">CPU</label>
-          <div className="flex flex-wrap gap-2">
-            {cpuOptions.map((cpu) => {
-              const newValue = cpu === selectedCpu ? null : cpu;
-              return (
-                <button
-                  key={cpu}
-                  onClick={() => {
-                    setSelectedCpu(newValue);
-                    applyFilter("cpu", newValue);
-                  }}
-                  className={`px-3 py-1 rounded-full border ${
-                    selectedCpu === cpu
-                      ? "bg-black text-white"
-                      : "bg-gray-100 text-gray-800"
-                  } transition`}
-                >
-                  {cpu}
-                </button>
-              );
-            })}
+        {selectedType === "iphone" && (
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              iPhone Model
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {iphoneModels.map((model) => {
+                const newValue = model === selectedName ? null : model;
+                return (
+                  <button
+                    key={model}
+                    onClick={() => {
+                      setSelectedName(newValue);
+                      applyFilter("name", newValue);
+                    }}
+                    className={`px-3 py-1 rounded-full border ${
+                      selectedName === model
+                        ? "bg-black text-white"
+                        : "bg-gray-100 text-gray-800"
+                    } transition`}
+                  >
+                    {model}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div>
-          <label className="block text-sm font-medium mb-2">Год выпуска</label>
-          <div className="flex flex-wrap gap-2">
-            {yearOptions.map((year) => {
-              const newValue = year === selectedYear ? null : year;
-              return (
-                <button
-                  key={year}
-                  onClick={() => {
-                    setSelectedYear(newValue);
-                    applyFilter("year", newValue);
-                  }}
-                  className={`px-3 py-1 rounded-full border ${
-                    selectedYear === year
-                      ? "bg-black text-white"
-                      : "bg-gray-100 text-gray-800"
-                  } transition`}
-                >
-                  {year}
-                </button>
-              );
-            })}
+        {selectedType === "mac" && (
+          <div>
+            <label className="block text-sm font-medium mb-2">Mac Model</label>
+            <div className="flex flex-wrap gap-2">
+              {macModels.map((model) => {
+                const newValue = model === selectedName ? null : model;
+                return (
+                  <button
+                    key={model}
+                    onClick={() => {
+                      setSelectedName(newValue);
+                      applyFilter("name", newValue);
+                    }}
+                    className={`px-3 py-1 rounded-full border ${
+                      selectedName === model
+                        ? "bg-black text-white"
+                        : "bg-gray-100 text-gray-800"
+                    } transition`}
+                  >
+                    {model}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div>
-          <label className="block text-sm font-medium mb-2">Цвет</label>
-          <div className="flex flex-wrap gap-2">
-            {colorOptions.map((color) => {
-              const newValue = color === selectedColor ? null : color;
-              return (
-                <button
-                  key={color}
-                  onClick={() => {
-                    setSelectedColor(newValue);
-                    applyFilter("color", newValue);
-                  }}
-                  className={`px-3 py-1 rounded-full border ${
-                    selectedColor === color
-                      ? "bg-black text-white"
-                      : "bg-gray-100 text-gray-800"
-                  } transition`}
-                >
-                  {color}
-                </button>
-              );
-            })}
+        {selectedType === "ipad" && (
+          <div>
+            <label className="block text-sm font-medium mb-2">iPad Model</label>
+            <div className="flex flex-wrap gap-2">
+              {ipadModels.map((model) => {
+                const newValue = model === selectedName ? null : model;
+                return (
+                  <button
+                    key={model}
+                    onClick={() => {
+                      setSelectedName(newValue);
+                      applyFilter("name", newValue);
+                    }}
+                    className={`px-3 py-1 rounded-full border ${
+                      selectedName === model
+                        ? "bg-black text-white"
+                        : "bg-gray-100 text-gray-800"
+                    } transition`}
+                  >
+                    {model}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

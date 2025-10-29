@@ -12,6 +12,7 @@ import { MenuIcon } from "lucide-react";
 import MenuExample from "./MenuHeader";
 import { useCartStore } from "../../lib/useCart";
 import { useAuthStore } from "../../store/auth/useAuthStore";
+import SearchDrawer from "./SearchDrawer";
 
 const categoriesData = [
   {
@@ -35,6 +36,7 @@ const Header = () => {
   const [isCartOpen, setCartOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isSearchOpen, setSearchOpen] = useState(false);
   const [show, setShow] = useState(false);
   const { cart, getItemCount } = useCartStore();
 
@@ -89,9 +91,10 @@ const Header = () => {
               IKafil
             </Link>
             <div className="flex items-center gap-3 border md:border-0 border-gray-200">
-              <Link href="/search">
+              <div onClick={() => setSearchOpen(true)}>
                 <RiSearchLine className="size-6 cursor-pointer transition-colors hover:text-indigo-500" />
-              </Link>
+              </div>
+
               <Link href={token ? "/profile" : "/auth/signin"}>
                 {token ? (
                   <img
@@ -297,6 +300,7 @@ const Header = () => {
       </div>
 
       <CartDrawer open={isCartOpen} onClose={() => setCartOpen(false)} />
+      <SearchDrawer open={isSearchOpen} onClose={() => setSearchOpen(false)} />
     </header>
   );
 };
