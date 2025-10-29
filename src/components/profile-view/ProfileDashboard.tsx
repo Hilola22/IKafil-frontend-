@@ -23,7 +23,7 @@ const ProfileDashboard = () => {
   }, [getAccessToken]);
 
   return (
-    <div className="fixed w-64">
+    <div className="fixed md:w-54 xl:w-64">
       <div className="flex flex-col gap-5 p-2  h-screen bg-white">
         <div className="flex place-items-center justify-between gap-2">
           <div className="flex place-items-center justify-between gap-2">
