@@ -82,7 +82,7 @@ export default function ProfileEditPage() {
                 <img
                   src={
                     photo ||
-                    "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?q=80&w=1200"
+                    "https://static.vecteezy.com/ti/vecteur-libre/p1/26434409-vecteur-d-icone-de-profil-d-avatar-par-defaut-photo-d-utilisateur-de-medias-sociaux-vectoriel.jpg"
                   }
                   alt="Profile"
                   className="w-full h-full object-cover transition-all hover:scale-105 duration-300"
