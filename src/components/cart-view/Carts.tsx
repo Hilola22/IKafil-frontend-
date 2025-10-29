@@ -1,17 +1,19 @@
-"use client";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { DeviceView } from "../device-view/DeviceView";
-import { useCartStore } from "../../lib/useCart";
-import { CartItemRow } from "./CartItemRow";
+'use client';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { DeviceView } from '../device-view/DeviceView';
+import { useCartStore } from '../../lib/useCart';
+import { CartItemRow } from './CartItemRow';
+import { useRouter } from 'next/navigation';
 
-const baseUrl = "https://api.ikafil.uz";
+const baseUrl = 'https://api.ikafil.uz';
 
 const Carts = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [isLoadingRelated, setIsLoadingRelated] = useState(true);
   const [isRemoving, setIsRemoving] = useState<number | null>(null);
+  const router = useRouter();
 
   const { cart, fetchCart, removeFromCart, clearCart, getTotalPrice } =
     useCartStore();
@@ -32,7 +34,7 @@ const Carts = () => {
 
       setRelatedProducts(normalized.slice(0, 4));
     } catch (error) {
-      console.error("Failed to fetch related products:", error);
+      console.error('Failed to fetch related products:', error);
     } finally {
       setIsLoadingRelated(false);
     }
@@ -50,7 +52,7 @@ const Carts = () => {
   };
 
   const handleClearCart = async () => {
-    if (!confirm("Savatchani tozalaysizmi?")) return;
+    if (!confirm('Savatchani tozalaysizmi?')) return;
     await clearCart();
   };
 
@@ -73,9 +75,19 @@ const Carts = () => {
         Your Cart
       </h3>
 
-      {/* 🔹 Agar cart bo‘sh bo‘lsa */}
       {!cart || cart.length === 0 ? (
-        <p className="mt-5 text-gray-400 text-center">Savatchangiz bo‘sh 😊</p>
+        <div className="flex flex-col items-center justify-center py-10">
+        <p className="text-gray-500 text-lg text-center">🛒 Your cart is currently empty</p>
+        <button
+          onClick={() => {
+            setTimeout(() => router.push('/products'), 300);
+          }}
+          className="mt-6 px-6 py-2.5 bg-indigo-500 text-white font-medium rounded-full shadow hover:bg-indigo-600 transition-all"
+        >
+          Start Shopping
+        </button>
+      </div>
+      
       ) : (
         <div className="mt-6 flex flex-col lg:flex-row gap-8 items-start">
           {/* 🧾 Cart Table */}
