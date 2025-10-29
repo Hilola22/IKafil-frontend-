@@ -77,7 +77,7 @@ export default function UserProfilePage() {
           <img
             src={
               user.photo ||
-              "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?q=80&w=400"
+              "https://static.vecteezy.com/ti/vecteur-libre/p1/26434409-vecteur-d-icone-de-profil-d-avatar-par-defaut-photo-d-utilisateur-de-medias-sociaux-vectoriel.jpg"
             }
             alt="User"
             className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-2xl border-4 border-white shadow-lg"
