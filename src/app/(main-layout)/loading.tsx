@@ -8,7 +8,7 @@ const Loader = () => {
         src="https://lottie.host/23be50a5-0ed2-4c71-91c4-8865b656cb91/Qnkhz7Yf5Q.lottie"
         loop
         autoplay
-        style={{ width: 100, height: 100 }}
+        style={{ width: 50, height: 50 }}
       />
     </div>
   );
