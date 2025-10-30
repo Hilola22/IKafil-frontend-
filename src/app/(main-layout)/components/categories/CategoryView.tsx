@@ -9,7 +9,9 @@ const CategoryView = () => {
   const router = useRouter();
 
   const handleClick = (category: string) => {
-    router.push(`/products?category=${encodeURIComponent(category)}`);
+    router.push(
+      `/products?type=${category}&status=null&priceMin=1000&priceMax=20000`
+    );
   };
 
   return (
@@ -23,10 +25,10 @@ const CategoryView = () => {
           series to the innovative iPhone lineup.
         </p>
       </div>
-      
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 items-stretch">
         <div
-          onClick={() => handleClick("macbook")}
+          onClick={() => handleClick("mac")}
           className="relative rounded-2xl h-[200px] sm:h-[220px] lg:h-[220px] bg-[#fafafa] flex items-center justify-center overflow-hidden group cursor-pointer"
         >
           <div className="w-full h-full relative">
