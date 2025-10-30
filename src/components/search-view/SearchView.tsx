@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Input } from "../ui/input";
 import { useSearch } from "../../context/useSearch";
-import { CartItemRow } from "../cart-view/CartItemRow";
 
 interface DeviceResponse {
   data: any[];
@@ -80,14 +79,16 @@ export default function Search() {
                     >
                       <td className="py-4 pr-4">
                         <div className="flex items-center gap-4">
-                          <img
-                            src={imageUrl}
-                            alt={device.name}
-                            className="w-16 h-16 object-contain rounded-md border"
-                            onError={(e) =>
-                              (e.currentTarget.src = "/no-image.jpg")
-                            }
-                          />
+                          <div className="w-16 h-16">
+                            <img
+                              src={imageUrl}
+                              alt={device.name}
+                              className="w-full h-full object-cover rounded-md border"
+                              onError={(e) =>
+                                (e.currentTarget.src = "/no-image.jpg")
+                              }
+                            />
+                          </div>
                           <div className="text-sm leading-5">
                             <p className="font-semibold text-gray-800">
                               {device.name}

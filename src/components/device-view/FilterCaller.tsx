@@ -17,7 +17,7 @@ export const FilterCaller = ({
   useEffect(() => {
     setTimeout(() => {
       setFilteredData(data);
-      setIsLoading(true);
+      setIsLoading(false);
     }, 1000);
   }, [data]);
 
@@ -32,13 +32,15 @@ export const FilterCaller = ({
         (!filters.status || p.status === filters.status) &&
         (!filters.type || p.type === filters.type) &&
         (!filters.name ||
-          (p.type === filters.type &&
-            p.name?.toLowerCase().includes(filters.name.toLowerCase()))) &&
+          p.name?.toLowerCase().includes(filters.name.toLowerCase())) &&
         (!filters.cpu || p.details?.cpu === filters.cpu) &&
         (!filters.year || p.details?.year?.toString() === filters.year) &&
         (!filters.color || p.details?.color === filters.color)
       );
     });
+
+    console.log(filters);
+    console.log(filtered);
 
     setTimeout(() => {
       setFilteredData(filtered);
