@@ -36,7 +36,6 @@ export default function UserProfilePage() {
       .catch((err) => console.error("Error fetching user:", err));
   }, [getAccessToken]);
 
-  console.log(user);
   if (!user)
     return (
       <div className="flex flex-col gap-10 w-full p-6 md:p-10 animate-in fade-in duration-500 bg-gray-50 dark:bg-neutral-900 min-h-[80vh]">
@@ -61,7 +60,7 @@ export default function UserProfilePage() {
       </div>
     );
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br  from-gray-50 via-white to-gray-100">
+    <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 via-white to-gray-100">
       <div className="relative w-full h-60 md:h-72 lg:h-80 overflow-hidden">
         <img
           src={
@@ -93,10 +92,10 @@ export default function UserProfilePage() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto p-6 md:p-10">
+      <div className=" mx-auto p-6 md:p-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
+            <h3 className="text-lg font-semibold text-gray-800  mb-4 border-b pb-2">
               Contact Details
             </h3>
             <div className="space-y-3 text-sm text-gray-700">

@@ -18,7 +18,7 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({
 }) => {
   const imageUrl = item.device.device_images?.[0]?.url
     ? `${baseUrl}${item.device.device_images[0].url}`
-    : "/no-image.jpg";
+    : "/assets/Image-not-found.png";
   const details = item.device.details || {};
 
   return (

@@ -68,9 +68,9 @@ const Header = () => {
 
   return (
     <header className="px-10 relative bg-[#f5f7f8]">
-      <div className="w-full h-16 md:h-50 xl:h-40 bg-[#f5f7f8] invisible"></div>
+      <div className="w-full h-15 md:h-50 xl:h-40 bg-[#f5f7f8] invisible"></div>
 
-      <div className=" md:hidden bottom-5 z-200 absolute">
+      <div className=" md:hidden bottom-4 z-200 absolute">
         <MenuExample />
       </div>
       <div
@@ -86,7 +86,7 @@ const Header = () => {
             onMouseEnter={() => setOpenCategory(null)}
             className="flex justify-between md:justify-between place-items-center"
           >
-            <div className="md:hidden size-10"></div>
+            <div className="md:hidden size-10 mr-5"></div>
             <Link href={"/"} className="text-[35px] mt-2 font-[serif]">
               IKafil
             </Link>
@@ -123,9 +123,7 @@ const Header = () => {
           >
             <ul
               className={
-                show
-                  ? "whitespace-nowrap md:grid md:grid-cols-5 xl:flex  gap-6 text-[15px] mt-4"
-                  : "hidden whitespace-nowrap md:grid md:grid-cols-5 xl:flex  gap-6 text-[15px] mt-4"
+                "hidden whitespace-nowrap md:grid md:grid-cols-5 xl:flex md:gap-6  xl:gap-12 text-[15px] mt-4"
               }
             >
               <li className="relative">

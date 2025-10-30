@@ -50,7 +50,7 @@ export default function ContactPage() {
   };
 
   return (
-    <section className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4 py-10">
+    <section className="min-h-[80vh] bg-gray-50 flex flex-col items-center justify-center px-4 py-10">
       <div className="max-w-4xl w-full bg-white rounded-2xl shadow-lg p-8">
         <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">
           Contact Us
@@ -85,7 +85,6 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* O'ng tomon - form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-gray-700 font-medium mb-1">

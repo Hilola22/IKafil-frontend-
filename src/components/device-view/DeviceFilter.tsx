@@ -93,7 +93,7 @@ export const DeviceFilter = ({
             }}
           />
           <div className="mt-2 text-sm text-gray-600">
-            ${priceRange[0].toLocaleString()} – $
+            ${priceRange[0].toLocaleString()} - $
             {priceRange[1].toLocaleString()}
           </div>
         </div>

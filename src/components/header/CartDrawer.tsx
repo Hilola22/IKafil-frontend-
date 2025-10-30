@@ -58,20 +58,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
         <div className="flex-1 overflow-y-auto">
           {isEmpty ? (
             <div className="flex flex-col justify-center items-center h-[80%] text-center text-gray-600">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-20 h-20 mb-4 text-indigo-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.293 6.707A1 1 0 007.7 21h8.6a1 1 0 00.993-.707L19 13M9 21a2 2 0 104 0"
-                />
-              </svg>
+              <img src="/assets/cart-not-found.png" alt="cart-not-found" className='w-[200px]'/>
               <p className="text-gray-500 text-lg">
                 Your cart is currently empty.
               </p>
