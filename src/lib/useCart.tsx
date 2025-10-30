@@ -69,7 +69,6 @@ interface CartStore {
 export const useCartStore = create<CartStore>((set, get) => ({
   cart: [],
 
-  // 🔹 Cartni backenddan olish
   fetchCart: async () => {
     try {
       const token =
@@ -84,13 +83,11 @@ export const useCartStore = create<CartStore>((set, get) => ({
       });
 
       set({ cart: data });
-      // console.log("🛒 Cart yuklandi (cookie orqali token)");
     } catch (error) {
       console.error("❌ Cartni olishda xatolik:", error);
     }
   },
 
-  // 🔹 Cartga mahsulot qo‘shish
   addToCart: async (item) => {
     try {
       const token =
@@ -107,13 +104,11 @@ export const useCartStore = create<CartStore>((set, get) => ({
       );
 
       await get().fetchCart();
-      // console.log("✅ Mahsulot cartga qo‘shildi (cookie orqali token)");
     } catch (error) {
       console.error("❌ Cartga qo‘shishda xatolik:", error);
     }
   },
 
-  // 🔹 Cartdan o‘chirish
   removeFromCart: async (id) => {
     try {
       const token =
@@ -128,13 +123,11 @@ export const useCartStore = create<CartStore>((set, get) => ({
       });
 
       await get().fetchCart();
-      // console.log("✅ Cartdan o‘chirildi (cookie orqali token)");
     } catch (error) {
       console.error("❌ Cartdan o‘chirishda xatolik:", error);
     }
   },
 
-  // 🔹 Cartni tozalash
   clearCart: async () => {
     try {
       const token =
@@ -149,7 +142,6 @@ export const useCartStore = create<CartStore>((set, get) => ({
       });
 
       set({ cart: [] });
-      // console.log("✅ Cart tozalandi (cookie orqali token)");
     } catch (error) {
       console.error("❌ Cartni tozalashda xatolik:", error);
     }
