@@ -3,6 +3,9 @@
 import React, { useState } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { ChevronRight, ChevronDown } from "lucide-react";
 
 const ramOptions = ["8GB", "12GB", "16GB"];
 const cpuOptions = ["Snapdragon 8 Gen 2", "A17 Pro", "Apple M2 Pro"];
@@ -25,9 +28,11 @@ export const DeviceFilter = ({
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedName, setSelectedName] = useState<string | null>(null);
+  const [showSwitch, setShowSwitch] = useState(false);
+  const [status, setstatus] = useState<string | null>(null);
 
-  const applyFilter = (field: string, value: string | null) => {
-    const filters: any = {
+  const triggerFilterUpdate = () => {
+    onFilterChange({
       priceRange,
       ram: selectedRam,
       cpu: selectedCpu,
@@ -35,16 +40,44 @@ export const DeviceFilter = ({
       color: selectedColor,
       type: selectedType,
       name: selectedName,
-    };
-    filters[field] = value;
-    onFilterChange(filters);
+      status,
+    });
   };
 
   return (
     <div className="bg-white shadow-md rounded-2xl p-6 mb-10">
       <h2 className="text-xl font-semibold mb-4">Device Filter</h2>
 
-      <div className="space-y-10">
+      <div className="flex flex-col space-y-2">
+        <div
+          className="flex items-center justify-between cursor-pointer"
+          onClick={() => setShowSwitch((prev) => !prev)}
+        >
+          <div className="flex justify-between">Доступность</div>
+          {!showSwitch ? (
+            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
+          )}
+        </div>
+
+        {showSwitch && (
+          <div className="mt-2 flex items-center gap-2">
+            <Switch
+              id="airplane-mode"
+              checked={status === "available"}
+              onCheckedChange={(val) => {
+                setstatus(val ? "available" : null);
+                triggerFilterUpdate();
+              }}
+            />
+
+            <Label htmlFor="airplane-mode">В наличии</Label>
+          </div>
+        )}
+      </div>
+
+      <div className="space-y-10 mt-6">
         <div>
           <label className="block text-sm font-medium mb-2">Price ($)</label>
           <Slider
@@ -56,15 +89,7 @@ export const DeviceFilter = ({
             onChange={(val) => {
               const range = val as [number, number];
               setPriceRange(range);
-              onFilterChange({
-                priceRange: range,
-                ram: selectedRam,
-                cpu: selectedCpu,
-                year: selectedYear,
-                color: selectedColor,
-                type: selectedType,
-                name: selectedName,
-              });
+              triggerFilterUpdate();
             }}
           />
           <div className="mt-2 text-sm text-gray-600">
@@ -120,11 +145,10 @@ export const DeviceFilter = ({
                     key={option}
                     onClick={() => {
                       set(newValue);
-                      applyFilter(key, newValue);
                       if (key === "type") {
                         setSelectedName(null);
-                        applyFilter("name", null);
                       }
+                      triggerFilterUpdate();
                     }}
                     className={`px-3 py-1 rounded-full border ${
                       selected === option
@@ -153,7 +177,7 @@ export const DeviceFilter = ({
                     key={model}
                     onClick={() => {
                       setSelectedName(newValue);
-                      applyFilter("name", newValue);
+                      triggerFilterUpdate();
                     }}
                     className={`px-3 py-1 rounded-full border ${
                       selectedName === model
@@ -180,7 +204,7 @@ export const DeviceFilter = ({
                     key={model}
                     onClick={() => {
                       setSelectedName(newValue);
-                      applyFilter("name", newValue);
+                      triggerFilterUpdate();
                     }}
                     className={`px-3 py-1 rounded-full border ${
                       selectedName === model
@@ -207,7 +231,7 @@ export const DeviceFilter = ({
                     key={model}
                     onClick={() => {
                       setSelectedName(newValue);
-                      applyFilter("name", newValue);
+                      triggerFilterUpdate();
                     }}
                     className={`px-3 py-1 rounded-full border ${
                       selectedName === model

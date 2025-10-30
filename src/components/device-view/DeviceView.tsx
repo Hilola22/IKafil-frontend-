@@ -35,7 +35,7 @@ export const DeviceView = ({
   return (
     <div className="">
       <section className="max-w-7xl mx-auto mb-10 sm:px-4 px-2">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {isLoading
             ? Array.from({ length: 8 }).map((_, i) => (
                 <div
@@ -69,7 +69,7 @@ export const DeviceView = ({
                   )}
 
                   <Link href={`/products/${p.id}`}>
-                    <div className="relative w-full h-[180px] sm:h-[230px] md:h-[280px] cursor-pointer">
+                    <div className="relative w-full h-[180px] sm:h-[230px] md:h-[260px] cursor-pointer">
                       {(() => {
                         const fallback =
                           "https://www.eclosio.ong/wp-content/uploads/2018/08/default.png";
@@ -111,7 +111,7 @@ export const DeviceView = ({
                     </div>
                   </Link>
 
-                  <div className="ml-2 sm:ml-3 mt-2 space-y-1 sm:space-y-2 mb-2">
+                  <div className="ml-2 sm:ml-3 mt-2 space-y-0 sm:space-y-1">
                     <h3 className="font-semibold text-sm sm:text-lg line-clamp-1">
                       {p.name}
                     </h3>
