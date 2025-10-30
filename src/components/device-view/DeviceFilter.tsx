@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { ChevronRight, ChevronDown } from "lucide-react";
+import { Label } from "../ui/label";
+import { Switch } from "../ui/switch";
 
 const ramOptions = ["8GB", "12GB", "16GB"];
 const cpuOptions = ["Snapdragon 8 Gen 2", "A17 Pro", "Apple M2 Pro"];
@@ -28,7 +28,7 @@ export const DeviceFilter = ({
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedName, setSelectedName] = useState<string | null>(null);
-  const [showSwitch, setShowSwitch] = useState(false);
+  const [showSwitch, setShowSwitch] = useState(true);
   const [status, setstatus] = useState<string | null>(null);
 
   const triggerFilterUpdate = () => {
@@ -66,7 +66,7 @@ export const DeviceFilter = ({
             <Switch
               id="airplane-mode"
               checked={status === "available"}
-              onCheckedChange={(val) => {
+              onCheckedChange={(val: any) => {
                 setstatus(val ? "available" : null);
                 triggerFilterUpdate();
               }}
