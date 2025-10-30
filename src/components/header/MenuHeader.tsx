@@ -45,6 +45,7 @@ export default function MenuExample() {
         className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition-colors"
       >
         <span className="text-[16px] font-medium">menu</span>
+
         <IoIosArrowDown
           className={`transition-transform duration-300 ${
             isOpen ? "rotate-180" : "rotate-0"

@@ -1,10 +1,10 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Trash2, Loader2 } from "lucide-react";
-import { useCartStore } from "../../lib/useCart";
+'use client';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Trash2, Loader2 } from 'lucide-react';
+import { useCartStore } from '../../lib/useCart';
 
-const baseUrl = "https://api.ikafil.uz";
+const baseUrl = 'https://api.ikafil.uz';
 
 const CartDrawerView = () => {
   const router = useRouter();
@@ -23,7 +23,7 @@ const CartDrawerView = () => {
   };
 
   const handleClearCart = async () => {
-    if (!confirm("Savatni tozalaysizmi?")) return;
+    if (!confirm('Savatni tozalaysizmi?')) return;
     setIsClearing(true);
     await clearCart();
     setIsClearing(false);
@@ -35,9 +35,10 @@ const CartDrawerView = () => {
         {cart.map((item) => {
           const device = item.device;
           const details = device.details || {};
+          
           const imageUrl = device.device_images?.[0]?.url
             ? `${baseUrl}${device.device_images[0].url}`
-            : "/no-image.jpg";
+            : '/assets/Image-not-found.png';
 
           const isThisRemoving = isRemoving === item.id;
 
@@ -47,15 +48,14 @@ const CartDrawerView = () => {
               className="flex items-center justify-between p-4 transition-all duration-200"
             >
               <div className="flex items-center gap-4">
-                {/* ✅ Spinner rasm ustida chiqadi */}
                 <div className="relative w-20 h-20">
                   <img
                     src={imageUrl}
                     alt={device.name}
                     className={`w-20 h-20 object-contain rounded-md transition-opacity ${
-                      isThisRemoving ? "opacity-50" : "opacity-100"
+                      isThisRemoving ? 'opacity-50' : 'opacity-100'
                     }`}
-                    onError={(e) => (e.currentTarget.src = "/no-image.jpg")}
+                    onError={(e) => (e.currentTarget.src = '/assets/Image-not-found.png')}
                   />
                   {isThisRemoving && (
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -74,21 +74,21 @@ const CartDrawerView = () => {
 
                   <div className="text-gray-600 mt-1 space-y-0.5">
                     <p>
-                      Цвет:{" "}
+                      Цвет:{' '}
                       <span className="text-gray-800">
-                        {details.color || "-"}
+                        {details.color || '-'}
                       </span>
                     </p>
                     <p>
-                      Ёмкость:{" "}
+                      Ёмкость:{' '}
                       <span className="text-gray-800">
-                        {details.storage || "-"}
+                        {details.storage || '-'}
                       </span>
                     </p>
                     <p>
-                      SIM:{" "}
+                      SIM:{' '}
                       <span className="text-gray-800">
-                        {details.sim_type || "Single SIM"}
+                        {details.sim_type || 'Single SIM'}
                       </span>
                     </p>
                   </div>
@@ -97,7 +97,7 @@ const CartDrawerView = () => {
 
               <div className="text-right">
                 <p className="text-[18px] font-semibold text-gray-900">
-                  {Number(device.base_price).toLocaleString()}{" "}
+                  {Number(device.base_price).toLocaleString()}{' '}
                   <span className="text-sm text-gray-800">сум</span>
                 </p>
                 <button
@@ -123,7 +123,7 @@ const CartDrawerView = () => {
               disabled={isClearing}
               className="text-red-600 hover:text-red-700 text-sm font-semibold transition disabled:opacity-50"
             >
-              {isClearing ? "Tozalanmoqda..." : "Savatni tozalash"}
+              {isClearing ? 'Tozalanmoqda...' : 'Savatni tozalash'}
             </button>
           </div>
         )}

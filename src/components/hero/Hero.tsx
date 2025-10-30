@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "./Hero.css";
+import Link from "next/link";
 
 const heroData = [
   {
@@ -47,6 +48,14 @@ export default function Hero() {
     }
   };
 
+  const handleLearnMore = () => {
+    setLoading(true);
+    setTimeout(() => {
+      router.push("/products");
+      setLoading(false);
+    }, 800);
+  };
+
   return (
     <section
       className={`relative w-full overflow-hidden bg-black text-white ${
@@ -83,6 +92,18 @@ export default function Hero() {
                 </p>
 
                 <div className="flex items-center justify-center gap-5 mt-4">
+                  <button
+                    onClick={() => handleLearnMore()}
+                    disabled={loading}
+                    className={`px-6 py-2 bg-blue-600 rounded-full font-medium transition ${
+                      loading
+                        ? "opacity-70 cursor-not-allowed"
+                        : "hover:bg-blue-500"
+                    }`}
+                  >
+                   {loading ? "Loading..." : "Learn more"}
+                  </button>
+
                   <button
                     onClick={() => handleBuyClick(hero.title)}
                     disabled={loading}

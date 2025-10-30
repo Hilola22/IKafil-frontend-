@@ -1,8 +1,21 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { DeviceView } from "../../components/device-view/DeviceView";
-import BackTo from "../../components/BackTo";
-import Hero from "../../components/hero/Hero";
-import CategoryView from "./components/categories/CategoryView";
+
+const BackTo = dynamic(() => import("../../components/BackTo"), {
+  loading: () => <p className="loader">Loading...</p>,
+});
+
+const Hero = dynamic(() => import("../../components/hero/Hero"), {
+  loading: () => <p className="loader">Loading...</p>,
+});
+
+const CategoryView = dynamic(
+  () => import("./components/categories/CategoryView"),
+  {
+    loading: () => <p className="loader">Loading...</p>,
+  }
+);
 
 const Home = async () => {
   const response = await fetch(

@@ -5,20 +5,34 @@ import { useEffect, useState } from "react";
 
 export default function ProfileEditPage() {
   const [user, setUser] = useState<any>(null);
-
   const getAccessToken = useAuthStore((state) => state.getAccessToken);
   const [token, setToken] = useState<string | null>(null);
-
   const [photo, setPhoto] = useState<string | null>(null);
+  console.log(user);
+  const [formData, setFormData] = useState<any>({
+    full_name: "",
+    email: "",
+    phone: "",
+    region: "",
+    // display_name: "",
+    // about: "",
+  });
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) setPhoto(URL.createObjectURL(file));
   };
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   useEffect(() => {
     const token = getAccessToken();
     if (!token) return;
+    setToken(token);
 
     fetch("http://3.76.183.255:3030/api/auth/me", {
       method: "GET",
@@ -32,11 +46,43 @@ export default function ProfileEditPage() {
         if (!res.ok) throw new Error(`Failed to fetch user: ${res.status}`);
         return res.json();
       })
-      .then((data) => setUser(data))
+      .then((data) => {
+        setUser(data);
+        setFormData({
+          full_name: data.full_name,
+          email: data.email,
+          phone: data.phone,
+          region: data.region.name,
+          display_name: data.full_name.split(" ")[0],
+          about: data.about || "",
+        });
+      })
       .catch((err) => console.error("Error fetching user:", err));
   }, [getAccessToken]);
-
   console.log(user);
+  const handleSaveChanges = async () => {
+    if (!token) return;
+
+    try {
+      const res = await fetch(`http://3.76.183.255:3030/api/users/${user.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) throw new Error(`Update failed: ${res.status}`);
+      const updatedUser = await res.json();
+      setUser(updatedUser);
+      alert("Profile updated successfully!");
+    } catch (err) {
+      console.error("Update error:", err);
+      alert("Failed to update profile");
+    }
+  };
+
   if (!user)
     return (
       <div className="flex flex-col gap-10 w-full p-6 md:p-10 animate-in fade-in duration-500 bg-gray-50 dark:bg-neutral-900 min-h-[80vh]">
@@ -48,7 +94,6 @@ export default function ProfileEditPage() {
             <Skeleton className="w-full h-10 rounded-lg" />
             <Skeleton className="w-full h-10 rounded-lg" />
           </div>
-
           <div className="w-full md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
               <Skeleton key={i} className="h-12 rounded-lg" />
@@ -60,24 +105,19 @@ export default function ProfileEditPage() {
         </div>
       </div>
     );
+
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <div className="min-h-screen w-full bg-gradient-to-br  from-gray-50 via-white to-gray-100">
       <div className="max-w-7xl mx-auto md:p-10">
         <div className="bg-white/90 backdrop-blur-xl  shadow-2xl border-gray- md:p-12">
           <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-5">
-            <h2 className=" md:text-2xl font-semibold italic text-gray-800 tracking-wide">
+            <h2 className=" md:text-2xl pt-6 md:pt-0  font-semibold italic text-gray-800 tracking-wide">
               Edit Your Profile
             </h2>
-            {/* <button className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-xl shadow-md hover:shadow-lg hover:from-blue-700 hover:to-indigo-700 transition-all">
-              Save Changes
-            </button> */}
           </div>
 
-          {/* Main Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Side */}
             <div className="bg-gradient-to-b from-gray-50 to-white rounded-2xl border border-gray-100 shadow-md overflow-hidden flex flex-col items-center p-6">
-              {/* Large Image */}
               <div className="relative w-full h-52 md:h-64 lg:h-72 rounded-2xl overflow-hidden mb-6">
                 <img
                   src={
@@ -97,7 +137,6 @@ export default function ProfileEditPage() {
                 )}
               </div>
 
-              {/* Upload Button */}
               <label className="w-full">
                 <input
                   type="file"
@@ -110,7 +149,6 @@ export default function ProfileEditPage() {
                 </span>
               </label>
 
-              {/* Password Section */}
               <div className="w-full mt-8">
                 <h3 className="text-md font-semibold text-gray-800 mb-3 border-b pb-1">
                   Change Password
@@ -123,20 +161,42 @@ export default function ProfileEditPage() {
               </div>
             </div>
 
-            {/* Right Side */}
             <div className="col-span-2 bg-white rounded-2xl border border-gray-100 shadow-md p-8 md:p-10">
               <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-6">
                 Profile Information
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                <Input label="Full Name" value={user.full_name} />
-                <Input label="Email" type="email" value={user.email} />
-                <Input label="Phone" value={user.phone} />
-                <Input label="Region" value={user.region.name} />
+                <Input
+                  label="Full Name"
+                  name="full_name"
+                  value={formData.full_name}
+                  onChange={handleChange}
+                />
+                <Input
+                  label="Email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                <Input
+                  label="Phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+                <Input
+                  label="Region"
+                  name="region"
+                  value={formData.region}
+                  onChange={handleChange}
+                />
                 <Input
                   label="Display Name"
-                  value={user.full_name.split(" ")[0]}
+                  name="display_name"
+                  // value={formData.display_name}
+                  // onChange={handleChange}
                 />
               </div>
 
@@ -145,11 +205,21 @@ export default function ProfileEditPage() {
                   About the User
                 </label>
                 <textarea
+                  name="about"
                   rows={4}
+                  // value={formData.about}
+                  // onChange={handleChange}
                   className="w-full border border-gray-200 rounded-xl p-3 text-sm focus:border-blue-400 focus:ring focus:ring-blue-100 outline-none transition-all"
                   placeholder="Write a short bio about yourself..."
                 ></textarea>
               </div>
+
+              <button
+                onClick={handleSaveChanges}
+                className="ml-auto mt-5 block place-items-end justify-end px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-[12px] shadow-md hover:shadow-lg hover:from-blue-700 hover:to-indigo-700 transition-all"
+              >
+                Save Changes
+              </button>
             </div>
           </div>
         </div>
@@ -162,17 +232,23 @@ function Input({
   label,
   value,
   type = "text",
+  name,
+  onChange,
 }: {
   label: string;
   value?: string;
   type?: string;
+  name?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
     <div className="flex flex-col">
       <label className="text-sm text-gray-600 mb-1 font-medium">{label}</label>
       <input
+        name={name}
         type={type}
-        defaultValue={value}
+        value={value}
+        onChange={onChange}
         className="border border-gray-200 rounded-xl p-3 text-sm focus:border-blue-400 focus:ring focus:ring-blue-100 outline-none transition-all bg-gray-50 hover:bg-white"
       />
     </div>
