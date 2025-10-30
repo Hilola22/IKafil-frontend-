@@ -1,14 +1,22 @@
 import ProductDetail from "./product-detail";
 
-const API_BASE = "https://api.ikafil.uz/api/devices";
+const baseApi = process.env.BASE_URL + "/api/devices";
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
   try {
-    const res = await fetch(`${API_BASE}/${params.id}`, { cache: "no-store" });
+    const res = await fetch(`${baseApi}/${id}`, { cache: "no-store" });
     const data = await res.json();
 
+    const baseStatic = process.env.BASE_URL?.replace("/api", "");
+
     return {
-      title: `${data.name} | Macbro`,
+      title: `${data.name} | iKafil`,
       description: data.details?.description ?? "View detailed specifications.",
       openGraph: {
         title: data.name,
@@ -17,7 +25,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
           data.device_images?.length > 0
             ? [
                 {
-                  url: `https://api.ikafil.uz${data.device_images[0].url}`,
+                  url: `${baseStatic}${data.device_images[0].url}`,
                   alt: data.name,
                 },
               ]
@@ -26,14 +34,24 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     };
   } catch {
     return {
-      title: "Product Detail | Macbro",
+      title: "Product Detail | iKafil",
       description: "View product specifications and details.",
     };
   }
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const res = await fetch(`${API_BASE}/${params.id}`, { cache: "no-store" });
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
+  const res = await fetch(`${baseApi}/${id}`, {
+    next: { revalidate: 60 },
+  });
+
   const data = await res.json();
+
   return <ProductDetail data={data} />;
 }
