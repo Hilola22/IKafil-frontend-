@@ -58,7 +58,6 @@ const Carts = () => {
 
   return (
     <div className="container mx-auto px-3 sm:px-6 lg:px-8">
-      {/* 🔹 Breadcrumb */}
       <div className="flex flex-wrap gap-3 text-sm sm:text-base mt-3">
         <Link
           href="/"
@@ -70,7 +69,6 @@ const Carts = () => {
         <p>Cart</p>
       </div>
 
-      {/* 🔹 Title */}
       <h3 className="mt-5 text-2xl sm:text-3xl lg:text-4xl font-medium">
         Your Cart
       </h3>
@@ -90,7 +88,6 @@ const Carts = () => {
       
       ) : (
         <div className="mt-6 flex flex-col lg:flex-row gap-8 items-start">
-          {/* 🧾 Cart Table */}
           <div className="flex-1 overflow-x-auto w-full">
             <table className="w-full border-collapse">
               <thead>
@@ -113,7 +110,6 @@ const Carts = () => {
             </table>
           </div>
 
-          {/* 💰 Order Summary */}
           <div className="w-full sm:max-w-md lg:w-[320px] border rounded-2xl p-5 sm:p-6 shadow-md bg-white sticky top-20">
             <h4 className="text-lg sm:text-xl font-semibold mb-3">
               Order Summary
@@ -143,7 +139,6 @@ const Carts = () => {
         </div>
       )}
 
-      {/* 🔸 Related Products har doim chiqadi */}
       <div className="max-w-7xl mx-auto mt-16 px-2 sm:px-4">
         <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-8 text-center sm:text-left">
           More Products You May Like
