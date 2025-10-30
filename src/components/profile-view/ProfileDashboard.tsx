@@ -23,11 +23,11 @@ const ProfileDashboard = () => {
   }, [getAccessToken]);
 
   return (
-    <div className="fixed md:w-54 xl:w-64">
+    <div className="md:w-54 w-12 xl:w-64">
       <div className="flex flex-col gap-5 p-2  h-screen bg-white">
         <div className="flex place-items-center justify-between gap-2">
           <div className="flex place-items-center justify-between gap-2">
-            <div className="flex place-items-center text-shadow-gray-800  gap-2">
+            <div className="flex place-items-center text-shadow-gray-800  md:gap-2">
               <p>
                 {token ? (
                   <img
@@ -40,11 +40,13 @@ const ProfileDashboard = () => {
                 )}
               </p>
               <Link href={"/"}>
-                <p className="font-semibold text-gray-800">IKafil</p>
+                <p className="font-semibold hidden md:block text-gray-800">
+                  IKafil
+                </p>
               </Link>
             </div>
           </div>
-          <div className="flex place-items-center px-1 text-[14px] mr-3 rounded-[3px]">
+          <div className=" place-items-center hidden md:flex md:px-1 text-[14px] mr-0 md:mr-3 rounded-[3px]">
             <Link href={"/"}>
               <ArrowRight className="size-4 text-gray-800 hover:bg-gray-200 rounded-full" />
             </Link>
@@ -60,11 +62,11 @@ const ProfileDashboard = () => {
             >
               <div className="flex place-items-center gap-2">
                 {item.logo}
-                <span className="text-gray-700 font-normal group-hover:text-gray-900">
+                <span className="text-gray-700 hidden md:block font-normal group-hover:text-gray-900">
                   {item.title}
                 </span>
               </div>
-              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
+              <ChevronRight className="hidden md:flex w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
             </Link>
           ))}
         </div>

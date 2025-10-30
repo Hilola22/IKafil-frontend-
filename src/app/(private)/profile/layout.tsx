@@ -5,7 +5,7 @@ import ProfileDashboard from "../../../components/profile-view/ProfileDashboard"
 const ProfileLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-neutral-900">
-      <aside className=" md:w-54 xl:w-64  bg-white dark:bg-neutral-800 border-r shadow-sm pt-2">
+      <aside className=" md:w-54 xl:w-64  z-50 bg-white dark:bg-neutral-800 border-r shadow-sm pt-2">
         <ProfileDashboard />
       </aside>
 
