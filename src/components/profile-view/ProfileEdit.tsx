@@ -9,7 +9,6 @@ export default function ProfileEditPage() {
   const [token, setToken] = useState<string | null>(null);
   const [photo, setPhoto] = useState<string | null>(null);
   console.log(user);
-  // ✅ new state for editable form
   const [formData, setFormData] = useState<any>({
     full_name: "",
     email: "",
@@ -24,14 +23,12 @@ export default function ProfileEditPage() {
     if (file) setPhoto(URL.createObjectURL(file));
   };
 
-  // ✅ handle input changes (for all fields)
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ✅ fetch user
   useEffect(() => {
     const token = getAccessToken();
     if (!token) return;
@@ -79,10 +76,10 @@ export default function ProfileEditPage() {
       if (!res.ok) throw new Error(`Update failed: ${res.status}`);
       const updatedUser = await res.json();
       setUser(updatedUser);
-      alert("✅ Profile updated successfully!");
+      alert("Profile updated successfully!");
     } catch (err) {
       console.error("Update error:", err);
-      alert("❌ Failed to update profile");
+      alert("Failed to update profile");
     }
   };
 
