@@ -9,10 +9,6 @@ const Cart = async () => {
       <Carts />
     </div>
   );
-<<<<<<< HEAD
 };
-=======
-}
->>>>>>> e2ee96d2a889e8adf533d6f05a8d3b68aa13ed89
 
 export default Cart;
