@@ -10,5 +10,4 @@ const Cart = async () => {
 
 };
 
-
 export default Cart;
