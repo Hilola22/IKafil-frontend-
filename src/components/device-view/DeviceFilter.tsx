@@ -28,8 +28,9 @@ export const DeviceFilter = ({
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedName, setSelectedName] = useState<string | null>(null);
-  const [showSwitch, setShowSwitch] = useState(true);
-  const [status, setstatus] = useState<string | null>(null);
+
+  const [showSwitch, setShowSwitch] = useState(false);
+  const [status, setstatus] = useState<string | null>("available");
 
   const triggerFilterUpdate = () => {
     onFilterChange({
@@ -65,9 +66,9 @@ export const DeviceFilter = ({
           <div className="mt-2 flex items-center gap-2">
             <Switch
               id="airplane-mode"
-              checked={status === "available"}
-              onCheckedChange={(val: any) => {
-                setstatus(val ? "available" : null);
+              checked={status === null}
+              onCheckedChange={(val: boolean) => {
+                setstatus(val ? null : "available");
                 triggerFilterUpdate();
               }}
             />
