@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { useCartStore } from "../../lib/useCart";
 import React from "react";
-import { TiTick } from "react-icons/ti";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FiShoppingCart } from "react-icons/fi";
+import { FaShoppingCart } from "react-icons/fa";
 
-// 🔹 Cookie’dan token olish helper
 const getCookie = (name: string): string | null => {
   if (typeof document === "undefined") return null;
   const match = document.cookie
@@ -34,12 +34,10 @@ export const AddToCartButton = ({ data }: DeviceButtonProps) => {
   const [isAdded, setIsAdded] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // 🔹 Cartni backenddan yuklab olish
   useEffect(() => {
     fetchCart();
   }, [fetchCart]);
 
-  // 🔹 Cart yangilanganda tekshirish
   useEffect(() => {
     const exists =
       cart.some((item) => item.device?.id === data.id || item.id === data.id) ||
@@ -107,7 +105,6 @@ export const AddToCartButton = ({ data }: DeviceButtonProps) => {
     }
   };
 
-  // 🔹 Tokenni tekshirish
   const attemptAdd = () => {
     const token =
       getCookie("accessToken") ||
@@ -126,8 +123,8 @@ export const AddToCartButton = ({ data }: DeviceButtonProps) => {
     <div>
       {isAdded ? (
         <Link href={"/cart"}>
-          <div className="mt-0.5 hover:text-slate-500 px-0.5 border justify-center items-center py-1 text-center text-black text-lg rounded-xl flex transition justify-self-center gap-2">
-            <TiTick className="text-green-600" />
+          <div className="mt-0.5 hover:text-slate-500 px-2 border justify-center items-center py-2 text-center text-black text-lg rounded-full flex transition justify-self-center gap-2">
+            <FaShoppingCart className="" />
           </div>
         </Link>
       ) : (
@@ -135,9 +132,9 @@ export const AddToCartButton = ({ data }: DeviceButtonProps) => {
           type="button"
           disabled={loading || isAdded}
           onClick={attemptAdd}
-          className="px-1.5 pt-[0px] border text-black text-lg rounded-xl flex items-center justify-center hover:text-slate-500 transition justify-self-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+          className="px-2 py-2 pt-[0px] border text-black text-lg rounded-full flex items-center justify-center hover:text-slate-500 transition justify-self-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {loading ? "..." : "+"}
+          {loading ? "...." : <FiShoppingCart className="size-5 mt-2" />}
         </button>
       )}
     </div>

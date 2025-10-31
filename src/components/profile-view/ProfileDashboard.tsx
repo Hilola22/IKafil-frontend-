@@ -78,11 +78,11 @@ const ProfileDashboard = () => {
           >
             <div className="flex place-items-center gap-2">
               <IoIosLogOut />
-              <span className="text-gray-700 font-normal group-hover:text-gray-900">
+              <span className="text-gray-700 hidden md:block font-normal group-hover:text-gray-900">
                 logout
               </span>
             </div>
-            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
+            <ChevronRight className="hidden md:flex w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
           </button>
         </div>
 
