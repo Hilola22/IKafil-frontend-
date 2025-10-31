@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
-import toast from "react-hot-toast";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 export default function ResetPasswordPage() {
@@ -16,28 +15,46 @@ export default function ResetPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState<"success" | "error" | "">("");
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!password || !confirmPassword) return toast.error("Fill all fields");
-    if (password !== confirmPassword)
-      return toast.error("Passwords do not match");
+
+    if (!password || !confirmPassword) {
+      setMessage("Please fill in all fields");
+      setMessageType("error");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setMessage("Passwords do not match");
+      setMessageType("error");
+      return;
+    }
 
     try {
       setLoading(true);
+      setMessage("");
       const res = await axios.post(
         "https://api.ikafil.uz/api/auth/reset-password",
-        { token, password, confirmPassword }
+        {
+          token,
+          password,
+          confirmPassword,
+        }
       );
 
       if (res.status === 201 || res.statusText === "Created") {
-        toast.success(res.data.message || "Password successfully changed!");
+        setMessage(res.data.message || "Password successfully changed!");
+        setMessageType("success");
         setTimeout(() => router.push("/auth/signin"), 2000);
       } else {
-        toast.error(res.data?.message || "Invalid or expired token");
+        setMessage(res.data?.message || "Invalid or expired token");
+        setMessageType("error");
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Server error");
+      setMessage(err.response?.data?.message || "Server error");
+      setMessageType("error");
     } finally {
       setLoading(false);
     }
@@ -46,9 +63,19 @@ export default function ResetPasswordPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
-        <h1 className="text-2xl font-semibold text-center mb-6 text-gray-800">
+        <h1 className="text-2xl font-semibold text-center mb-4 text-gray-800">
           Reset your password
         </h1>
+
+        {message && (
+          <p
+            className={`text-center mb-4 font-medium ${
+              messageType === "success" ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {message}
+          </p>
+        )}
 
         <form onSubmit={handleReset} className="space-y-5">
           <div className="relative">
