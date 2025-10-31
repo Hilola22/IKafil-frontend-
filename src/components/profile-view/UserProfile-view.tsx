@@ -2,19 +2,20 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuthStore } from "../../store/auth/useAuthStore";
 import { useEffect, useState } from "react";
+import PaymentList from "@/components/payments/PaymentList";
 
 export default function UserProfilePage() {
   const [user, setUser] = useState<any>(null);
-
   const getAccessToken = useAuthStore((state) => state.getAccessToken);
   const [token, setToken] = useState<string | null>(null);
-
   const [photo, setPhoto] = useState<string | null>(null);
 
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) setPhoto(URL.createObjectURL(file));
-  };
+  useEffect(() => {
+    const savedPhoto = localStorage.getItem("profilePhoto");
+    if (savedPhoto) {
+      setPhoto(savedPhoto);
+    }
+  }, []);
 
   useEffect(() => {
     const token = getAccessToken();
@@ -75,12 +76,14 @@ export default function UserProfilePage() {
         <div className="absolute bottom-6 left-6 flex items-center gap-4">
           <img
             src={
+              photo ||
               user.photo ||
               "https://static.vecteezy.com/ti/vecteur-libre/p1/26434409-vecteur-d-icone-de-profil-d-avatar-par-defaut-photo-d-utilisateur-de-medias-sociaux-vectoriel.jpg"
             }
             alt="User"
             className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-2xl border-4 border-white shadow-lg"
           />
+
           <div>
             <h2 className="text-white text-2xl md:text-3xl font-semibold tracking-wide">
               {user.full_name}
@@ -135,6 +138,10 @@ export default function UserProfilePage() {
                 {new Date(user.created_at).toLocaleDateString()}
               </span>
             </div>
+          </div>
+
+          <div className="mt-10">
+            <PaymentList userId={user.id} />
           </div>
         </div>
       </div>
