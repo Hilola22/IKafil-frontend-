@@ -17,8 +17,8 @@ const menuItems = [
 
 const ProfileDashboard = () => {
   const getAccessToken = useAuthStore((state) => state.getAccessToken);
-  const logout = useAuthStore((state) => state.logout);
   const [token, setToken] = useState<string | null>(null);
+  const logout = useAuthStore((state) => state.logout);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
@@ -26,105 +26,104 @@ const ProfileDashboard = () => {
   }, [getAccessToken]);
 
   return (
-    <>
-      <div className="fixed w-64">
-        <div className="flex flex-col gap-5 p-2 h-screen bg-white">
+    <div className="md:w-54 w-12 xl:w-64">
+      <div className="flex flex-col gap-5 p-2  h-screen bg-white">
+        <div className="flex place-items-center justify-between gap-2">
           <div className="flex place-items-center justify-between gap-2">
-            <div className="flex place-items-center justify-between gap-2">
-              <div className="flex place-items-center text-shadow-gray-800 gap-2">
-                <p>
-                  {token ? (
-                    <img
-                      src="/assets/profile-avatar.png"
-                      alt="Profile"
-                      className="size-8 rounded-full border"
-                    />
-                  ) : (
-                    <LuUserRound className="size-6 text-gray-700" />
-                  )}
-                </p>
-                <Link href={"/"}>
-                  <p className="font-semibold text-gray-800">IKafil</p>
-                </Link>
-              </div>
-            </div>
-            <div className="flex place-items-center px-1 text-[14px] mr-3 rounded-[3px]">
+            <div className="flex place-items-center text-shadow-gray-800  md:gap-2">
+              <p>
+                {token ? (
+                  <img
+                    src="/assets/profile-avatar.png"
+                    alt="Profile"
+                    className="size-8 rounded-full border"
+                  />
+                ) : (
+                  <LuUserRound className="size-6 text-gray-700" />
+                )}
+              </p>
               <Link href={"/"}>
-                <ArrowRight className="size-4 text-gray-800 hover:bg-gray-200 rounded-full" />
+                <p className="font-semibold hidden md:block text-gray-800">
+                  IKafil
+                </p>
               </Link>
             </div>
           </div>
+          <div className=" place-items-center hidden md:flex md:px-1 text-[14px] mr-0 md:mr-3 rounded-[3px]">
+            <Link href={"/"}>
+              <ArrowRight className="size-4 text-gray-800 hover:bg-gray-200 rounded-full" />
+            </Link>
+          </div>
+        </div>
 
-          <div className="flex flex-col divide-y w-full max-w-3xl">
-            {menuItems.map((item, idx) => (
-              <Link
-                key={idx}
-                href={item.href}
-                className="flex items-center justify-between px-2 py-2 hover:bg-gray-50 transition group"
-              >
-                <div className="flex place-items-center gap-2">
-                  {item.logo}
-                  <span className="text-gray-700 font-normal group-hover:text-gray-900">
-                    {item.title}
-                  </span>
-                </div>
-                <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
-              </Link>
-            ))}
-
-            <button
-              onClick={() => setShowLogoutModal(true)}
+        <div className="flex flex-col divide-y w-full max-w-3xl">
+          {menuItems.map((item, idx) => (
+            <Link
+              key={idx}
+              href={item.href}
               className="flex items-center justify-between px-2 py-2 hover:bg-gray-50 transition group"
             >
               <div className="flex place-items-center gap-2">
-                <IoIosLogOut />
-                <span className="text-gray-700 font-normal group-hover:text-gray-900">
-                  logout
+                {item.logo}
+                <span className="text-gray-700 hidden md:block font-normal group-hover:text-gray-900">
+                  {item.title}
                 </span>
               </div>
-              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
-            </button>
-          </div>
+              <ChevronRight className="hidden md:flex w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
+            </Link>
+          ))}
+          <button
+            onClick={() => setShowLogoutModal(true)}
+            className="flex items-center justify-between px-2 py-2 hover:bg-gray-50 transition group"
+          >
+            <div className="flex place-items-center gap-2">
+              <IoIosLogOut />
+              <span className="text-gray-700 font-normal group-hover:text-gray-900">
+                logout
+              </span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
+          </button>
         </div>
-      </div>
 
-      {showLogoutModal && (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
-          <div className="bg-white rounded-xl shadow-lg p-6 w-[90%] max-w-sm text-center">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUzNnrwPUFY4oN-My9KauGfZ3AiScpgwkOg&s"
-              alt="Logout"
-              className="mx-auto mb-4 w-16 h-16"
-            />
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">
-              Oh no! You're leaving...
-            </h2>
-            <p className="text-sm text-gray-600 mb-6">
-              Are you sure you want to log out?
-            </p>
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={() => setShowLogoutModal(false)}
-                className="px-4 py-2 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 transition"
-              >
-                Nah, Just Kidding
-              </button>
-              <Link href={"/"}>
+        {showLogoutModal && (
+          <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
+            <div className="bg-white rounded-xl shadow-lg p-6 w-[90%] max-w-sm text-center">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeUzNnrwPUFY4oN-My9KauGfZ3AiScpgwkOg&s"
+                alt="Logout"
+                className="mx-auto mb-4 w-16 h-16"
+              />
+              <h2 className="text-lg font-semibold text-gray-800 mb-2">
+                Oh no! You're leaving...
+              </h2>
+              <p className="text-sm text-gray-600 mb-6">
+                Are you sure you want to log out?
+              </p>
+              <div className="flex justify-center gap-4">
                 <button
-                  onClick={() => {
-                    logout();
-                    setShowLogoutModal(false);
-                  }}
-                  className="px-4 py-2 rounded-md bg-black border text-white hover:bg-white hover:text-black transition"
+                  onClick={() => setShowLogoutModal(false)}
+                  className="px-4 py-2 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 transition"
                 >
-                  Yes, Log Me Out
+                  Nah, Just Kidding
                 </button>
-              </Link>
+                <Link href={"/"}>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setShowLogoutModal(false);
+                    }}
+                    className="px-4 py-2 rounded-md bg-black border text-white hover:bg-white hover:text-black transition"
+                  >
+                    Yes, Log Me Out
+                  </button>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </>
+        )}
+      </div>
+    </div>
   );
 };
 

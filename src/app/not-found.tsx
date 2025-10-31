@@ -38,7 +38,7 @@ export default function NotFoundPage() {
         </Link>
       </motion.div>
 
-      <div className="absolute bottom-10 w-[300px] h-[300px] rounded-full bg-gradient-to-r from-gray-500/10 to-gray-100/10 blur-3xl" />
+      {/* <div className="absolute bottom-10 w-[300px] h-[300px] rounded-full bg-gradient-to-r from-gray-500/10 to-gray-100/10 blur-3xl" /> */}
     </div>
   );
 }
