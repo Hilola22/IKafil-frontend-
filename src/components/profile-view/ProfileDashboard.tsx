@@ -20,6 +20,14 @@ const ProfileDashboard = () => {
   const [token, setToken] = useState<string | null>(null);
   const logout = useAuthStore((state) => state.logout);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [photo, setPhoto] = useState<string | null>(null);
+
+  useEffect(() => {
+    const savedPhoto = localStorage.getItem("profilePhoto");
+    if (savedPhoto) {
+      setPhoto(savedPhoto);
+    }
+  }, []);
 
   useEffect(() => {
     setToken(getAccessToken());
@@ -34,7 +42,7 @@ const ProfileDashboard = () => {
               <p>
                 {token ? (
                   <img
-                    src="/assets/profile-avatar.png"
+                    src={photo ? photo : "/assets/profile-avatar.png"}
                     alt="Profile"
                     className="size-8 rounded-full border"
                   />
