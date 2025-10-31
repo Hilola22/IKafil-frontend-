@@ -52,9 +52,9 @@ export default function ProfileEditPage() {
           full_name: data.full_name,
           email: data.email,
           phone: data.phone,
-          region: data.region.name,
+          // region: data.region.name,
           display_name: data.full_name.split(" ")[0],
-          about: data.about || "",
+          // about: data.about || "",
         });
       })
       .catch((err) => console.error("Error fetching user:", err));
@@ -188,8 +188,8 @@ export default function ProfileEditPage() {
                 />
                 <Input
                   label="Region"
-                  name="region"
-                  value={formData.region}
+                  // name="region"
+                  // value={formData.region}
                   onChange={handleChange}
                 />
                 <Input
