@@ -46,7 +46,7 @@ export default function ProfileEditPage() {
 
     setToken(accessToken);
 
-    fetch("http://3.76.183.255:3030/api/auth/me", {
+    fetch("https://api.ikafil.uz/api/auth/me", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -74,7 +74,7 @@ export default function ProfileEditPage() {
     if (!token || !user) return;
 
     try {
-      const res = await fetch(`http://3.76.183.255:3030/api/users/${user.id}`, {
+      const res = await fetch(`https://api.ikafil.uz/api/users/${user.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -265,7 +265,7 @@ function ProfileSidebar({
     try {
       setLoading(true);
       const res = await fetch(
-        "http://3.76.183.255:3030/api/auth/reset-password-no-token",
+        "https://api.ikafil.uz/api/auth/reset-password-no-token",
         {
           method: "POST",
           headers: {
