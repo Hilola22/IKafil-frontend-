@@ -6,8 +6,8 @@ import { Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useCartStore } from "@/lib/useCart";
 import { useRouter } from "next/navigation";
+import { validateToken } from "@/lib/validateToken";
 
-// 🔹 Cookie'dan token olish helper
 const getCookie = (name: string): string | null => {
   if (typeof document === "undefined") return null;
   const match = document.cookie
@@ -30,14 +30,9 @@ type DeviceButtonProps = {
 
 const DeviceButton = ({ product }: DeviceButtonProps) => {
   const router = useRouter();
-  const { addToCart, fetchCart, cart } = useCartStore();
+  const { addToCart, cart } = useCartStore();
   const [loading, setLoading] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
-
-  // 🔹 Cartni backenddan yuklab olish
-  useEffect(() => {
-    fetchCart();
-  }, [fetchCart]);
 
   // 🔹 Cart yangilansa, mavjudligini tekshirish
   useEffect(() => {
@@ -98,8 +93,6 @@ const DeviceButton = ({ product }: DeviceButtonProps) => {
                 ],
         },
       });
-
-      await fetchCart();
     } catch (err) {
       console.error("Cartga qo‘shishda xatolik:", err);
     } finally {
@@ -107,8 +100,8 @@ const DeviceButton = ({ product }: DeviceButtonProps) => {
     }
   };
 
-  // 🔹 Tokenni tekshirib, bo‘lmasa /signin sahifasiga yo‘naltirish
-  const attemptAdd = () => {
+  // 🔹 Faqat tugma bosilganda tokenni tekshirish va eskirgan bo‘lsa /signin ga yo‘naltirish
+  const attemptAdd = async () => {
     const token =
       getCookie("accessToken") ||
       getCookie("token") ||
@@ -118,6 +111,9 @@ const DeviceButton = ({ product }: DeviceButtonProps) => {
       router.push("/auth/signin");
       return;
     }
+
+    const isValid = await validateToken(true);
+    if (!isValid) return;
 
     handleBuyNow();
   };
