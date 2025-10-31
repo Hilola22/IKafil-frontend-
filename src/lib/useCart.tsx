@@ -74,12 +74,12 @@ const getToken = (): string | null => {
 export const useCartStore = create<CartStore>((set, get) => ({
   cart: [],
 
+  // 🔹 Backenddan cartni olish
   fetchCart: async () => {
     try {
-      const isValid = validateToken();
-      if (!isValid) return;
-
       const token = getToken();
+      if (!token) return;
+
       const { data } = await api.get("/cart", {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -90,12 +90,18 @@ export const useCartStore = create<CartStore>((set, get) => ({
     }
   },
 
+  // 🔹 Cartga qo‘shish
   addToCart: async (item) => {
     try {
-      const isValid = validateToken();
+      const token = getToken();
+      if (!token) {
+        if (typeof window !== "undefined") window.location.href = "/auth/signin";
+        return;
+      }
+
+      const isValid = await validateToken(true);
       if (!isValid) return;
 
-      const token = getToken();
       await api.post(
         "/cart",
         { device_id: item.device.id },
@@ -108,12 +114,18 @@ export const useCartStore = create<CartStore>((set, get) => ({
     }
   },
 
+  // 🔹 Cartdan o‘chirish
   removeFromCart: async (id) => {
     try {
-      const isValid = validateToken();
+      const token = getToken();
+      if (!token) {
+        if (typeof window !== "undefined") window.location.href = "/auth/signin";
+        return;
+      }
+
+      const isValid = await validateToken(true);
       if (!isValid) return;
 
-      const token = getToken();
       await api.delete(`/cart/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -124,12 +136,18 @@ export const useCartStore = create<CartStore>((set, get) => ({
     }
   },
 
+  // 🔹 Cartni tozalash
   clearCart: async () => {
     try {
-      const isValid = validateToken();
+      const token = getToken();
+      if (!token) {
+        if (typeof window !== "undefined") window.location.href = "/auth/signin";
+        return;
+      }
+
+      const isValid = await validateToken(true);
       if (!isValid) return;
 
-      const token = getToken();
       await api.delete("/cart", {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -140,12 +158,14 @@ export const useCartStore = create<CartStore>((set, get) => ({
     }
   },
 
-  getTotalPrice: () => {
-    return get().cart.reduce((total, item) => {
+  // 🔹 Cart narxini hisoblash
+  getTotalPrice: (): number => {
+    return get().cart.reduce<number>((total, item) => {
       const price = parseFloat(item.device.base_price) || 0;
       return total + price;
     }, 0);
   },
 
-  getItemCount: () => get().cart.length,
+  // 🔹 Cartdagi elementlar soni
+  getItemCount: (): number => get().cart.length,
 }));
