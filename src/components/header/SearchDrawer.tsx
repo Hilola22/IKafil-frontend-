@@ -35,7 +35,7 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onClose }) => {
     setIsLoading(true);
     setIsError(false);
 
-    fetch(`http://3.76.183.255:3030/api/devices?search=${debouncedTitle}`)
+    fetch(`http://api.kafil.uz/api/devices?search=${debouncedTitle}`)
       .then((res) => {
         if (!res.ok) throw new Error("Fetch failed");
         return res.json();
