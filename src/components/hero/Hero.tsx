@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSearch } from "../../context/useSearch";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -28,7 +27,6 @@ export default function Hero() {
   const [loadingBuyId, setLoadingBuyId] = useState<number | null>(null);
   const [loadingLearnId, setLoadingLearnId] = useState<number | null>(null);
   const router = useRouter();
-  const { setSearchTitle } = useSearch();
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -40,9 +38,10 @@ export default function Hero() {
   const handleBuyClick = async (title: string, id: number) => {
     try {
       setLoadingBuyId(id);
-      setSearchTitle(title);
       await new Promise((r) => setTimeout(r, 300));
-      router.push("/search");
+      router.push(
+        `https://ikafil.vercel.app/products?name=${title}&status=null&priceMin=1000&priceMax=20000`
+      );
     } finally {
       setLoadingBuyId(null);
     }
