@@ -13,9 +13,9 @@ const cpuOptions = ["Snapdragon 8 Gen 2", "A17 Pro", "Apple M2 Pro"];
 const yearOptions = ["2022", "2024"];
 const colorOptions = ["Midnight Blue", "Purple", "Black", "Space Gray"];
 const types = ["iphone", "mac", "ipad"];
-const iphoneModels = ["iPhone 15", "iPhone 16", "iPhone 17"];
+export const iphoneModels = ["iPhone 15", "iPhone 16", "iPhone 17"];
 const ipadModels = ["Ipad", "Ipad Pro", "Ipad Air"];
-const macModels = ["MacBook Air", "MacBook Pro", "iMac"];
+export const macModels = ["MacBook Air", "MacBook Pro", "iMac"];
 
 export const DeviceFilter = ({
   onFilterChange,
