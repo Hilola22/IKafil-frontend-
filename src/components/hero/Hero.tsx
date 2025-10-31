@@ -7,7 +7,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "./Hero.css";
-import Link from "next/link";
 
 const heroData = [
   {
@@ -26,7 +25,8 @@ const heroData = [
 
 export default function Hero() {
   const [isMobile, setIsMobile] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loadingBuyId, setLoadingBuyId] = useState<number | null>(null);
+  const [loadingLearnId, setLoadingLearnId] = useState<number | null>(null);
   const router = useRouter();
   const { setSearchTitle } = useSearch();
 
@@ -37,23 +37,25 @@ export default function Hero() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleBuyClick = async (title: string) => {
+  const handleBuyClick = async (title: string, id: number) => {
     try {
-      setLoading(true);
-      setSearchTitle(title); 
+      setLoadingBuyId(id);
+      setSearchTitle(title);
       await new Promise((r) => setTimeout(r, 300));
       router.push("/search");
     } finally {
-      setLoading(false);
+      setLoadingBuyId(null);
     }
   };
 
-  const handleLearnMore = () => {
-    setLoading(true);
-    setTimeout(() => {
+  const handleLearnMore = async (id: number) => {
+    try {
+      setLoadingLearnId(id);
+      await new Promise((r) => setTimeout(r, 800));
       router.push("/products");
-      setLoading(false);
-    }, 800);
+    } finally {
+      setLoadingLearnId(null);
+    }
   };
 
   return (
@@ -93,27 +95,27 @@ export default function Hero() {
 
                 <div className="flex items-center justify-center gap-5 mt-4">
                   <button
-                    onClick={() => handleLearnMore()}
-                    disabled={loading}
+                    onClick={() => handleLearnMore(hero.id)}
+                    disabled={loadingLearnId === hero.id}
                     className={`px-6 py-2 bg-blue-600 rounded-full font-medium transition ${
-                      loading
+                      loadingLearnId === hero.id
                         ? "opacity-70 cursor-not-allowed"
                         : "hover:bg-blue-500"
                     }`}
                   >
-                   {loading ? "Loading..." : "Learn more"}
+                    {loadingLearnId === hero.id ? "Loading..." : "Learn more"}
                   </button>
 
                   <button
-                    onClick={() => handleBuyClick(hero.title)}
-                    disabled={loading}
+                    onClick={() => handleBuyClick(hero.title, hero.id)}
+                    disabled={loadingBuyId === hero.id}
                     className={`px-6 py-2 border border-blue-600 rounded-full font-medium transition ${
-                      loading
+                      loadingBuyId === hero.id
                         ? "opacity-70 cursor-not-allowed"
                         : "hover:bg-blue-600 hover:text-white"
                     }`}
                   >
-                    {loading ? "Loading..." : "Buy"}
+                    {loadingBuyId === hero.id ? "Loading..." : "Buy"}
                   </button>
                 </div>
               </div>

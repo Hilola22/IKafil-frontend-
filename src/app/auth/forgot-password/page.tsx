@@ -1,71 +1,72 @@
 "use client";
 
 import { useState } from "react";
-import { api } from "@/api"; 
+import { useRouter } from "next/navigation";
+import { api } from "@/api";
+import toast from "react-hot-toast";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMessage("");
 
     if (!email.trim()) {
-      setMessage("⚠️ Please enter your email address.");
+      toast.error("Please enter your email address.");
       return;
     }
 
     try {
       setLoading(true);
-      const res = await api.post("/forgot-password", { email });
-      setMessage(res.data.message || "✅ Check your email for the reset link.");
+      const res = await api.post("/auth/forgot-password", { email });
+
+      toast.success(
+        res.data?.message || "Check your email for the reset link!"
+      );
+      setEmail("");
+
+      setTimeout(() => router.push("/auth/reset-password"), 2000);
     } catch (error: any) {
-      const msg = error.response?.data?.message || "❌ Error occurred.";
-      setMessage(msg);
+      const msg =
+        error.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 mt-20 border rounded-xl shadow-lg">
-      <h1 className="text-2xl font-semibold mb-6 text-center">
+    <div className="max-w-md mx-auto mt-24 p-6 bg-white border rounded-2xl shadow-md">
+      <h1 className="text-2xl font-semibold mb-6 text-center text-gray-800">
         Forgot Password
       </h1>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="email"
-          placeholder="Enter your email"
-          className="border border-gray-300 rounded-md p-2 w-full mb-4 focus:outline-none focus:ring focus:ring-blue-300"
+          placeholder="Enter your email address"
+          className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          disabled={loading}
         />
-
-        {message && (
-          <p
-            className={`text-center mb-4 ${
-              message.startsWith("✅")
-                ? "text-green-600"
-                : message.startsWith("⚠️")
-                ? "text-yellow-600"
-                : "text-red-600"
-            }`}
-          >
-            {message}
-          </p>
-        )}
 
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md w-full hover:bg-blue-700 disabled:opacity-50"
+          className="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700 transition disabled:opacity-50"
         >
-          {loading ? "Sending..." : "Send Reset Link"}
+          {loading ? "Sending link..." : "Send Reset Link"}
         </button>
       </form>
+
+      <p className="text-sm text-gray-500 mt-4 text-center">
+        We'll send a password reset link to your email if it exists in our
+        system.
+      </p>
     </div>
   );
 }
