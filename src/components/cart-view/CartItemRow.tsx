@@ -2,7 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { Trash2, Loader2, CheckCircle2 } from "lucide-react";
-import { Device } from "../../lib/useCart"; // Device interface import qilindi
+import { Device } from "../../lib/useCart";
 
 const baseUrl = "https://api.ikafil.uz";
 
@@ -31,16 +31,18 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({
             src={imageUrl}
             alt={item.device.name}
             className="w-20 h-20 sm:w-24 sm:h-24 object-contain rounded-lg"
+            onError={(e) => (e.currentTarget.src = "/assets/Image-not-found.png")}
           />
           <div className="text-sm leading-5">
             <Link
               href={`/products/${item.device.id}`}
-              className="text-base font-medium hover:text-blue-500 transition-colors"
+              className={`text-base font-medium transition-colors ${
+                !item.device.is_active ? "text-gray-500 cursor-not-allowed" : "hover:text-blue-500"
+              }`}
             >
               {item.device.name}
             </Link>
 
-            {/* Agar is_active false bo‘lsa Sotib olingan belgisi */}
             {!item.device.is_active && (
               <div className="mt-1 flex items-center gap-1 text-red-500 font-semibold text-sm">
                 <CheckCircle2 size={16} /> Sotib olingan
@@ -69,7 +71,7 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({
       <td className="py-4 text-right align-top w-[60px]">
         <button
           onClick={() => handleRemove(item.id)}
-          disabled={isRemoving === item.id || !item.device.is_active} // agar is_active false bo‘lsa o‘chiriladi
+          disabled={isRemoving === item.id}
           className="text-red-500 hover:text-red-600 transition disabled:opacity-50"
         >
           {isRemoving === item.id ? (
