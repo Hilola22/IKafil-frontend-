@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { api } from "../api";
 import { validateToken } from "./validateToken";
-import { useRouter } from "next/navigation";
 
 export interface DeviceDetails {
   id?: number;
@@ -72,106 +71,101 @@ const getToken = (): string | null => {
   return tokenCookie ? decodeURIComponent(tokenCookie.split("=")[1]) : null;
 };
 
-export const useCartStore = create<CartStore>((set, get) => {
-  // useRouter chaqirish faqat clientda
-  const router = typeof window !== "undefined" ? useRouter() : null;
+export const useCartStore = create<CartStore>((set, get) => ({
+  cart: [],
 
-  return {
-    cart: [],
+  // 🔹 Backenddan cartni olish
+  fetchCart: async () => {
+    try {
+      const token = getToken();
+      if (!token) return;
 
-    // 🔹 Backenddan cartni olish
-    fetchCart: async () => {
-      try {
-        const token = getToken();
-        if (!token) return;
+      const { data } = await api.get("/cart", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-        const { data } = await api.get("/cart", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+      set({ cart: data });
+    } catch (error) {
+      console.error("❌ Cartni olishda xatolik:", error);
+    }
+  },
 
-        set({ cart: data });
-      } catch (error) {
-        console.error("❌ Cartni olishda xatolik:", error);
+  // 🔹 Cartga qo‘shish
+  addToCart: async (item) => {
+    try {
+      const token = getToken();
+      if (!token) {
+        if (typeof window !== "undefined") window.location.href = "/auth/signin";
+        return;
       }
-    },
 
-    // 🔹 Cartga qo‘shish
-    addToCart: async (item) => {
-      try {
-        const token = getToken();
-        if (!token) {
-          router?.push("/auth/signin");
-          return;
-        }
+      const isValid = await validateToken(true);
+      if (!isValid) return;
 
-        const isValid = await validateToken(true);
-        if (!isValid) return;
+      await api.post(
+        "/cart",
+        { device_id: item.device.id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-        await api.post(
-          "/cart",
-          { device_id: item.device.id },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+      await get().fetchCart();
+    } catch (error) {
+      console.error("❌ Cartga qo‘shishda xatolik:", error);
+    }
+  },
 
-        await get().fetchCart();
-      } catch (error) {
-        console.error("❌ Cartga qo‘shishda xatolik:", error);
+  // 🔹 Cartdan o‘chirish
+  removeFromCart: async (id) => {
+    try {
+      const token = getToken();
+      if (!token) {
+        if (typeof window !== "undefined") window.location.href = "/auth/signin";
+        return;
       }
-    },
 
-    // 🔹 Cartdan o‘chirish
-    removeFromCart: async (id) => {
-      try {
-        const token = getToken();
-        if (!token) {
-          router?.push("/auth/signin");
-          return;
-        }
+      const isValid = await validateToken(true);
+      if (!isValid) return;
 
-        const isValid = await validateToken(true);
-        if (!isValid) return;
+      await api.delete(`/cart/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-        await api.delete(`/cart/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+      await get().fetchCart();
+    } catch (error) {
+      console.error("❌ Cartdan o‘chirishda xatolik:", error);
+    }
+  },
 
-        await get().fetchCart();
-      } catch (error) {
-        console.error("❌ Cartdan o‘chirishda xatolik:", error);
+  // 🔹 Cartni tozalash
+  clearCart: async () => {
+    try {
+      const token = getToken();
+      if (!token) {
+        if (typeof window !== "undefined") window.location.href = "/auth/signin";
+        return;
       }
-    },
 
-    // 🔹 Cartni tozalash
-    clearCart: async () => {
-      try {
-        const token = getToken();
-        if (!token) {
-          router?.push("/auth/signin");
-          return;
-        }
+      const isValid = await validateToken(true);
+      if (!isValid) return;
 
-        const isValid = await validateToken(true);
-        if (!isValid) return;
+      await api.delete("/cart", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-        await api.delete("/cart", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+      set({ cart: [] });
+    } catch (error) {
+      console.error("❌ Cartni tozalashda xatolik:", error);
+    }
+  },
 
-        set({ cart: [] });
-      } catch (error) {
-        console.error("❌ Cartni tozalashda xatolik:", error);
-      }
-    },
+  // 🔹 Cart narxini hisoblash
+  getTotalPrice: (): number => {
+    return get().cart.reduce<number>((total, item) => {
+      const price = parseFloat(item.device.base_price) || 0;
+      return total + price;
+    }, 0);
+  },
 
-    // 🔹 Cart narxini hisoblash
-    getTotalPrice: (): number => {
-      return get().cart.reduce<number>((total, item) => {
-        const price = parseFloat(item.device.base_price) || 0;
-        return total + price;
-      }, 0);
-    },
-
-    // 🔹 Cartdagi elementlar soni
-    getItemCount: (): number => get().cart.length,
-  };
-});
+  // 🔹 Cartdagi elementlar soni
+  getItemCount: (): number => get().cart.length,
+}));
