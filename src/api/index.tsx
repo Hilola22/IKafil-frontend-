@@ -62,7 +62,7 @@ api.interceptors.response.use(
       } catch (err) {
         console.error("Refresh token yangilanishi muvaffaqiyatsiz:", err);
         document.cookie = "accessToken=; path=/; max-age=0; SameSite=Lax"; 
-        window.location.href = "/login";
+        window.location.href = "/auth/signin";
       } finally {
         isRefreshing = false;
       }
