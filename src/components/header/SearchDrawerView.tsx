@@ -34,7 +34,7 @@ const SearchDrawerView = ({ onClose }: { onClose: () => void }) => {
     setIsLoading(true);
     setIsError(false);
 
-    fetch(`http://api.kafil.uz/api/devices?search=${debouncedTitle}`)
+    fetch(`https://api.kafil.uz/api/devices?search=${debouncedTitle}`)
       .then((res) => {
         if (!res.ok) throw new Error("Fetch failed");
         return res.json();
