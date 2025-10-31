@@ -13,6 +13,7 @@ import MenuExample from "./MenuHeader";
 import { useCartStore } from "../../lib/useCart";
 import { useAuthStore } from "../../store/auth/useAuthStore";
 import SearchDrawer from "./SearchDrawer";
+import { iphoneModels, macModels } from "../device-view/DeviceFilter";
 
 const categoriesData = [
   {
@@ -179,30 +180,16 @@ const Header = () => {
                 </div>
 
                 <ul className="z-10 absolute left-0 mt-2 w-48 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                  <li>
-                    <Link
-                      href="/"
-                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                    >
-                      Option 1
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/"
-                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                    >
-                      Option 2
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/"
-                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                    >
-                      Option 3
-                    </Link>
-                  </li>
+                  {macModels?.map((i, inx) => (
+                    <li key={inx}>
+                      <Link
+                        href={`https://ikafil.vercel.app/products?type=mac&name=${i}&status=null&priceMin=1000&priceMax=20000`}
+                        className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
+                      >
+                        {i}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </li>
 
@@ -241,35 +228,21 @@ const Header = () => {
               </li>
               <li className="relative group">
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-                  MacKafil Verified <IoIosArrowDown />
+                  iPhone Models <IoIosArrowDown />
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
                 </div>
 
                 <ul className="z-10 absolute left-0 mt-2 w-48 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                  <li>
-                    <Link
-                      href="/"
-                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                    >
-                      Option 1
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/"
-                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                    >
-                      Option 2
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/"
-                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                    >
-                      Option 3
-                    </Link>
-                  </li>
+                  {iphoneModels?.map((i, inx) => (
+                    <li key={inx}>
+                      <Link
+                        href={`https://ikafil.vercel.app/products?type=mac&name=${i}&status=null&priceMin=1000&priceMax=20000`}
+                        className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
+                      >
+                        {i}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </li>
               <>
