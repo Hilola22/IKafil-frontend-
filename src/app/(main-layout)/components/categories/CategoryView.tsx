@@ -48,7 +48,7 @@ const CategoryView = () => {
 
         <div
           onClick={() => handleClick("iphone")}
-          className="relative rounded-2xl h-[180px] sm:h-[260px] lg:h-[220px] bg-[#f5f5f5] flex items-center justify-center overflow-hidden group cursor-pointer"
+          className="relative rounded-2xl h-[150px] sm:h-[260px] lg:h-[220px] bg-[#f5f5f5] flex items-center justify-center overflow-hidden group cursor-pointer"
         >
           <div className="w-[70%] h-[70%] relative">
             <Image
