@@ -41,11 +41,13 @@ const ProfileDashboard = () => {
             <div className="flex place-items-center text-shadow-gray-800  md:gap-2">
               <p>
                 {token ? (
-                  <img
-                    src={photo ? photo : "/assets/profile-avatar.png"}
-                    alt="Profile"
-                    className="size-8 rounded-full border"
-                  />
+                  <Link href={"/"}>
+                    <img
+                      src={photo ? photo : "/assets/profile-avatar.png"}
+                      alt="Profile"
+                      className="size-8 rounded-full border"
+                    />
+                  </Link>
                 ) : (
                   <LuUserRound className="size-6 text-gray-700" />
                 )}
