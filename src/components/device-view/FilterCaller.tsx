@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { DeviceFilter } from "./DeviceFilter";
 import { DeviceView } from "./DeviceView";
 import { DevicePagination } from "../device-pagination/DevicePagination";
@@ -12,14 +13,9 @@ export const FilterCaller = ({
   data: any[];
   pagination: { page: number; totalPages: number };
 }) => {
+  const searchParams = useSearchParams();
   const [filteredData, setFilteredData] = useState<any[]>(data);
   const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    setTimeout(() => {
-      setFilteredData(data);
-      setIsLoading(true);
-    }, 1000);
-  }, [data]);
 
   const handleFilterChange = (filters: any) => {
     setIsLoading(true);
@@ -29,11 +25,12 @@ export const FilterCaller = ({
         price >= filters.priceRange[0] &&
         price <= filters.priceRange[1] &&
         (!filters.ram || p.details?.ram === filters.ram) &&
-        (!filters.status || p.status === filters.status) &&
+        (filters.status
+          ? p.status === "available"
+          : ["available", "sold"].includes(p.status)) &&
         (!filters.type || p.type === filters.type) &&
         (!filters.name ||
-          (p.type === filters.type &&
-            p.name?.toLowerCase().includes(filters.name.toLowerCase()))) &&
+          p.name?.toLowerCase().includes(filters.name.toLowerCase())) &&
         (!filters.cpu || p.details?.cpu === filters.cpu) &&
         (!filters.year || p.details?.year?.toString() === filters.year) &&
         (!filters.color || p.details?.color === filters.color)
@@ -45,6 +42,27 @@ export const FilterCaller = ({
       setIsLoading(false);
     }, 1000);
   };
+
+  useEffect(() => {
+    const filters = {
+      priceRange: [
+        parseInt(searchParams.get("priceMin") || "1000"),
+        parseInt(searchParams.get("priceMax") || "20000"),
+      ],
+      ram: searchParams.get("ram"),
+      cpu: searchParams.get("cpu"),
+      year: searchParams.get("year"),
+      color: searchParams.get("color"),
+      type: searchParams.get("type"),
+      name: searchParams.get("name"),
+      status:
+        searchParams.get("status") === "null"
+          ? null
+          : searchParams.get("status"),
+    };
+
+    handleFilterChange(filters);
+  }, [searchParams]);
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 mt-10 max-w-7xl mx-auto">

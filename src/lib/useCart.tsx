@@ -1,15 +1,6 @@
 import { create } from "zustand";
 import { api } from "../api";
-
-// 🔹 CookieStorage'dan token olish funksiyasi
-const getCookie = (name: string): string | null => {
-  if (typeof document === "undefined") return null;
-  const match = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith(name + "="));
-  if (!match) return null;
-  return decodeURIComponent(match.split("=")[1] || "") || null;
-};
+import { validateToken } from "./validateToken";
 
 export interface DeviceDetails {
   id?: number;
@@ -66,18 +57,29 @@ interface CartStore {
   getItemCount: () => number;
 }
 
+const getToken = (): string | null => {
+  if (typeof document === "undefined") return null;
+  const tokenCookie = document.cookie
+    .split("; ")
+    .find(
+      (row) =>
+        row.startsWith("accessToken=") ||
+        row.startsWith("token=") ||
+        row.startsWith("access_token=")
+    );
+
+  return tokenCookie ? decodeURIComponent(tokenCookie.split("=")[1]) : null;
+};
+
 export const useCartStore = create<CartStore>((set, get) => ({
   cart: [],
 
   fetchCart: async () => {
     try {
-      const token =
-        getCookie("accessToken") ||
-        getCookie("token") ||
-        getCookie("access_token");
+      const isValid = validateToken();
+      if (!isValid) return;
 
-      if (!token) throw new Error("Token topilmadi!");
-
+      const token = getToken();
       const { data } = await api.get("/cart", {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -90,13 +92,10 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
   addToCart: async (item) => {
     try {
-      const token =
-        getCookie("accessToken") ||
-        getCookie("token") ||
-        getCookie("access_token");
+      const isValid = validateToken();
+      if (!isValid) return;
 
-      if (!token) throw new Error("Token topilmadi!");
-
+      const token = getToken();
       await api.post(
         "/cart",
         { device_id: item.device.id },
@@ -111,13 +110,10 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
   removeFromCart: async (id) => {
     try {
-      const token =
-        getCookie("accessToken") ||
-        getCookie("token") ||
-        getCookie("access_token");
+      const isValid = validateToken();
+      if (!isValid) return;
 
-      if (!token) throw new Error("Token topilmadi!");
-
+      const token = getToken();
       await api.delete(`/cart/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -130,13 +126,10 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
   clearCart: async () => {
     try {
-      const token =
-        getCookie("accessToken") ||
-        getCookie("token") ||
-        getCookie("access_token");
+      const isValid = validateToken();
+      if (!isValid) return;
 
-      if (!token) throw new Error("Token topilmadi!");
-
+      const token = getToken();
       await api.delete("/cart", {
         headers: { Authorization: `Bearer ${token}` },
       });

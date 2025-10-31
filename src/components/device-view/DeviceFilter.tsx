@@ -1,8 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { ChevronRight, ChevronDown } from "lucide-react";
+import { Label } from "../ui/label";
+import { Switch } from "../ui/switch";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const ramOptions = ["8GB", "12GB", "16GB"];
 const cpuOptions = ["Snapdragon 8 Gen 2", "A17 Pro", "Apple M2 Pro"];
@@ -18,6 +22,9 @@ export const DeviceFilter = ({
 }: {
   onFilterChange: (filters: any) => void;
 }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [priceRange, setPriceRange] = useState<[number, number]>([1000, 20000]);
   const [selectedRam, setSelectedRam] = useState<string | null>(null);
   const [selectedCpu, setSelectedCpu] = useState<string | null>(null);
@@ -25,9 +32,76 @@ export const DeviceFilter = ({
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedName, setSelectedName] = useState<string | null>(null);
+  const [showSwitch, setShowSwitch] = useState(false);
+  const [status, setstatus] = useState<string | null>("available");
 
-  const applyFilter = (field: string, value: string | null) => {
-    const filters: any = {
+  useEffect(() => {
+    const type = searchParams.get("type");
+    const ram = searchParams.get("ram");
+    const cpu = searchParams.get("cpu");
+    const year = searchParams.get("year");
+    const color = searchParams.get("color");
+    const name = searchParams.get("name");
+    const statusParam = searchParams.get("status");
+    const priceMin = searchParams.get("priceMin");
+    const priceMax = searchParams.get("priceMax");
+
+    if (type) setSelectedType(type);
+    if (ram) setSelectedRam(ram);
+    if (cpu) setSelectedCpu(cpu);
+    if (year) setSelectedYear(year);
+    if (color) setSelectedColor(color);
+    if (name) setSelectedName(name);
+    if (statusParam === "null") setstatus(null);
+    else setstatus(null);
+    if (priceMin && priceMax) {
+      setPriceRange([parseInt(priceMin), parseInt(priceMax)]);
+    }
+
+    onFilterChange({
+      priceRange:
+        priceMin && priceMax
+          ? [parseInt(priceMin), parseInt(priceMax)]
+          : [1000, 20000],
+      ram,
+      cpu,
+      year,
+      color,
+      type,
+      name,
+      status: statusParam === "null" ? null : "available",
+    });
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+
+    if (selectedType) params.set("type", selectedType);
+    if (selectedRam) params.set("ram", selectedRam);
+    if (selectedCpu) params.set("cpu", selectedCpu);
+    if (selectedYear) params.set("year", selectedYear);
+    if (selectedColor) params.set("color", selectedColor);
+    if (selectedName) params.set("name", selectedName);
+    if (status === null) params.set("status", "null");
+    else params.set("status", "available");
+
+    params.set("priceMin", priceRange[0].toString());
+    params.set("priceMax", priceRange[1].toString());
+
+    router.push(`/products?${params.toString()}`);
+  }, [
+    selectedType,
+    selectedRam,
+    selectedCpu,
+    selectedYear,
+    selectedColor,
+    selectedName,
+    status,
+    priceRange,
+  ]);
+
+  const startFilterUpdate = () => {
+    onFilterChange({
       priceRange,
       ram: selectedRam,
       cpu: selectedCpu,
@@ -35,16 +109,44 @@ export const DeviceFilter = ({
       color: selectedColor,
       type: selectedType,
       name: selectedName,
-    };
-    filters[field] = value;
-    onFilterChange(filters);
+      status,
+    });
   };
 
   return (
     <div className="bg-white shadow-md rounded-2xl p-6 mb-10">
       <h2 className="text-xl font-semibold mb-4">Device Filter</h2>
 
-      <div className="space-y-10">
+      <div className="flex flex-col space-y-2">
+        <div
+          className="flex items-center justify-between cursor-pointer"
+          onClick={() => setShowSwitch((prev) => !prev)}
+        >
+          <div className="flex justify-between">Доступность</div>
+          {!showSwitch ? (
+            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
+          )}
+        </div>
+
+        {showSwitch && (
+          <div className="mt-2 flex items-center gap-2">
+            <Switch
+              id="airplane-mode"
+              checked={status === "available"}
+              onCheckedChange={(val: boolean) => {
+                setstatus(val ? "available" : null);
+                startFilterUpdate();
+              }}
+            />
+
+            <Label htmlFor="airplane-mode">В наличии</Label>
+          </div>
+        )}
+      </div>
+
+      <div className="space-y-10 mt-6">
         <div>
           <label className="block text-sm font-medium mb-2">Price ($)</label>
           <Slider
@@ -56,15 +158,7 @@ export const DeviceFilter = ({
             onChange={(val) => {
               const range = val as [number, number];
               setPriceRange(range);
-              onFilterChange({
-                priceRange: range,
-                ram: selectedRam,
-                cpu: selectedCpu,
-                year: selectedYear,
-                color: selectedColor,
-                type: selectedType,
-                name: selectedName,
-              });
+              startFilterUpdate();
             }}
           />
           <div className="mt-2 text-sm text-gray-600">
@@ -120,11 +214,10 @@ export const DeviceFilter = ({
                     key={option}
                     onClick={() => {
                       set(newValue);
-                      applyFilter(key, newValue);
                       if (key === "type") {
                         setSelectedName(null);
-                        applyFilter("name", null);
                       }
+                      startFilterUpdate();
                     }}
                     className={`px-3 py-1 rounded-full border ${
                       selected === option
@@ -153,7 +246,7 @@ export const DeviceFilter = ({
                     key={model}
                     onClick={() => {
                       setSelectedName(newValue);
-                      applyFilter("name", newValue);
+                      startFilterUpdate();
                     }}
                     className={`px-3 py-1 rounded-full border ${
                       selectedName === model
@@ -180,7 +273,7 @@ export const DeviceFilter = ({
                     key={model}
                     onClick={() => {
                       setSelectedName(newValue);
-                      applyFilter("name", newValue);
+                      startFilterUpdate();
                     }}
                     className={`px-3 py-1 rounded-full border ${
                       selectedName === model
@@ -207,7 +300,7 @@ export const DeviceFilter = ({
                     key={model}
                     onClick={() => {
                       setSelectedName(newValue);
-                      applyFilter("name", newValue);
+                      startFilterUpdate();
                     }}
                     className={`px-3 py-1 rounded-full border ${
                       selectedName === model

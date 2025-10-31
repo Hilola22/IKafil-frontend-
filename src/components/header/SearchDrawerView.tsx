@@ -46,7 +46,6 @@ const SearchDrawerView = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <div className="fixed top-0 right-0 h-full w-full sm:max-w-md bg-white shadow-xl z-50 transition-transform duration-300 rounded-l-2xl flex flex-col">
-      {/* Header */}
       <div className="flex justify-between items-center p-5 border-b border-gray-200 sticky top-0 bg-white z-10">
         <h2 className="text-xl font-semibold text-gray-800">Search</h2>
         <button
@@ -57,7 +56,6 @@ const SearchDrawerView = ({ onClose }: { onClose: () => void }) => {
         </button>
       </div>
 
-      {/* Input */}
       <div className="p-5 border-b bg-white sticky top-[64px] z-10">
         <Input
           value={title}
@@ -73,7 +71,6 @@ const SearchDrawerView = ({ onClose }: { onClose: () => void }) => {
         )}
       </div>
 
-      {/* Results */}
       <div className="flex-1 overflow-y-auto p-5 space-y-4">
         {results?.data?.map((device) => {
           const details = device.details || {};
@@ -87,11 +84,11 @@ const SearchDrawerView = ({ onClose }: { onClose: () => void }) => {
               className="flex items-center justify-between p-4 transition-all duration-200"
             >
               <div className="flex items-center gap-4">
-                <div className="relative w-20 h-20">
+                <div className="w-16 h-16">
                   <img
                     src={imageUrl}
                     alt={device.name}
-                    className="w-20 h-20 object-contain rounded-md"
+                    className="w-full h-full object-cover rounded-md border"
                     onError={(e) => (e.currentTarget.src = "/no-image.jpg")}
                   />
                 </div>

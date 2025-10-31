@@ -72,7 +72,6 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onClose }) => {
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        {/* Header */}
         <div className="flex justify-between items-center p-5 border-b border-gray-200 sticky top-0 bg-white z-10">
           <h2 className="text-xl font-semibold text-gray-800">Search</h2>
           <button
@@ -83,7 +82,6 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onClose }) => {
           </button>
         </div>
 
-        {/* Input */}
         <div className="p-5 border-b bg-white sticky top-[64px] z-10">
           <Input
             value={title}
@@ -99,7 +97,6 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onClose }) => {
           )}
         </div>
 
-        {/* Results */}
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
           {results.map((device) => {
             const details = device.details || {};
@@ -114,11 +111,11 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onClose }) => {
               >
                 <div className="flex items-center gap-4">
                   <Link href={`/products/${device.id}`}>
-                    <div className="w-20 h-20">
+                    <div className="w-16 h-16">
                       <img
                         src={imageUrl}
                         alt={device.name}
-                        className="w-full h-full object-contain rounded-md"
+                        className="w-full h-full object-cover rounded-md"
                         onError={(e) => (e.currentTarget.src = "/no-image.jpg")}
                       />
                     </div>

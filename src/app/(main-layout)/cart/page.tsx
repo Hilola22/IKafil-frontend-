@@ -7,7 +7,5 @@ const Cart = async () => {
       <Carts />
     </div>
   );
-
 };
-
 export default Cart;
