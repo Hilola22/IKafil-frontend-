@@ -41,6 +41,15 @@ const Header = () => {
   const [show, setShow] = useState(false);
   const { cart, getItemCount } = useCartStore();
 
+  const [photo, setPhoto] = useState<string | null>(null);
+
+  useEffect(() => {
+    const savedPhoto = localStorage.getItem("profilePhoto");
+    if (savedPhoto) {
+      setPhoto(savedPhoto);
+    }
+  }, []);
+
   const getAccessToken = useAuthStore((state) => state.getAccessToken);
   const [token, setToken] = useState<string | null>(null);
 
@@ -99,7 +108,7 @@ const Header = () => {
               <Link href={token ? "/profile" : "/auth/signin"}>
                 {token ? (
                   <img
-                    src="/assets/profile-avatar.png"
+                    src={photo ? photo : "/assets/profile-avatar.png"}
                     alt="Profile"
                     className="size-8 rounded-full border"
                   />
