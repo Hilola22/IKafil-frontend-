@@ -40,7 +40,7 @@ const Header = () => {
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [show, setShow] = useState(false);
   const { cart, getItemCount } = useCartStore();
-  const t = useTranslations("Header")
+  const t = useTranslations("Header");
 
   const [photo, setPhoto] = useState<string | null>(null);
 
@@ -50,11 +50,11 @@ const Header = () => {
       setPhoto(savedPhoto);
     }
   }, []);
-  
+
   const getAccessToken = useAuthStore((state) => state.getAccessToken);
   const [token, setToken] = useState<string | null>(null);
-  const  params  = useParams()
-  const locale =params.locale as string
+  const params = useParams();
+  const locale = params.locale as string;
   useEffect(() => {
     setToken(getAccessToken());
   }, [getAccessToken]);
@@ -102,7 +102,7 @@ const Header = () => {
             <Link href={"/"} className="text-[35px] mt-2 font-[serif]">
               IKafil
             </Link>
-            <div className="flex items-center gap-3 border md:border-0 border-gray-200">
+            <div className="flex items-center gap-3 md:border-0">
               <div onClick={() => setSearchOpen(true)}>
                 <RiSearchLine className="size-6 cursor-pointer transition-colors hover:text-indigo-500" />
               </div>
@@ -217,12 +217,10 @@ const Header = () => {
                       {t("navItem3.option3")}
                     </Link>
                   </li>
-                  
                 </ul>
               </li>
 
               <li className="relative group">
-
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
                   {t("navItem4.title")} <IoIosArrowDown />
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
@@ -252,13 +250,11 @@ const Header = () => {
                       {t("navItem4.option3")}
                     </Link>
                   </li>
-                </ul> 
+                </ul>
               </li>
               <li className="relative group">
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-
                   {t("navItem5.title")} <IoIosArrowDown />
-
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
                 </div>
 
