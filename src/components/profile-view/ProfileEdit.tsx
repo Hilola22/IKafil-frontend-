@@ -26,16 +26,27 @@ export default function ProfileEditPage() {
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) setPhoto(URL.createObjectURL(file));
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result as string;
+      setPhoto(base64String);
+      localStorage.setItem("profilePhoto", base64String);
+    };
+    reader.readAsDataURL(file);
   };
 
   useEffect(() => {
+    const savedPhoto = localStorage.getItem("profilePhoto");
+    if (savedPhoto) setPhoto(savedPhoto);
+
     const accessToken = getAccessToken();
     if (!accessToken) return;
 
     setToken(accessToken);
 
-    fetch("http://3.76.183.255:3030/api/auth/me", {
+    fetch("https://api.ikafil.uz/api/auth/me", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -63,7 +74,7 @@ export default function ProfileEditPage() {
     if (!token || !user) return;
 
     try {
-      const res = await fetch(`http://3.76.183.255:3030/api/users/${user.id}`, {
+      const res = await fetch(`https://api.ikafil.uz/api/users/${user.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -122,7 +133,10 @@ export default function ProfileEditPage() {
             <ProfileSidebar
               photo={photo}
               onPhotoChange={handlePhotoChange}
-              onRemovePhoto={() => setPhoto(null)}
+              onRemovePhoto={() => {
+                setPhoto(null);
+                localStorage.removeItem("profilePhoto");
+              }}
             />
 
             <div className="col-span-2 bg-white rounded-2xl border border-gray-100 shadow-md p-8 md:p-10">
@@ -235,6 +249,48 @@ function ProfileSidebar({
   onPhotoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRemovePhoto: () => void;
 }) {
+  const getAccessToken = useAuthStore((state) => state.getAccessToken);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handlePasswordChange = async () => {
+    const token = getAccessToken();
+    if (!token) return alert("Please log in first.");
+
+    if (!oldPassword || !newPassword) {
+      return alert("Please fill in both fields.");
+    }
+
+    try {
+      setLoading(true);
+      const res = await fetch(
+        "https://api.ikafil.uz/api/auth/reset-password-no-token",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            oldPassword,
+            newPassword,
+          }),
+        }
+      );
+
+      if (!res.ok) throw new Error(`Error: ${res.status}`);
+      alert("Password updated successfully!");
+      setOldPassword("");
+      setNewPassword("");
+    } catch (err) {
+      console.error("Password update failed:", err);
+      alert("Failed to update password");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white rounded-2xl border border-gray-100 shadow-md overflow-hidden flex flex-col items-center p-6">
       <div className="relative w-full h-52 md:h-64 lg:h-72 rounded-2xl overflow-hidden mb-6">
@@ -272,10 +328,24 @@ function ProfileSidebar({
         <h3 className="text-md font-semibold text-gray-800 mb-3 border-b pb-1">
           Change Password
         </h3>
-        <Input label="Old Password" type="password" />
-        <Input label="New Password" type="password" />
-        <button className="w-full mt-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2.5 rounded-lg font-medium hover:shadow-md transition-all">
-          Update Password
+        <Input
+          label="Old Password"
+          type="password"
+          value={oldPassword}
+          onChange={(e) => setOldPassword(e.target.value)}
+        />
+        <Input
+          label="New Password"
+          type="password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+        />
+        <button
+          onClick={handlePasswordChange}
+          disabled={loading}
+          className="w-full mt-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2.5 rounded-lg font-medium hover:shadow-md transition-all disabled:opacity-60"
+        >
+          {loading ? "Updating..." : "Update Password"}
         </button>
       </div>
     </div>

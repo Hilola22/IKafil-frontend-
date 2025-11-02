@@ -111,13 +111,13 @@ export const DeviceView = ({
                     </div>
                   </Link>
 
-                  <div className="ml-2 sm:ml-3 mt-2 space-y-0 sm:space-y-1">
+                  <div className="ml-2 sm:ml-3 mt-2 space-y-0">
                     <h3 className="font-semibold text-sm sm:text-lg line-clamp-1">
                       {p.name}
                     </h3>
-                    <div className="flex gap-3 sm:gap-5 justify-between items-center">
-                      <p className="text-red-600 text-sm sm:text-lg font-bold">
-                        {p.base_price}
+                    <div className="flex gap-3 sm:gap-3 justify-between items-center">
+                      <p className="text-sm sm:text-lg font-bold">
+                        {p.base_price} $
                       </p>
                       <AddToCartButton data={p} />
                     </div>

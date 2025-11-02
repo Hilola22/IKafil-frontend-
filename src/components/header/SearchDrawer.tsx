@@ -35,7 +35,7 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onClose }) => {
     setIsLoading(true);
     setIsError(false);
 
-    fetch(`http://3.76.183.255:3030/api/devices?search=${debouncedTitle}`)
+    fetch(`http://api.kafil.uz/api/devices?search=${debouncedTitle}`)
       .then((res) => {
         if (!res.ok) throw new Error("Fetch failed");
         return res.json();
@@ -68,7 +68,7 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onClose }) => {
       />
 
       <div
-        className={`absolute right-0 top-0 h-full w-[520px] bg-white shadow-2xl transform transition-transform duration-500 rounded-l-2xl flex flex-col ${
+        className={`absolute right-0 top-0 h-full w-full sm:w-[420px] md:w-[480px] lg:w-[520px] bg-white shadow-2xl transform transition-transform duration-500 rounded-l-2xl flex flex-col ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >

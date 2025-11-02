@@ -34,7 +34,7 @@ const SearchDrawerView = ({ onClose }: { onClose: () => void }) => {
     setIsLoading(true);
     setIsError(false);
 
-    fetch(`http://3.76.183.255:3030/api/devices?search=${debouncedTitle}`)
+    fetch(`http://api.kafil.uz/api/devices?search=${debouncedTitle}`)
       .then((res) => {
         if (!res.ok) throw new Error("Fetch failed");
         return res.json();
@@ -45,7 +45,7 @@ const SearchDrawerView = ({ onClose }: { onClose: () => void }) => {
   }, [debouncedTitle]);
 
   return (
-    <div className="fixed top-0 right-0 h-full w-full sm:max-w-md bg-white shadow-xl z-50 transition-transform duration-300 rounded-l-2xl flex flex-col">
+    <div className="fixed top-0 right-0 h-full w-full sm:w-[420px] md:w-[480px] lg:w-[520px] bg-white shadow-xl z-50 transition-transform duration-300 rounded-l-2xl flex flex-col">
       <div className="flex justify-between items-center p-5 border-b border-gray-200 sticky top-0 bg-white z-10">
         <h2 className="text-xl font-semibold text-gray-800">Search</h2>
         <button

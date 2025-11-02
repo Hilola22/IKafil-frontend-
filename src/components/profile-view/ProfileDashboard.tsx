@@ -20,6 +20,14 @@ const ProfileDashboard = () => {
   const [token, setToken] = useState<string | null>(null);
   const logout = useAuthStore((state) => state.logout);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [photo, setPhoto] = useState<string | null>(null);
+
+  useEffect(() => {
+    const savedPhoto = localStorage.getItem("profilePhoto");
+    if (savedPhoto) {
+      setPhoto(savedPhoto);
+    }
+  }, []);
 
   useEffect(() => {
     setToken(getAccessToken());
@@ -33,11 +41,13 @@ const ProfileDashboard = () => {
             <div className="flex place-items-center text-shadow-gray-800  md:gap-2">
               <p>
                 {token ? (
-                  <img
-                    src="/assets/profile-avatar.png"
-                    alt="Profile"
-                    className="size-8 rounded-full border"
-                  />
+                  <Link href={"/"}>
+                    <img
+                      src={photo ? photo : "/assets/profile-avatar.png"}
+                      alt="Profile"
+                      className="size-8 rounded-full border"
+                    />
+                  </Link>
                 ) : (
                   <LuUserRound className="size-6 text-gray-700" />
                 )}
@@ -78,11 +88,11 @@ const ProfileDashboard = () => {
           >
             <div className="flex place-items-center gap-2">
               <IoIosLogOut />
-              <span className="text-gray-700 font-normal group-hover:text-gray-900">
+              <span className="text-gray-700 hidden md:block font-normal group-hover:text-gray-900">
                 logout
               </span>
             </div>
-            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
+            <ChevronRight className="hidden md:flex w-4 h-4 text-gray-400 group-hover:text-gray-700 transition" />
           </button>
         </div>
 

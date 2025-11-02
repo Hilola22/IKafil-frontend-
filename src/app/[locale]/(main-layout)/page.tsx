@@ -18,12 +18,9 @@ const CategoryView = dynamic(
 );
 
 const Home = async () => {
-  const response = await fetch(
-    "https://api.ikafil.uz/api/devices?limit=8",
-    {
-      cache: "force-cache",
-    }
-  );
+  const response = await fetch("https://api.ikafil.uz/api/devices?limit=8", {
+    cache: "no-cache",
+  });
   const data = await response.json();
   return (
     <main className="bg-white text-gray-900">
