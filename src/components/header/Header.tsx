@@ -8,7 +8,6 @@ import { RiSearchLine } from "react-icons/ri";
 import CartDrawer from "./CartDrawer";
 import SubHeader from "./SubHeader";
 import HeaderCategoryView from "./HeaderCategoryView";
-import { MenuIcon } from "lucide-react";
 import MenuExample from "./MenuHeader";
 import { useCartStore } from "../../lib/useCart";
 import { useAuthStore } from "../../store/auth/useAuthStore";
