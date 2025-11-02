@@ -1,12 +1,11 @@
-import { memo } from "react";
+import React from "react";
 import Carts from "../../../../components/cart-view/Carts";
 
-const ProfileCart = () => {
+const Cart = async () => {
   return (
     <div>
       <Carts />
     </div>
   );
 };
-
-export default memo(ProfileCart);
+export default Cart;

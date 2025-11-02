@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useWishlistStore } from "../../lib/userWishlist";
-import { Product } from "../../app/(main-layout)/products/[id]/product-detail";
+import { Product } from "../../app/[locale]/(main-layout)/products/[id]/product-detail";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 
 export const WishlistButton = ({ data }: { data: Product }) => {

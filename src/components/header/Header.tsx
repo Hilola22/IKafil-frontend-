@@ -8,13 +8,13 @@ import { RiSearchLine } from "react-icons/ri";
 import CartDrawer from "./CartDrawer";
 import SubHeader from "./SubHeader";
 import HeaderCategoryView from "./HeaderCategoryView";
-import { MenuIcon } from "lucide-react";
 import MenuExample from "./MenuHeader";
 import { useCartStore } from "../../lib/useCart";
 import { useAuthStore } from "../../store/auth/useAuthStore";
 import SearchDrawer from "./SearchDrawer";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 import { iphoneModels, macModels } from "../device-view/DeviceFilter";
-
 const categoriesData = [
   {
     name: "MacBook",
@@ -40,6 +40,7 @@ const Header = () => {
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [show, setShow] = useState(false);
   const { cart, getItemCount } = useCartStore();
+  const t = useTranslations("Header")
 
   const [photo, setPhoto] = useState<string | null>(null);
 
@@ -49,10 +50,11 @@ const Header = () => {
       setPhoto(savedPhoto);
     }
   }, []);
-
+  
   const getAccessToken = useAuthStore((state) => state.getAccessToken);
   const [token, setToken] = useState<string | null>(null);
-
+  const  params  = useParams()
+  const locale =params.locale as string
   useEffect(() => {
     setToken(getAccessToken());
   }, [getAccessToken]);
@@ -105,7 +107,9 @@ const Header = () => {
                 <RiSearchLine className="size-6 cursor-pointer transition-colors hover:text-indigo-500" />
               </div>
 
-              <Link href={token ? "/profile" : "/auth/signin"}>
+              <Link
+                href={token ? `/${locale}/profile` : `/${locale}/auth/signin`}
+              >
                 {token ? (
                   <img
                     src={photo ? photo : "/assets/profile-avatar.png"}
@@ -142,7 +146,7 @@ const Header = () => {
                   onMouseEnter={() => setOpenCategory("all")}
                 >
                   <div className="cursor-pointer flex items-center gap-2 transition-colors duration-300 hover:text-indigo-500">
-                    All Categories <IoIosArrowDown />
+                    {t("navItem1.title")} <IoIosArrowDown />
                     <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 hover:w-full"></span>
                   </div>
 
@@ -158,7 +162,7 @@ const Header = () => {
                       onMouseEnter={() => setOpenCategory(null)}
                     />
                     <div className="relative bg-[#f5f5f5] h-100 transition-opacity duration-300">
-                      <HeaderCategoryView />
+                      <HeaderCategoryView categoriesData={[]} />
                     </div>
                   </div>
                 </div>
@@ -176,7 +180,7 @@ const Header = () => {
                       backgroundClip: "text",
                     }}
                   >
-                    Discount
+                    {t("navItem2.title")}
                     <span className="absolute left-0 -bottom-0.5 w-0 h-px bg-linear-to-r from-red-500 to-red-300 transition-all duration-300 group-hover:w-full"></span>
                   </span>
                 </Link>
@@ -184,40 +188,52 @@ const Header = () => {
 
               <li className="relative group">
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-                  MacBook <IoIosArrowDown />
+                  {t("navItem3.title")} <IoIosArrowDown />
                   <span className="absolute left-0 -bottom-0.5 w-0 h-px bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
                 </div>
 
                 <ul className="z-10 absolute left-0 mt-2 w-48 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                  {macModels?.map((i, inx) => (
-                    <li key={inx}>
-                      <Link
-                        href={`https://ikafil.vercel.app/products?type=mac&name=${i}&status=null&priceMin=1000&priceMax=20000`}
-                        className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                      >
-                        {i}
-                      </Link>
-                    </li>
-                  ))}
+                  <li>
+                    <Link
+                      href="/"
+                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
+                    >
+                      {t("navItem3.option1")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/"
+                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
+                    >
+                      {t("navItem3.option2")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/"
+                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
+                    >
+                      {t("navItem3.option3")}
+                    </Link>
+                  </li>
+                  
                 </ul>
               </li>
 
               <li className="relative group">
-                <Link href={"/products"}>
-                  <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-                    Accessors
-                    {/* <IoIosArrowDown /> */}
-                    <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
-                  </div>
-                </Link>
-                {/* 
+
+                <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
+                  {t("navItem4.title")} <IoIosArrowDown />
+                  <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+                </div>
                 <ul className=" z-10 absolute left-0 mt-2 w-48 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
                   <li>
                     <Link
                       href="/"
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 1
+                      {t("navItem4.option1")}
                     </Link>
                   </li>
                   <li>
@@ -225,7 +241,7 @@ const Header = () => {
                       href="/"
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 2
+                      {t("navItem4.option2")}
                     </Link>
                   </li>
                   <li>
@@ -233,28 +249,44 @@ const Header = () => {
                       href="/"
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 3
+                      {t("navItem4.option3")}
                     </Link>
                   </li>
-                </ul> */}
+                </ul> 
               </li>
               <li className="relative group">
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-                  iPhone Models <IoIosArrowDown />
+
+                  {t("navItem5.title")} <IoIosArrowDown />
+
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
                 </div>
 
                 <ul className="z-10 absolute left-0 mt-2 w-48 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                  {iphoneModels?.map((i, inx) => (
-                    <li key={inx}>
-                      <Link
-                        href={`https://ikafil.vercel.app/products?type=mac&name=${i}&status=null&priceMin=1000&priceMax=20000`}
-                        className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                      >
-                        {i}
-                      </Link>
-                    </li>
-                  ))}
+                  <li>
+                    <Link
+                      href="/"
+                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
+                    >
+                      {t("navItem5.option1")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/"
+                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
+                    >
+                      {t("navItem5.option2")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/"
+                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
+                    >
+                      {t("navItem5.option3")}
+                    </Link>
+                  </li>
                 </ul>
               </li>
               <>
@@ -263,7 +295,7 @@ const Header = () => {
                     href={"/products"}
                     className="font-medium text-transparent bg-clip-text bg-[linear-gradient(90deg,#60a5fa_0%,#818cf8_25%,#a78bfa_50%,#f472b6_75%,#f87171_100%)]"
                   >
-                    Top week products
+                    {t("topprod")}
                   </Link>
                 </li>
                 <li>
@@ -271,7 +303,7 @@ const Header = () => {
                     href={"/"}
                     className="font-medium text-transparent bg-clip-text bg-[linear-gradient(90deg,#60a5fa_0%,#818cf8_25%,#a78bfa_50%,#f472b6_75%,#f87171_100%)]"
                   >
-                    Golden Consept
+                    {t("golden")}
                   </Link>
                 </li>
               </>

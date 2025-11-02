@@ -1,5 +1,5 @@
 import { memo } from "react";
-import ProfileEditPage from "../../../../components/profile-view/ProfileEdit";
+import ProfileEditPage from "../../../../../components/profile-view/ProfileEdit";
 
 const EditUser = () => {
   return (

@@ -1,0 +1,73 @@
+{
+  "Header": {
+    "menu": "Menyu",
+    "mainMenu": "Asosiy menyu",
+    "navItem1": {
+      "title": "Barcha kategoriyalar",
+      "option1": "Kompyuterlar",
+      "option2": "Smartfonlar",
+      "option3": "Planshetlar"
+    },
+    "navItem2": {
+      "title": "Chegirmalar",
+      "option1": "Haftalik",
+      "option2": "Oylik",
+      "option3": "Mavsumiy"
+    },
+    "navItem3": {
+      "title": "Macbook",
+      "option1": "Air",
+      "option2": "Pro",
+      "option3": "Studio"
+    },
+    "navItem4": {
+      "title": "Aksessuarlar",
+      "option1": "Zaryad",
+      "option2": "G'ilof",
+      "option3": "Klaviatura"
+    },
+    "navItem5": {
+      "title": "MacKafil Tasdiqlangan",
+      "option1": "Sertifikatli",
+      "option2": "Original",
+      "option3": "Ruxsatli"
+    },
+    "topprod": "Haftaning eng yaxshi mahsulotlari",
+    "golden": "Oltin konsepsiya",
+    "Categories": {
+      "exploreTitle": "Barcha qurilmalarni ko'ring",
+      "macbook": {
+        "title": "MacBook",
+        "computers": "Kompyuterlar",
+        "smartphones": "Smartfonlar",
+        "tablets": "Planshetlar"
+      },
+      "ipad": {
+        "title": "iPad",
+        "tablets": "Planshetlar",
+        "accessories": "Aksesuarlar"
+      }
+    }
+  },
+  "SubHeader": {
+    "about": "Kompaniya haqida",
+    "delivery": "Yetkazib berish",
+    "trade": "Trade-in",
+    "blogers": "CMI va blogerlar uchun",
+    "news": "Yangiliklar",
+    "contacts": "Aloqa"
+  },
+  "Hero": {
+    "iphone": {
+      "title": "iPhone 17 Pro",
+      "subtitle": "Har jihatdan mukammal."
+    },
+    "macbook": {
+      "title": "MacBook Air M3",
+      "subtitle": "Yengil. Tez. Quvvatli."
+    },
+    "learnMore": "Batafsil",
+    "buy": "Sotib olish",
+    "loading": "Yuklanmoqda..."
+  }
+}

@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
-import { api } from "../../../api";
+import { api } from "../../../../api";
 
 const SignUp = () => {
   const router = useRouter();
@@ -28,6 +28,8 @@ const SignUp = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const params = useParams();
+  const locale = params.locale as string;
 
   useEffect(() => {
     const fetchRegions = async () => {
@@ -69,13 +71,13 @@ const SignUp = () => {
     }
 
     try {
-      const res = await api.post("/auth/register", form);
+      const res = await api.post(`/${locale}/auth/register`, form);
       const data = res.data;
 
       if (data && data.user && data.token) {
         login(data.user, data.token);
         setSuccess("Successfully signed up!");
-        setTimeout(() => router.push("/profile"), 1200);
+        setTimeout(() => `${router}.${<Link href = {`/${locale}/auth/signin`}> Sign in</Link>}`, 1200);
       } else {
         setError("Unexpected server response.");
       }
@@ -211,13 +213,13 @@ const SignUp = () => {
 
         <p className="mt-4 text-center text-sm sm:text-base">
           Already have an account?{" "}
-          <Link href="/auth/signin" className="text-blue-500 hover:underline">
+          <Link href={`/${locale}/auth/signin`} className="text-blue-500 hover:underline">
             Sign In
           </Link>
         </p>
 
         <p className="mt-2 text-center text-gray-500 text-sm sm:text-base">
-          <Link href="/" className="hover:underline">
+          <Link href={`/${locale}`} className="hover:underline">
             Back to Home
           </Link>
         </p>

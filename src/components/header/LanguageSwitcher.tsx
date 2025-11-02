@@ -1,21 +1,23 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useMemo, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { routing } from "@/i18n/routing";
 
 const languages = [
   {
-    code: "EN",
+    code: "en",
     name: "English",
     flag: "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg",
   },
   {
-    code: "RU",
-    name: "Russian",
+    code: "ru",
+    name: "Русский",
     flag: "https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg",
   },
   {
-    code: "UZ",
-    name: "Uzbek",
+    code: "uz",
+    name: "Oʻzbekcha",
     flag: "https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Uzbekistan.svg",
   },
 ];
@@ -23,12 +25,34 @@ const languages = [
 export const LanguageSwitcher = memo(
   ({ className = "" }: { className?: string }) => {
     const [open, setOpen] = useState(false);
-    const [selected, setSelected] = useState(languages[0]);
+    const router = useRouter();
+    const pathname = usePathname();
+
+    const currentLocale = useMemo(() => {
+      const segments = pathname.split("/");
+      const localeSegment = segments[1];
+      return (routing.locales as unknown as string[]).includes(localeSegment)
+        ? localeSegment
+        : routing.defaultLocale;
+    }, [pathname]);
+
+    const selected = useMemo(
+      () => languages.find((l) => l.code === currentLocale) || languages[0],
+      [currentLocale]
+    );
 
     const changeLang = (lang: (typeof languages)[0]) => {
-      setSelected(lang);
       setOpen(false);
-      console.log("Selected:", lang); // value outputting
+
+      const segments = pathname.split("/");
+      if ((routing.locales as unknown as string[]).includes(segments[1])) {
+        segments[1] = lang.code;
+      } else {
+        segments.splice(1, 0, lang.code);
+      }
+
+      const newPath = segments.join("/") || "/";
+      router.push(newPath);
     };
 
     return (
@@ -43,7 +67,7 @@ export const LanguageSwitcher = memo(
             alt={selected.name}
             className="size-3 rounded-full object-cover"
           />
-          <span className="text-[12px]">{selected.code}</span>
+          <span className="text-[12px] uppercase">{selected.code}</span>
           <svg
             className={`size-3 transition-transform duration-300 ${
               open ? "rotate-180" : ""

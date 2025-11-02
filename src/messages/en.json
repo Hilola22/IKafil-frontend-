@@ -1,0 +1,73 @@
+{
+  "Header": {
+    "menu": "Menu",
+    "mainMenu": "Main Menu",
+    "navItem1": {
+      "title": "All categories",
+      "option1": "Computers",
+      "option2": "Smartphones",
+      "option3": "Tablets"
+    },
+    "navItem2": {
+      "title": "Discount",
+      "option1": "Weekly",
+      "option2": "Monthly",
+      "option3": "Seasonal"
+    },
+    "navItem3": {
+      "title": "Macbook",
+      "option1": "Air",
+      "option2": "Pro",
+      "option3": "Studio"
+    },
+    "navItem4": {
+      "title": "Accessories",
+      "option1": "Chargers",
+      "option2": "Covers",
+      "option3": "Keyboards"
+    },
+    "navItem5": {
+      "title": "MacKafil Verified",
+      "option1": "Certified",
+      "option2": "Original",
+      "option3": "Authorized"
+    },
+    "topprod": "Top week products",
+    "golden": "Golden Concept",
+    "Categories": {
+      "exploreTitle": "Explore all devices",
+      "macbook": {
+        "title": "MacBook",
+        "computers": "Computers",
+        "smartphones": "Smartphones",
+        "tablets": "Tablets"
+      },
+      "ipad": {
+        "title": "iPad",
+        "tablets": "Tablets",
+        "accessories": "Accessories"
+      }
+    }
+  },
+  "SubHeader": {
+    "about": "About company",
+    "delivery": "Delivery",
+    "trade": "Trade in",
+    "blogers": "For CMI and bloggers",
+    "news": "News",
+    "contacts": "Contacts"
+  },
+  "Hero": {
+    "iphone": {
+      "title": "iPhone 17 Pro",
+      "subtitle": "All out. Pro."
+    },
+    "macbook": {
+      "title": "MacBook Air M3",
+      "subtitle": "Light. Speed. Power."
+    },
+    "learnMore": "Learn more",
+    "buy": "Buy",
+    "loading": "Loading..."
+  }
+}
