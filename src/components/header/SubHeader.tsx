@@ -50,7 +50,6 @@ const SubHeader = ({ setOpenCategory }: any) => {
             <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
           </Link>
         </li>
-<<<<<<< HEAD
         <li>
           <Link
             href="/news"
@@ -60,9 +59,6 @@ const SubHeader = ({ setOpenCategory }: any) => {
             <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
           </Link>
         </li>
-=======
-
->>>>>>> ac35a19145990b3138c6734fda62d173b53761f3
         <li>
           <Link
             href="/contacts"
