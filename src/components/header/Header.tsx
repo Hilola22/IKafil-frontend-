@@ -13,6 +13,8 @@ import MenuExample from "./MenuHeader";
 import { useCartStore } from "../../lib/useCart";
 import { useAuthStore } from "../../store/auth/useAuthStore";
 import SearchDrawer from "./SearchDrawer";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 
 const categoriesData = [
   {
@@ -39,10 +41,11 @@ const Header = () => {
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [show, setShow] = useState(false);
   const { cart, getItemCount } = useCartStore();
-
+  const t = useTranslations("Header")
   const getAccessToken = useAuthStore((state) => state.getAccessToken);
   const [token, setToken] = useState<string | null>(null);
-
+  const  params  = useParams()
+  const locale =params.locale as string
   useEffect(() => {
     setToken(getAccessToken());
   }, [getAccessToken]);
@@ -95,7 +98,9 @@ const Header = () => {
                 <RiSearchLine className="size-6 cursor-pointer transition-colors hover:text-indigo-500" />
               </div>
 
-              <Link href={token ? "/profile" : "/auth/signin"}>
+              <Link
+                href={token ? `/${locale}/profile` : `/${locale}/auth/signin`}
+              >
                 {token ? (
                   <img
                     src="/assets/profile-avatar.png"
@@ -132,7 +137,7 @@ const Header = () => {
                   onMouseEnter={() => setOpenCategory("all")}
                 >
                   <div className="cursor-pointer flex items-center gap-2 transition-colors duration-300 hover:text-indigo-500">
-                    All Categories <IoIosArrowDown />
+                    {t("navItem1.title")} <IoIosArrowDown />
                     <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 hover:w-full"></span>
                   </div>
 
@@ -166,7 +171,7 @@ const Header = () => {
                       backgroundClip: "text",
                     }}
                   >
-                    Discount
+                    {t("navItem2.title")}
                     <span className="absolute left-0 -bottom-0.5 w-0 h-px bg-linear-to-r from-red-500 to-red-300 transition-all duration-300 group-hover:w-full"></span>
                   </span>
                 </Link>
@@ -174,7 +179,7 @@ const Header = () => {
 
               <li className="relative group">
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-                  MacBook <IoIosArrowDown />
+                  {t("navItem3.title")} <IoIosArrowDown />
                   <span className="absolute left-0 -bottom-0.5 w-0 h-px bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
                 </div>
 
@@ -184,7 +189,7 @@ const Header = () => {
                       href="/"
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 1
+                      {t("navItem3.option1")}
                     </Link>
                   </li>
                   <li>
@@ -192,7 +197,7 @@ const Header = () => {
                       href="/"
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 2
+                      {t("navItem3.option2")}
                     </Link>
                   </li>
                   <li>
@@ -200,7 +205,7 @@ const Header = () => {
                       href="/"
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 3
+                      {t("navItem3.option3")}
                     </Link>
                   </li>
                 </ul>
@@ -208,7 +213,7 @@ const Header = () => {
 
               <li className="relative group">
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-                  Accessors <IoIosArrowDown />
+                  {t("navItem4.title")} <IoIosArrowDown />
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
                 </div>
 
@@ -218,7 +223,7 @@ const Header = () => {
                       href="/"
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 1
+                      {t("navItem4.option1")}
                     </Link>
                   </li>
                   <li>
@@ -226,7 +231,7 @@ const Header = () => {
                       href="/"
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 2
+                      {t("navItem4.option2")}
                     </Link>
                   </li>
                   <li>
@@ -234,14 +239,14 @@ const Header = () => {
                       href="/"
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 3
+                      {t("navItem4.option3")}
                     </Link>
                   </li>
                 </ul>
               </li>
               <li className="relative group">
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-                  MacKafil Verified <IoIosArrowDown />
+                  {t("navItem5.title")} <IoIosArrowDown />
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
                 </div>
 
@@ -251,7 +256,7 @@ const Header = () => {
                       href="/"
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 1
+                      {t("navItem5.option1")}
                     </Link>
                   </li>
                   <li>
@@ -259,7 +264,7 @@ const Header = () => {
                       href="/"
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 2
+                      {t("navItem5.option2")}
                     </Link>
                   </li>
                   <li>
@@ -267,7 +272,7 @@ const Header = () => {
                       href="/"
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 3
+                      {t("navItem5.option3")}
                     </Link>
                   </li>
                 </ul>
@@ -278,7 +283,7 @@ const Header = () => {
                     href={"/products"}
                     className="font-medium text-transparent bg-clip-text bg-[linear-gradient(90deg,#60a5fa_0%,#818cf8_25%,#a78bfa_50%,#f472b6_75%,#f87171_100%)]"
                   >
-                    Top week products
+                    {t("topprod")}
                   </Link>
                 </li>
                 <li>
@@ -286,7 +291,7 @@ const Header = () => {
                     href={"/"}
                     className="font-medium text-transparent bg-clip-text bg-[linear-gradient(90deg,#60a5fa_0%,#818cf8_25%,#a78bfa_50%,#f472b6_75%,#f87171_100%)]"
                   >
-                    Golden Consept
+                    {t("golden")}
                   </Link>
                 </li>
               </>

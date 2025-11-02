@@ -1,6 +1,6 @@
 "use client";
 import React, { ReactNode } from "react";
-import ProfileDashboard from "../../../components/profile-view/ProfileDashboard";
+import ProfileDashboard from "../../../../components/profile-view/ProfileDashboard";
 
 const ProfileLayout = ({ children }: { children: ReactNode }) => {
   return (

@@ -1,12 +1,12 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { DeviceView } from "../../components/device-view/DeviceView";
+import { DeviceView } from "../../../components/device-view/DeviceView";
 
-const BackTo = dynamic(() => import("../../components/BackTo"), {
+const BackTo = dynamic(() => import("../../../components/BackTo"), {
   loading: () => <p className="loader">Loading...</p>,
 });
 
-const Hero = dynamic(() => import("../../components/hero/Hero"), {
+const Hero = dynamic(() => import("../../../components/hero/Hero"), {
   loading: () => <p className="loader">Loading...</p>,
 });
 

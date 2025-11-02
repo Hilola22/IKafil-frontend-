@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import Link from "next/link";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
@@ -18,6 +18,8 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const params = useParams();
+  const locale = params.locale as string;
 
   const validateInputs = () => {
     let valid = true;
@@ -48,7 +50,7 @@ const SignIn = () => {
       await login(email, password);
       setSuccess("Successfully signed in!");
       setLoading(false);
-      setTimeout(() => router.push("/profile"), 1000);
+      setTimeout(() => router.push(`/${locale}/profile`), 1000);
     } catch (err: any) {
       console.error("Login error:", err);
       setError(err.message || "Something went wrong. Please try again.");
@@ -111,7 +113,7 @@ const SignIn = () => {
 
           <div className="text-right mb-4">
             <Link
-              href="/auth/forgot-password"
+              href={`/${locale}/auth/forgot-password`}
               className="text-sm text-blue-500 hover:underline"
             >
               Forgot password?
@@ -136,13 +138,16 @@ const SignIn = () => {
 
         <p className="mt-4 text-center text-sm sm:text-base">
           Don't have an account?{" "}
-          <Link href="/auth/signup" className="text-blue-500 hover:underline">
+          <Link
+            href={`/${locale}/auth/signup`}
+            className="text-blue-500 hover:underline"
+          >
             Sign Up
           </Link>
         </p>
 
         <p className="mt-2 text-center text-gray-500 text-sm sm:text-base">
-          <Link href="/" className="hover:underline">
+          <Link href={`/${locale}`} className="hover:underline">
             Back to Home
           </Link>
         </p>

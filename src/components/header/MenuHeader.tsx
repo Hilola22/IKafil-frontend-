@@ -1,39 +1,62 @@
 "use client";
+
 import { useState } from "react";
 import Link from "next/link";
 import { IoIosArrowDown } from "react-icons/io";
 import { X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function MenuExample() {
+  const t = useTranslations("Header"); 
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = [
     {
-      title: "All Categories",
-      children: ["Computers", "Smartphones", "Tablets"],
+      title: t("navItem1.title"),
+      children: [
+        t("navItem1.option1"),
+        t("navItem1.option2"),
+        t("navItem1.option3"),
+      ],
     },
     {
-      title: "MacBook",
-      children: ["Air", "Pro 13", "Pro 16"],
+      title: t("navItem2.title"),
+      children: [
+        t("navItem2.option1"),
+        t("navItem2.option2"),
+        t("navItem2.option3"),
+      ],
     },
     {
-      title: "Accessors",
-      children: ["Chargers", "Cables", "Headphones"],
+      title: t("navItem3.title"),
+      children: [
+        t("navItem3.option1"),
+        t("navItem3.option2"),
+        t("navItem3.option3"),
+      ],
     },
     {
-      title: "MacKafil Verified",
-      children: ["Premium", "Certified"],
+      title: t("navItem4.title"),
+      children: [
+        t("navItem4.option1"),
+        t("navItem4.option2"),
+        t("navItem4.option3"),
+      ],
     },
     {
-      title: "Discount",
-      href: "/discount",
+      title: t("navItem5.title"),
+      children: [
+        t("navItem5.option1"),
+        t("navItem5.option2"),
+        t("navItem5.option3"),
+      ],
     },
     {
-      title: "Top Week Products",
+      title: t("topprod"),
       href: "/products",
     },
     {
-      title: "Golden Concept",
+      title: t("golden"),
       href: "/golden",
     },
   ];
@@ -44,8 +67,7 @@ export default function MenuExample() {
         onClick={() => setIsOpen(true)}
         className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 transition-colors"
       >
-        <span className="text-[16px] font-medium">menu</span>
-
+        <span className="text-[16px] font-medium">{t("menu")}</span>
         <IoIosArrowDown
           className={`transition-transform duration-300 ${
             isOpen ? "rotate-180" : "rotate-0"
@@ -59,14 +81,15 @@ export default function MenuExample() {
           isOpen ? "opacity-100 visible" : "opacity-0 invisible"
         } z-[9998]`}
       ></div>
-
       <div
         className={`fixed top-0 left-0 h-full w-[340px] bg-[#f5f5f5] shadow-2xl transform transition-transform duration-500 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } z-[9999]`}
       >
         <div className="flex justify-between items-center px-5 py-4 border-b border-gray-200 bg-white shadow-sm">
-          <h2 className="text-lg font-semibold text-gray-800">Main Menu</h2>
+          <h2 className="text-lg font-semibold text-gray-800">
+            {t("mainMenu")}
+          </h2>
           <button
             onClick={() => setIsOpen(false)}
             className="p-2 rounded-full hover:bg-gray-100 transition-colors"

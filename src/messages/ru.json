@@ -1,0 +1,73 @@
+{
+  "Header": {
+    "menu": "Меню",
+    "mainMenu": "Главное меню",
+    "navItem1": {
+      "title": "Все категории",
+      "option1": "Компьютеры",
+      "option2": "Смартфоны",
+      "option3": "Планшеты"
+    },
+    "navItem2": {
+      "title": "Скидки",
+      "option1": "Еженедельно",
+      "option2": "Ежемесячно",
+      "option3": "Сезонно"
+    },
+    "navItem3": {
+      "title": "Macbook",
+      "option1": "Air",
+      "option2": "Pro",
+      "option3": "Studio"
+    },
+    "navItem4": {
+      "title": "Аксессуары",
+      "option1": "Зарядки",
+      "option2": "Чехлы",
+      "option3": "Клавиатуры"
+    },
+    "navItem5": {
+      "title": "Проверено MacKafil",
+      "option1": "Сертиф.",
+      "option2": "Оригинал",
+      "option3": "Авториз."
+    },
+    "topprod": "Лучшие товары недели",
+    "golden": "Золотая Концепция",
+    "Categories": {
+      "exploreTitle": "Изучите все устройства",
+      "macbook": {
+        "title": "MacBook",
+        "computers": "Компьютеры",
+        "smartphones": "Смартфоны",
+        "tablets": "Планшеты"
+      },
+      "ipad": {
+        "title": "iPad",
+        "tablets": "Планшеты",
+        "accessories": "Аксессуары"
+      }
+    }
+  },
+  "SubHeader": {
+    "about": "О компании",
+    "delivery": "Доставка",
+    "trade": "Trade-in",
+    "blogers": "Для CMI и блогеров",
+    "news": "Новости",
+    "contacts": "Контакты"
+  },
+  "Hero": {
+    "iphone": {
+      "title": "iPhone 17 Pro",
+      "subtitle": "Максимум. Профессионально."
+    },
+    "macbook": {
+      "title": "MacBook Air M3",
+      "subtitle": "Лёгкий. Быстрый. Мощный."
+    },
+    "learnMore": "Подробнее",
+    "buy": "Купить",
+    "loading": "Загрузка..."
+  }
+}

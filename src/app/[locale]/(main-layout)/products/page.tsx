@@ -1,5 +1,5 @@
-import { DevicePagination } from "../../../components/device-pagination/DevicePagination";
-import { FilterCaller } from "../../../components/device-view/FilterCaller";
+import { DevicePagination } from "../../../../components/device-pagination/DevicePagination";
+import { FilterCaller } from "../../../../components/device-view/FilterCaller";
 
 interface Props {
   searchParams: { page?: string; limit?: string };

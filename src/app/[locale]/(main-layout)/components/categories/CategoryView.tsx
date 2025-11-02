@@ -2,9 +2,8 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import macImg from "../../../../../public/assets/mac.jpg";
-import iphoneImg from "../../../../../public/assets/iphoneImg.jpg";
-
+import macImg from "../../../../../../public/assets/mac.jpg";
+ import iphoneImg from "../../../../../../public/assets/iphoneImg.jpg"
 const CategoryView = () => {
   const router = useRouter();
 
