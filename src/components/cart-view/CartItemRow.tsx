@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { Trash2, Loader2, CheckCircle2 } from "lucide-react";
 import { Device } from "../../lib/useCart";
+import { useParams } from "next/navigation";
 
 const baseUrl = "https://api.ikafil.uz";
 
@@ -17,6 +18,8 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({
   isRemoving,
   handleRemove,
 }) => {
+  const params = useParams();
+  const locale = (params as any)?.locale as string;
   const imageUrl = item.device.device_images?.[0]?.url
     ? `${baseUrl}${item.device.device_images[0].url}`
     : "/assets/Image-not-found.png";
@@ -35,7 +38,7 @@ export const CartItemRow: React.FC<CartItemRowProps> = ({
           />
           <div className="text-sm leading-5">
             <Link
-              href={`/products/${item.device.id}`}
+              href={`/${locale}/products/${item.device.id}`}
               className={`text-base font-medium transition-colors ${
                 !item.device.is_active ? "text-gray-500 cursor-not-allowed" : "hover:text-blue-500"
               }`}

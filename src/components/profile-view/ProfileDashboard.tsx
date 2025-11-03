@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { useAuthStore } from "../../store/auth/useAuthStore";
 import { LuUserRound } from "react-icons/lu";
@@ -8,12 +8,9 @@ import { MdEditNote } from "react-icons/md";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 import { IoIosLogOut } from "react-icons/io";
+import { IoIosHeart } from "react-icons/io";
+import { useParams } from "next/navigation";
 
-const menuItems = [
-  { title: "profile", href: "/profile", logo: <FaUser /> },
-  { title: "settings", href: "/profile/edit", logo: <MdEditNote /> },
-  { title: "cart", href: "/profile/cart", logo: <FaCartShopping /> },
-];
 
 const ProfileDashboard = () => {
   const getAccessToken = useAuthStore((state) => state.getAccessToken);
@@ -33,6 +30,19 @@ const ProfileDashboard = () => {
     setToken(getAccessToken());
   }, [getAccessToken]);
 
+  const params = useParams();
+  const locale = (params as any)?.locale as string;
+
+  const menuItems = useMemo(
+    () => [
+      { title: "profile", href: `/${locale}/profile`, logo: <FaUser /> },
+      { title: "settings", href: `/${locale}/profile/edit`, logo: <MdEditNote /> },
+      { title: "cart", href: `/${locale}/profile/cart`, logo: <FaCartShopping /> },
+      { title: "wishlist", href: `/${locale}/profile/wishlist`, logo: <IoIosHeart /> },
+    ],
+    [locale]
+  );
+
   return (
     <div className="md:w-54 w-12 xl:w-64">
       <div className="flex flex-col gap-5 p-2  h-screen bg-white">
@@ -41,7 +51,7 @@ const ProfileDashboard = () => {
             <div className="flex place-items-center text-shadow-gray-800  md:gap-2">
               <p>
                 {token ? (
-                  <Link href={"/"}>
+                  <Link href={`/${locale}`}>
                     <img
                       src={photo ? photo : "/assets/profile-avatar.png"}
                       alt="Profile"
@@ -52,7 +62,7 @@ const ProfileDashboard = () => {
                   <LuUserRound className="size-6 text-gray-700" />
                 )}
               </p>
-              <Link href={"/"}>
+              <Link href={`/${locale}`}>
                 <p className="font-semibold hidden md:block text-gray-800">
                   IKafil
                 </p>
@@ -60,7 +70,7 @@ const ProfileDashboard = () => {
             </div>
           </div>
           <div className=" place-items-center hidden md:flex md:px-1 text-[14px] mr-0 md:mr-3 rounded-[3px]">
-            <Link href={"/"}>
+            <Link href={`/${locale}`}>
               <ArrowRight className="size-4 text-gray-800 hover:bg-gray-200 rounded-full" />
             </Link>
           </div>
@@ -117,7 +127,7 @@ const ProfileDashboard = () => {
                 >
                   Nah, Just Kidding
                 </button>
-                <Link href={"/"}>
+                <Link href={`/${locale}`}>
                   <button
                     onClick={() => {
                       logout();

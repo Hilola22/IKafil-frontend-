@@ -2,26 +2,20 @@
 
 import { useState, useEffect } from "react";
 import { Input } from "../ui/input";
-import { useSearch } from "../../context/useSearch";
+import { useParams, useRouter } from "next/navigation";
 
 interface DeviceResponse {
   data: any[];
 }
 
 export default function Search() {
-  const { searchTitle } = useSearch();
-  const [title, setTitle] = useState(searchTitle || "");
-  const [debouncedTitle, setDebouncedTitle] = useState(searchTitle || "");
+  const router = useRouter();
+  const params = useParams();
+  const locale = (params as any)?.locale as string;
+  const [debouncedTitle, setDebouncedTitle] = useState("");
   const [results, setResults] = useState<DeviceResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedTitle(title.trim());
-    }, 300);
-    return () => clearTimeout(handler);
-  }, [title]);
 
   useEffect(() => {
     if (!debouncedTitle) {
@@ -120,9 +114,7 @@ export default function Search() {
                       </td>
                       <td className="py-4 text-right">
                         <button
-                          onClick={() =>
-                            (window.location.href = `/products/${device.id}`)
-                          }
+                          onClick={() => router.push(`/${locale}/products/${device.id}`)}
                           className="text-indigo-600 hover:text-indigo-700 text-sm font-medium transition"
                         >
                           View
@@ -149,8 +141,8 @@ export default function Search() {
             Search Devices
           </h4>
           <Input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={debouncedTitle}
+            onChange={(e) => setDebouncedTitle(e.target.value)}
             placeholder="Search"
             className="w-full rounded-md shadow-sm border border-gray-300 text-gray-800"
           />

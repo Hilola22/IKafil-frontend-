@@ -2,36 +2,20 @@
 import Link from "next/link";
 import { memo, useEffect, useState } from "react";
 import { FiShoppingCart } from "react-icons/fi";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosHeart } from "react-icons/io";
 import { LuUserRound } from "react-icons/lu";
 import { RiSearchLine } from "react-icons/ri";
 import CartDrawer from "./CartDrawer";
 import SubHeader from "./SubHeader";
 import HeaderCategoryView from "./HeaderCategoryView";
-import { MenuIcon } from "lucide-react";
 import MenuExample from "./MenuHeader";
 import { useCartStore } from "../../lib/useCart";
 import { useAuthStore } from "../../store/auth/useAuthStore";
 import SearchDrawer from "./SearchDrawer";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 import { iphoneModels, macModels } from "../device-view/DeviceFilter";
-
-const categoriesData = [
-  {
-    name: "MacBook",
-    columns: [
-      { title: "Computers", items: ["Desktop PCs", "Monitors", "All-in-One"] },
-      { title: "Smartphones", items: ["iPhone", "Samsung"] },
-      { title: "Tablets", items: ["iPad Pro", "iPad Mini"] },
-    ],
-  },
-  {
-    name: "iPad",
-    columns: [
-      { title: "Tablets", items: ["iPad Pro", "iPad Air", "iPad Mini"] },
-      { title: "Accessories", items: ["Covers", "Keyboards", "Chargers"] },
-    ],
-  },
-];
+import { useWishlistStore } from "../../lib/userWishlist";
 const Header = () => {
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [isCartOpen, setCartOpen] = useState(false);
@@ -40,10 +24,40 @@ const Header = () => {
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [show, setShow] = useState(false);
   const { cart, getItemCount } = useCartStore();
+  const { getItemCount: getWishlistCount } = useWishlistStore();
+  const t = useTranslations("Header");
+
+  const [photo, setPhoto] = useState<string | null>(null);
+
+  useEffect(() => {
+    const savedPhoto = localStorage.getItem("profilePhoto");
+    if (savedPhoto) {
+      setPhoto(savedPhoto);
+    }
+  }, []);
 
   const getAccessToken = useAuthStore((state) => state.getAccessToken);
   const [token, setToken] = useState<string | null>(null);
-
+  const params = useParams();
+  const locale = params.locale as string;
+  const categoriesDataLocal = [
+    {
+      name: "MacBook",
+      columns: [
+        { title: "MacBook Air", href: `/${locale}/products?type=mac&name=MacBook%20Air` },
+        { title: "MacBook Pro", href: `/${locale}/products?type=mac&name=MacBook%20Pro` },
+        { title: "iMac", href: `/${locale}/products?type=mac&name=iMac` },
+      ],
+    },
+    {
+      name: "iPad",
+      columns: [
+        { title: "iPad Pro", href: `/${locale}/products?type=ipad&name=iPad%20Pro` },
+        { title: "iPad Air", href: `/${locale}/products?type=ipad&name=iPad%20Air` },
+        { title: "iPad Mini", href: `/${locale}/products?type=ipad&name=iPad%20Mini` },
+      ],
+    },
+  ];
   useEffect(() => {
     setToken(getAccessToken());
   }, [getAccessToken]);
@@ -88,24 +102,34 @@ const Header = () => {
             className="flex justify-between md:justify-between place-items-center"
           >
             <div className="md:hidden size-10 mr-5"></div>
-            <Link href={"/"} className="text-[35px] mt-2 font-[serif]">
+            <Link href={`/${locale}`} className="text-[35px] mt-2 font-[serif]">
               IKafil
             </Link>
-            <div className="flex items-center gap-3 border md:border-0 border-gray-200">
+            <div className="flex items-center gap-3 md:border-0">
               <div onClick={() => setSearchOpen(true)}>
                 <RiSearchLine className="size-6 cursor-pointer transition-colors hover:text-indigo-500" />
               </div>
 
-              <Link href={token ? "/profile" : "/auth/signin"}>
+              <Link
+                href={token ? `/${locale}/profile` : `/${locale}/auth/signin`}
+              >
                 {token ? (
                   <img
-                    src="/assets/profile-avatar.png"
+                    src={photo ? photo : "/assets/profile-avatar.png"}
                     alt="Profile"
                     className="size-8 rounded-full border"
                   />
                 ) : (
                   <LuUserRound className="size-6 text-gray-700" />
                 )}
+              </Link>
+              <Link href={`/${locale}/wishlist`} className="relative">
+                {getWishlistCount() > 0 && (
+                  <p className="left-5 bottom-3 absolute bg-pink-500 rounded-full size-4 text-[11px] font-bold text-white grid items-center justify-center">
+                    {getWishlistCount()}
+                  </p>
+                )}
+                <IoIosHeart className="size-6" />
               </Link>
               <div className="relative" onClick={() => setCartOpen(true)}>
                 {getItemCount() > 0 && (
@@ -133,7 +157,7 @@ const Header = () => {
                   onMouseEnter={() => setOpenCategory("all")}
                 >
                   <div className="cursor-pointer flex items-center gap-2 transition-colors duration-300 hover:text-indigo-500">
-                    All Categories <IoIosArrowDown />
+                    {t("navItem1.title")} <IoIosArrowDown />
                     <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 hover:w-full"></span>
                   </div>
 
@@ -149,14 +173,14 @@ const Header = () => {
                       onMouseEnter={() => setOpenCategory(null)}
                     />
                     <div className="relative bg-[#f5f5f5] h-100 transition-opacity duration-300">
-                      <HeaderCategoryView categoriesData={categoriesData} />
+                      <HeaderCategoryView categoriesData={categoriesDataLocal} />
                     </div>
                   </div>
                 </div>
               </li>
 
               <li>
-                <Link href={"/"}>
+                <Link href={`/${locale}`}>
                   <span
                     onMouseEnter={() => setOpenCategory(null)}
                     className="relative inline-block group transition-all duration-300 text-transparent bg-clip-text"
@@ -167,7 +191,7 @@ const Header = () => {
                       backgroundClip: "text",
                     }}
                   >
-                    Discount
+                    {t("navItem2.title")}
                     <span className="absolute left-0 -bottom-0.5 w-0 h-px bg-linear-to-r from-red-500 to-red-300 transition-all duration-300 group-hover:w-full"></span>
                   </span>
                 </Link>
@@ -175,91 +199,118 @@ const Header = () => {
 
               <li className="relative group">
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-                  MacBook <IoIosArrowDown />
+                  {t("navItem3.title")} <IoIosArrowDown />
                   <span className="absolute left-0 -bottom-0.5 w-0 h-px bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
                 </div>
 
                 <ul className="z-10 absolute left-0 mt-2 w-48 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                  {macModels?.map((i, inx) => (
-                    <li key={inx}>
-                      <Link
-                        href={`https://ikafil.vercel.app/products?type=mac&name=${i}&status=null&priceMin=1000&priceMax=20000`}
-                        className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                      >
-                        {i}
-                      </Link>
-                    </li>
-                  ))}
+                  <li>
+                    <Link
+                      href={`/${locale}`}
+                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
+                    >
+                      {t("navItem3.option1")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={`/${locale}`}
+                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
+                    >
+                      {t("navItem3.option2")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={`/${locale}`}
+                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
+                    >
+                      {t("navItem3.option3")}
+                    </Link>
+                  </li>
                 </ul>
               </li>
 
               <li className="relative group">
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-                  Accessors <IoIosArrowDown />
+                  {t("navItem4.title")} <IoIosArrowDown />
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
                 </div>
-
                 <ul className=" z-10 absolute left-0 mt-2 w-48 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
                   <li>
                     <Link
-                      href="/"
+                      href={`/${locale}`}
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 1
+                      {t("navItem4.option1")}
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/"
+                      href={`/${locale}`}
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 2
+                      {t("navItem4.option2")}
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/"
+                      href={`/${locale}`}
                       className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
                     >
-                      Option 3
+                      {t("navItem4.option3")}
                     </Link>
                   </li>
                 </ul>
               </li>
               <li className="relative group">
                 <div className="cursor-pointer flex items-center gap-2 px-3 transition-colors duration-300 group-hover:text-blue-500">
-                  iPhone Models <IoIosArrowDown />
+                  {t("navItem5.title")} <IoIosArrowDown />
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1px] bg-indigo-500 transition-all duration-300 group-hover:w-full"></span>
                 </div>
 
                 <ul className="z-10 absolute left-0 mt-2 w-48 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                  {iphoneModels?.map((i, inx) => (
-                    <li key={inx}>
-                      <Link
-                        href={`https://ikafil.vercel.app/products?type=mac&name=${i}&status=null&priceMin=1000&priceMax=20000`}
-                        className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
-                      >
-                        {i}
-                      </Link>
-                    </li>
-                  ))}
+                  <li>
+                    <Link
+                      href={`/${locale}`}
+                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
+                    >
+                      {t("navItem5.option1")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={`/${locale}`}
+                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
+                    >
+                      {t("navItem5.option2")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={`/${locale}`}
+                      className="block px-4 py-2 hover:text-gray-700 hover:bg-[#fcf9f99e]"
+                    >
+                      {t("navItem5.option3")}
+                    </Link>
+                  </li>
                 </ul>
               </li>
               <>
                 <li>
                   <Link
-                    href={"/products"}
+                    href={`/${locale}/products`}
                     className="font-medium text-transparent bg-clip-text bg-[linear-gradient(90deg,#60a5fa_0%,#818cf8_25%,#a78bfa_50%,#f472b6_75%,#f87171_100%)]"
                   >
-                    Top week products
+                    {t("topprod")}
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href={"/"}
+                    href={`/${locale}`}
                     className="font-medium text-transparent bg-clip-text bg-[linear-gradient(90deg,#60a5fa_0%,#818cf8_25%,#a78bfa_50%,#f472b6_75%,#f87171_100%)]"
                   >
-                    Golden Consept
+                    {t("golden")}
                   </Link>
                 </li>
               </>

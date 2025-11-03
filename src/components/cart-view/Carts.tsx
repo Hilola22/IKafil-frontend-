@@ -1,11 +1,13 @@
 'use client';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { DeviceView } from '../device-view/DeviceView';
 import { useCartStore } from '../../lib/useCart';
 import { CartItemRow } from './CartItemRow';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import CheckoutButton from './CheckoutButton';
+import { useAuthStore } from '../../store/auth/useAuthStore';
 
 const baseUrl = 'https://api.ikafil.uz';
 
@@ -14,6 +16,9 @@ const Carts = () => {
   const [isLoadingRelated, setIsLoadingRelated] = useState(true);
   const [isRemoving, setIsRemoving] = useState<number | null>(null);
   const router = useRouter();
+  const params = useParams();
+  const locale = (params as any)?.locale as string;
+  const getAccessToken = useAuthStore((s) => s.getAccessToken);
 
   const { cart, fetchCart, removeFromCart, clearCart, getTotalPrice } =
     useCartStore();
@@ -45,6 +50,33 @@ const Carts = () => {
     fetchRelatedProducts();
   }, [fetchCart]);
 
+  const user = useMemo(() => {
+    // Only basic info from localStorage if present
+    try {
+      const raw = localStorage.getItem('user_basic');
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const checkoutItems = useMemo(() => {
+    return (cart || []).map((c) => ({
+      id: c.device?.id ?? c.id,
+      name: c.device?.name,
+      price: Number(c.device?.base_price ?? 0),
+      device: {
+        id: c.device?.id,
+        name: c.device?.name,
+        base_price: String(c.device?.base_price ?? '0'),
+        details: {
+          color: c.device?.details?.color,
+          storage: c.device?.details?.storage,
+        },
+      },
+    }));
+  }, [cart]);
+
   const handleRemove = async (id: number) => {
     setIsRemoving(id);
     await removeFromCart(id);
@@ -60,7 +92,7 @@ const Carts = () => {
     <div className="container mx-auto px-3 sm:px-6 lg:px-8">
       <div className="flex flex-wrap gap-3 text-sm sm:text-base mt-3">
         <Link
-          href="/"
+          href={`/${locale}`}
           className="hover:text-blue-500 underline underline-offset-4"
         >
           Home
@@ -78,7 +110,7 @@ const Carts = () => {
         <p className="text-gray-500 text-lg text-center">🛒 Your cart is currently empty</p>
         <button
           onClick={() => {
-            setTimeout(() => router.push('/products'), 300);
+            setTimeout(() => router.push(`/${locale}/products`), 300);
           }}
           className="mt-6 px-6 py-2.5 bg-indigo-500 text-white font-medium rounded-full shadow hover:bg-indigo-600 transition-all"
         >
@@ -128,12 +160,12 @@ const Carts = () => {
               >
                 Clear Cart
               </button>
-              <button
-                onClick={handleClearCart}
-                className="w-full px-5 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
-              >
-                Proceed to Checkout
-              </button>
+              <CheckoutButton
+                items={checkoutItems}
+                total={getTotalPrice()}
+                locale={locale}
+                user={user}
+              />
             </div>
           </div>
         </div>

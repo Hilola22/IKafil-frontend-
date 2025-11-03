@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
+const nextConfig:NextConfig = {
   images: {
     domains: ["www.eclosio.ong", "3.76.183.255", "api.ikafil.uz"],
     remotePatterns: [
@@ -11,5 +13,11 @@ const nextConfig = {
     ],
   },
 };
+const withNextIntl = createNextIntlPlugin();
+export default withNextIntl(nextConfig)
 
-export default nextConfig;
+
+
+
+
+ 

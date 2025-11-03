@@ -5,7 +5,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useCartStore } from "@/lib/useCart";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { validateToken } from "@/lib/validateToken";
 
 const getCookie = (name: string): string | null => {
@@ -30,6 +30,8 @@ type DeviceButtonProps = {
 
 const DeviceButton = ({ product }: DeviceButtonProps) => {
   const router = useRouter();
+  const params = useParams();
+  const locale = (params as any)?.locale as string;
   const { addToCart, cart } = useCartStore();
   const [loading, setLoading] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
@@ -108,7 +110,7 @@ const DeviceButton = ({ product }: DeviceButtonProps) => {
       getCookie("access_token");
 
     if (!token) {
-      router.push("/auth/signin");
+      router.push(`/${locale}/auth/signin`);
       return;
     }
 

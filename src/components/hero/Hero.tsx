@@ -1,8 +1,9 @@
 "use client";
+
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSearch } from "../../context/useSearch";
+import { useTranslations, useLocale } from "next-intl";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -11,14 +12,12 @@ import "./Hero.css";
 const heroData = [
   {
     id: 1,
-    title: "iPhone 17 Pro",
-    subtitle: "All out. Pro.",
+    key: "iphone",
     image: "/assets/apple-hero2.webp",
   },
   {
     id: 2,
-    title: "MacBook Air M3",
-    subtitle: "Light. Speed. Power.",
+    key: "macbook",
     image: "/assets/mac2.jpg",
   },
 ];
@@ -28,7 +27,8 @@ export default function Hero() {
   const [loadingBuyId, setLoadingBuyId] = useState<number | null>(null);
   const [loadingLearnId, setLoadingLearnId] = useState<number | null>(null);
   const router = useRouter();
-  const { setSearchTitle } = useSearch();
+  const locale = useLocale();
+  const t = useTranslations("Hero");
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -40,9 +40,12 @@ export default function Hero() {
   const handleBuyClick = async (title: string, id: number) => {
     try {
       setLoadingBuyId(id);
-      setSearchTitle(title);
       await new Promise((r) => setTimeout(r, 300));
-      router.push("/search");
+      router.push(
+        `/${locale}/products?name=${encodeURIComponent(
+          title
+        )}&status=null&priceMin=1000&priceMax=20000`
+      );
     } finally {
       setLoadingBuyId(null);
     }
@@ -52,7 +55,7 @@ export default function Hero() {
     try {
       setLoadingLearnId(id);
       await new Promise((r) => setTimeout(r, 800));
-      router.push("/products");
+      router.push(`/${locale}/products`);
     } finally {
       setLoadingLearnId(null);
     }
@@ -66,10 +69,7 @@ export default function Hero() {
     >
       <Swiper
         modules={[Autoplay]}
-        autoplay={{
-          delay: 4000,
-          disableOnInteraction: false,
-        }}
+        autoplay={{ delay: 4000, disableOnInteraction: false }}
         loop
         speed={600}
         className="w-full h-full"
@@ -83,14 +83,14 @@ export default function Hero() {
                     isMobile ? "text-3xl" : "text-6xl"
                   }`}
                 >
-                  {hero.title}
+                  {t(`${hero.key}.title`)}
                 </h1>
                 <p
                   className={`text-gray-300 ${
                     isMobile ? "text-base" : "text-xl"
                   }`}
                 >
-                  {hero.subtitle}
+                  {t(`${hero.key}.subtitle`)}
                 </p>
 
                 <div className="flex items-center justify-center gap-5 mt-4">
@@ -103,11 +103,11 @@ export default function Hero() {
                         : "hover:bg-blue-500"
                     }`}
                   >
-                    {loadingLearnId === hero.id ? "Loading..." : "Learn more"}
+                    {loadingLearnId === hero.id ? t("loading") : t("learnMore")}
                   </button>
 
                   <button
-                    onClick={() => handleBuyClick(hero.title, hero.id)}
+                    onClick={() => handleBuyClick(hero.key, hero.id)}
                     disabled={loadingBuyId === hero.id}
                     className={`px-6 py-2 border border-blue-600 rounded-full font-medium transition ${
                       loadingBuyId === hero.id
@@ -115,7 +115,7 @@ export default function Hero() {
                         : "hover:bg-blue-600 hover:text-white"
                     }`}
                   >
-                    {loadingBuyId === hero.id ? "Loading..." : "Buy"}
+                    {loadingBuyId === hero.id ? t("loading") : t("buy")}
                   </button>
                 </div>
               </div>
@@ -123,7 +123,7 @@ export default function Hero() {
               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center">
                 <Image
                   src={hero.image}
-                  alt={hero.title}
+                  alt={t(`${hero.key}.title`)}
                   width={isMobile ? 320 : 900}
                   height={isMobile ? 320 : 900}
                   priority
