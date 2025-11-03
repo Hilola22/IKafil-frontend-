@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useCartStore } from "../../lib/useCart";
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { FiShoppingCart } from "react-icons/fi";
 import { FaShoppingCart } from "react-icons/fa";
 
@@ -33,6 +33,8 @@ export const AddToCartButton = ({ data }: DeviceButtonProps) => {
   const { addToCart, cart, fetchCart } = useCartStore();
   const [isAdded, setIsAdded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const params = useParams();
+  const locale = (params as any)?.locale as string;
 
   useEffect(() => {
     fetchCart();
@@ -112,7 +114,7 @@ export const AddToCartButton = ({ data }: DeviceButtonProps) => {
       getCookie("access_token");
 
     if (!token) {
-      router.push("/auth/signin");
+      router.push(`/${locale}/auth/signin`);
       return;
     }
 
@@ -122,7 +124,7 @@ export const AddToCartButton = ({ data }: DeviceButtonProps) => {
   return (
     <div>
       {isAdded ? (
-        <Link href={"/cart"}>
+        <Link href={`/${locale}/cart`}>
           <div className="mt-0.5 hover:text-slate-500 px-2 border justify-center items-center py-2 text-center text-black text-lg rounded-full flex transition justify-self-center gap-2">
             <FaShoppingCart className="" />
           </div>

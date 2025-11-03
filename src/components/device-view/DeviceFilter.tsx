@@ -6,7 +6,7 @@ import "rc-slider/assets/index.css";
 import { ChevronRight, ChevronDown } from "lucide-react";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 const ramOptions = ["8GB", "12GB", "16GB"];
 const cpuOptions = ["Snapdragon 8 Gen 2", "A17 Pro", "Apple M2 Pro"];
@@ -33,7 +33,9 @@ export const DeviceFilter = ({
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [selectedName, setSelectedName] = useState<string | null>(null);
   const [showSwitch, setShowSwitch] = useState(false);
-  const [status, setstatus] = useState<string | null>("available");
+  const [status, setstatus] = useState<string | null | undefined>(undefined);
+  const paramsLocale = useParams();
+  const locale = (paramsLocale as any)?.locale as string;
 
   useEffect(() => {
     const type = searchParams.get("type");
@@ -53,7 +55,8 @@ export const DeviceFilter = ({
     if (color) setSelectedColor(color);
     if (name) setSelectedName(name);
     if (statusParam === "null") setstatus(null);
-    else setstatus(null);
+    else if (statusParam === "available") setstatus("available");
+    else setstatus(undefined);
     if (priceMin && priceMax) {
       setPriceRange([parseInt(priceMin), parseInt(priceMax)]);
     }
@@ -62,14 +65,14 @@ export const DeviceFilter = ({
       priceRange:
         priceMin && priceMax
           ? [parseInt(priceMin), parseInt(priceMax)]
-          : [1000, 20000],
+          : priceRange,
       ram,
       cpu,
       year,
       color,
       type,
       name,
-      status: statusParam === "null" ? null : "available",
+      status: statusParam === "null" ? null : statusParam === "available" ? "available" : undefined,
     });
   }, []);
 
@@ -82,13 +85,15 @@ export const DeviceFilter = ({
     if (selectedYear) params.set("year", selectedYear);
     if (selectedColor) params.set("color", selectedColor);
     if (selectedName) params.set("name", selectedName);
-    if (status === null) params.set("status", "null");
-    else params.set("status", "available");
+    if (status !== undefined) {
+      if (status === null) params.set("status", "null");
+      else params.set("status", "available");
+    }
 
     params.set("priceMin", priceRange[0].toString());
     params.set("priceMax", priceRange[1].toString());
 
-    router.push(`/products?${params.toString()}`);
+    router.push(`/${locale}/products?${params.toString()}`);
   }, [
     selectedType,
     selectedRam,

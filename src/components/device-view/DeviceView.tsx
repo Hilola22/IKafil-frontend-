@@ -26,9 +26,11 @@ type Product = {
 export const DeviceView = ({
   data,
   isLoading,
+  locale,
 }: {
   data: Product[] | any;
   isLoading?: boolean;
+  locale?: string;
 }) => {
   const image_url = "https://api.ikafil.uz";
 
@@ -68,7 +70,7 @@ export const DeviceView = ({
                     </div>
                   )}
 
-                  <Link href={`/products/${p.id}`}>
+                  <Link href={`${locale ? `/${locale}` : ""}/products/${p.id}`}>
                     <div className="relative w-full h-[180px] sm:h-[230px] md:h-[260px] cursor-pointer">
                       {(() => {
                         const fallback =

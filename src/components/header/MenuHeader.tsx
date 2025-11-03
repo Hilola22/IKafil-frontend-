@@ -5,10 +5,13 @@ import Link from "next/link";
 import { IoIosArrowDown } from "react-icons/io";
 import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 
 export default function MenuExample() {
   const t = useTranslations("Header"); 
   const [isOpen, setIsOpen] = useState(false);
+  const params = useParams();
+  const locale = (params as any)?.locale as string;
 
   const menuItems = [
     {
@@ -103,7 +106,7 @@ export default function MenuExample() {
             <div key={i} className="border-b border-gray-200 pb-3">
               {item.href ? (
                 <Link
-                  href={item.href}
+                  href={`/${locale}${item.href}`}
                   onClick={() => setIsOpen(false)}
                   className="block font-medium text-gray-800 hover:text-indigo-600 transition-colors"
                 >

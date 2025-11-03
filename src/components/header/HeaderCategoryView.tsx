@@ -24,9 +24,13 @@ const HeaderCategoryView = ({ categoriesData }: HeaderCategoryViewProps) => {
   const t = useTranslations("Header.Categories");
 
   const translatedOrFallback = (key: string, fallback: string) => {
-    const value = t(key);
-    if (!value || value === key) return fallback;
-    return value;
+    try {
+      const value = t(key);
+      if (!value || value === key) return fallback;
+      return value;
+    } catch {
+      return fallback;
+    }
   };
 
   return (

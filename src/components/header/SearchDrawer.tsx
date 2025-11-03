@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { FiX } from "react-icons/fi";
 import { Input } from "../ui/input";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 
 interface SearchDrawerProps {
@@ -13,6 +13,8 @@ interface SearchDrawerProps {
 
 const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onClose }) => {
   const router = useRouter();
+  const params = useParams();
+  const locale = (params as any)?.locale as string;
   const [title, setTitle] = useState("");
   const [debouncedTitle, setDebouncedTitle] = useState("");
   const [results, setResults] = useState<any[]>([]);
@@ -35,7 +37,7 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onClose }) => {
     setIsLoading(true);
     setIsError(false);
 
-    fetch(`http://api.kafil.uz/api/devices?search=${debouncedTitle}`)
+    fetch(`https://api.ikafil.uz/api/devices?search=${debouncedTitle}`)
       .then((res) => {
         if (!res.ok) throw new Error("Fetch failed");
         return res.json();
@@ -110,7 +112,7 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onClose }) => {
                 className="flex items-center justify-between p-4 transition-all duration-200"
               >
                 <div className="flex items-center gap-4">
-                  <Link href={`/products/${device.id}`}>
+                  <Link href={`/${locale}/products/${device.id}`}>
                     <div className="w-16 h-16">
                       <img
                         src={imageUrl}
@@ -125,7 +127,7 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onClose }) => {
                     <h4
                       onClick={() => {
                         onClose();
-                        router.push(`/products/${device.id}`);
+                        router.push(`/${locale}/products/${device.id}`);
                       }}
                       className="font-semibold text-[16px] text-gray-800 hover:text-blue-600 cursor-pointer transition-colors"
                     >

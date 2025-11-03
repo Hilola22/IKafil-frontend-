@@ -4,9 +4,12 @@ import Link from "next/link";
 import { memo } from "react";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useParams } from "next/navigation";
 
 const SubHeader = ({ setOpenCategory }: any) => {
   const t = useTranslations("SubHeader");
+  const params = useParams();
+  const locale = (params as any)?.locale as string;
 
   return (
     <div
@@ -16,7 +19,7 @@ const SubHeader = ({ setOpenCategory }: any) => {
       <ul className="flex gap-5 text-[12px] font-[Montserrat,sans-serif] text-gray-600 font-normal">
         <li>
           <Link
-            href="/about"
+            href={`/${locale}/about`}
             className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
           >
             {t("about")}
@@ -25,7 +28,7 @@ const SubHeader = ({ setOpenCategory }: any) => {
         </li>
         <li>
           <Link
-            href="/delivery"
+            href={`/${locale}/delivery`}
             className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
           >
             {t("delivery")}
@@ -34,7 +37,7 @@ const SubHeader = ({ setOpenCategory }: any) => {
         </li>
         <li>
           <Link
-            href="/trade-in"
+            href={`/${locale}/trade-in`}
             className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
           >
             {t("trade")}
@@ -43,7 +46,7 @@ const SubHeader = ({ setOpenCategory }: any) => {
         </li>
         <li>
           <Link
-            href="/"
+            href={`/${locale}`}
             className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
           >
             {t("blogers")}
@@ -52,7 +55,7 @@ const SubHeader = ({ setOpenCategory }: any) => {
         </li>
         <li>
           <Link
-            href="/news"
+            href={`/${locale}/news`}
             className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
           >
             {t("news")}
@@ -61,7 +64,7 @@ const SubHeader = ({ setOpenCategory }: any) => {
         </li>
         <li>
           <Link
-            href="/contacts"
+            href={`/${locale}/contacts`}
             className="hover:text-indigo-500 relative inline-block group transition-all duration-300"
           >
             {t("contacts")}

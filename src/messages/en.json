@@ -40,12 +40,18 @@
         "title": "MacBook",
         "computers": "Computers",
         "smartphones": "Smartphones",
-        "tablets": "Tablets"
+        "tablets": "Tablets",
+        "macbookair": "MacBook Air",
+        "macbookpro": "MacBook Pro",
+        "imac": "iMac"
       },
       "ipad": {
         "title": "iPad",
         "tablets": "Tablets",
-        "accessories": "Accessories"
+        "accessories": "Accessories",
+        "ipadpro": "iPad Pro",
+        "ipadair": "iPad Air",
+        "ipadmini": "iPad Mini"
       }
     }
   },

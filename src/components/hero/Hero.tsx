@@ -28,7 +28,7 @@ export default function Hero() {
   const [loadingLearnId, setLoadingLearnId] = useState<number | null>(null);
   const router = useRouter();
   const locale = useLocale();
-  const t = useTranslations("Hero"); // 🔥 i18n kalitlar
+  const t = useTranslations("Hero");
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -42,7 +42,9 @@ export default function Hero() {
       setLoadingBuyId(id);
       await new Promise((r) => setTimeout(r, 300));
       router.push(
-        `https://ikafil.vercel.app/products?name=${title}&status=null&priceMin=1000&priceMax=20000`
+        `/${locale}/products?name=${encodeURIComponent(
+          title
+        )}&status=null&priceMin=1000&priceMax=20000`
       );
     } finally {
       setLoadingBuyId(null);

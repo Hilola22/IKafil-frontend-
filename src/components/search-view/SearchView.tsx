@@ -2,12 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { Input } from "../ui/input";
+import { useParams, useRouter } from "next/navigation";
 
 interface DeviceResponse {
   data: any[];
 }
 
 export default function Search() {
+  const router = useRouter();
+  const params = useParams();
+  const locale = (params as any)?.locale as string;
   const [debouncedTitle, setDebouncedTitle] = useState("");
   const [results, setResults] = useState<DeviceResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -110,9 +114,7 @@ export default function Search() {
                       </td>
                       <td className="py-4 text-right">
                         <button
-                          onClick={() =>
-                            (window.location.href = `/products/${device.id}`)
-                          }
+                          onClick={() => router.push(`/${locale}/products/${device.id}`)}
                           className="text-indigo-600 hover:text-indigo-700 text-sm font-medium transition"
                         >
                           View

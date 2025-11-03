@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Input } from "../ui/input";
 import { FiX } from "react-icons/fi";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
 interface DeviceResponse {
@@ -12,6 +12,8 @@ interface DeviceResponse {
 
 const SearchDrawerView = ({ onClose }: { onClose: () => void }) => {
   const router = useRouter();
+  const params = useParams();
+  const locale = (params as any)?.locale as string;
   const [title, setTitle] = useState("");
   const [debouncedTitle, setDebouncedTitle] = useState("");
   const [results, setResults] = useState<DeviceResponse | null>(null);
@@ -34,7 +36,7 @@ const SearchDrawerView = ({ onClose }: { onClose: () => void }) => {
     setIsLoading(true);
     setIsError(false);
 
-    fetch(`http://api.kafil.uz/api/devices?search=${debouncedTitle}`)
+    fetch(`https://api.ikafil.uz/api/devices?search=${debouncedTitle}`)
       .then((res) => {
         if (!res.ok) throw new Error("Fetch failed");
         return res.json();
@@ -97,7 +99,7 @@ const SearchDrawerView = ({ onClose }: { onClose: () => void }) => {
                   <h4
                     onClick={() => {
                       onClose();
-                      router.push(`/products/${device.id}`);
+                      router.push(`/${locale}/products/${device.id}`);
                     }}
                     className="font-semibold text-[16px] text-gray-800 hover:text-blue-600 cursor-pointer transition-colors"
                   >

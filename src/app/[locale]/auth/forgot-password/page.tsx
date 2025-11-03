@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { api } from "@/api";
 import toast from "react-hot-toast";
 
@@ -9,6 +9,8 @@ export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const params = useParams();
+  const locale = (params as any)?.locale as string;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +29,7 @@ export default function ForgotPassword() {
       );
       setEmail("");
 
-      setTimeout(() => router.push("/auth/reset-password"), 2000);
+      setTimeout(() => router.push(`/${locale}/auth/reset-password`), 2000);
     } catch (error: any) {
       const msg =
         error.response?.data?.message ||
