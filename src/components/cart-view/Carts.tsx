@@ -51,7 +51,6 @@ const Carts = () => {
   }, [fetchCart]);
 
   const user = useMemo(() => {
-    // Only basic info from localStorage if present
     try {
       const raw = localStorage.getItem('user_basic');
       return raw ? JSON.parse(raw) : null;

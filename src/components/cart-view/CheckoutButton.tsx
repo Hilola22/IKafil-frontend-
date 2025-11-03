@@ -46,7 +46,6 @@ export default function CheckoutButton({
           ? await res.json()
           : await res.text();
       } catch (_) {
-        // ignore JSON parse errors, handle below
       }
       if (!res.ok || (typeof data === "object" && data && data.ok === false)) {
         const msg =

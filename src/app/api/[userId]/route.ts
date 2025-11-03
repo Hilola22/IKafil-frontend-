@@ -9,7 +9,6 @@ export async function GET(req: NextRequest, { params }: { params: { userId: stri
 
     const auth = req.headers.get("authorization");
 
-    // Upstream endpoint (HTTP). Using server-side fetch to avoid browser CORS/mixed-content issues.
     const upstreamUrl = `http://3.76.183.255:3030/api/payment-schedule/buyer/${encodeURIComponent(userId)}`;
 
     const res = await fetch(upstreamUrl, {
@@ -17,7 +16,6 @@ export async function GET(req: NextRequest, { params }: { params: { userId: stri
         ...(auth ? { Authorization: auth } : {}),
         "Content-Type": "application/json",
       },
-      // Ensure this is server-side only
       cache: "no-store",
       next: { revalidate: 0 },
     });
