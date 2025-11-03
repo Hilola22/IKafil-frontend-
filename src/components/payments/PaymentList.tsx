@@ -18,7 +18,7 @@ export default function PaymentList({ userId }: { userId: number }) {
     const token = getAccessToken();
     if (!token) return;
 
-    fetch(`http://3.76.183.255:3030/api/payment-schedule/buyer/${userId}`, {
+    fetch(`https://api.ikafil.uz/api/payment-schedule/buyer/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
