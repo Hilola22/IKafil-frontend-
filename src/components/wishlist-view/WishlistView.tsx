@@ -67,14 +67,7 @@ export default function WishlistView() {
       </div>
 
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {wishlist.map((item) => {
-          const img =
-            item.device_images && item.device_images.length > 0
-              ? item.device_images[0].url
-              : "/assets/placeholder.png";
-          const price = parseFloat(item.base_price || "0");
-          return <DeviceView data={item} />;
-        })}
+        <DeviceView data={wishlist} />
       </div>
     </div>
   );

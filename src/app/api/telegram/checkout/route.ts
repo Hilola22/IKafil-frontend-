@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => null);
 
-    const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "7835723357:AAE6B5HGpmIj-rE4X5Vb7WvxB5NGpJUB6GI";
-    const CHAT_ID = process.env.TELEGRAM_CHAT_ID || "6381463618";
+    const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "....";
+    const CHAT_ID = process.env.TELEGRAM_CHAT_ID || "....";
 
     if (!BOT_TOKEN || !CHAT_ID) {
       return NextResponse.json(
