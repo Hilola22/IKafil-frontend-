@@ -36,7 +36,6 @@ const DeviceButton = ({ product }: DeviceButtonProps) => {
   const [loading, setLoading] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
 
-  // 🔹 Cart yangilansa, mavjudligini tekshirish
   useEffect(() => {
     const exists = cart.some(
       (item) => item.device?.id === product.id || item.id === product.id
@@ -102,7 +101,6 @@ const DeviceButton = ({ product }: DeviceButtonProps) => {
     }
   };
 
-  // 🔹 Faqat tugma bosilganda tokenni tekshirish va eskirgan bo‘lsa /signin ga yo‘naltirish
   const attemptAdd = async () => {
     const token =
       getCookie("accessToken") ||

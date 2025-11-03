@@ -1,8 +1,8 @@
-// src/app/[locale]/layout.tsx
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "../../i18n/routing";
 import { getMessages } from "next-intl/server";
+import type { ReactNode } from "react";
 
 export async function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -11,10 +11,10 @@ export async function generateStaticParams() {
 export default async function LocaleLayout({
   children,
   params,
-}: Readonly<{
-  children: React.ReactNode;
+}: {
+  children: ReactNode;
   params: Promise<{ locale: string }>;
-}>) {
+}) {
   const { locale } = await params;
 
   if (!hasLocale(routing.locales, locale)) {
