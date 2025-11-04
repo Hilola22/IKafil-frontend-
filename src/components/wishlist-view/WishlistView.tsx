@@ -66,9 +66,8 @@ export default function WishlistView() {
         </button>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <DeviceView data={wishlist} />
-      </div>
+      <br /><br />
+      <DeviceView data={wishlist} />
     </div>
   );
 }
