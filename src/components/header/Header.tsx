@@ -44,17 +44,32 @@ const Header = () => {
     {
       name: "MacBook",
       columns: [
-        { title: "MacBook Air", href: `/${locale}/products?type=mac&name=MacBook%20Air` },
-        { title: "MacBook Pro", href: `/${locale}/products?type=mac&name=MacBook%20Pro` },
+        {
+          title: "MacBook Air",
+          href: `/${locale}/products?type=mac&name=MacBook%20Air`,
+        },
+        {
+          title: "MacBook Pro",
+          href: `/${locale}/products?type=mac&name=MacBook%20Pro`,
+        },
         { title: "iMac", href: `/${locale}/products?type=mac&name=iMac` },
       ],
     },
     {
       name: "iPad",
       columns: [
-        { title: "iPad Pro", href: `/${locale}/products?type=ipad&name=iPad%20Pro` },
-        { title: "iPad Air", href: `/${locale}/products?type=ipad&name=iPad%20Air` },
-        { title: "iPad Mini", href: `/${locale}/products?type=ipad&name=iPad%20Mini` },
+        {
+          title: "iPad Pro",
+          href: `/${locale}/products?type=ipad&name=iPad%20Pro`,
+        },
+        {
+          title: "iPad Air",
+          href: `/${locale}/products?type=ipad&name=iPad%20Air`,
+        },
+        {
+          title: "iPad Mini",
+          href: `/${locale}/products?type=ipad&name=iPad%20Mini`,
+        },
       ],
     },
   ];
@@ -173,12 +188,14 @@ const Header = () => {
                       onMouseEnter={() => setOpenCategory(null)}
                     />
                     <div className="relative bg-[#f5f5f5] h-100 transition-opacity duration-300">
-                      <HeaderCategoryView categoriesData={categoriesDataLocal} />
+                      <HeaderCategoryView
+                        categoriesData={categoriesDataLocal}
+                      />
                     </div>
                   </div>
                 </div>
               </li>
-
+              {/*  */}
               <li>
                 <Link href={`/${locale}`}>
                   <span
